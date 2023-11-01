@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "beekeeping",
+	"version": "${version}",
+	"name": "Beekeeping",
+	"description": "NOT THE BEES!!",
+	"authors": [
+		"MRH0 (author)",
+    "unilock (fabric port)",
+    "Forestry (inspiration)"
+	],
+	"contact": {
+		"sources": "https://github.com/mrh0/beekeeping"
+	},
+	"license": "MIT",
+	"icon": "beekeeping.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"github.mrh0.beekeeping.Beekeeping"
+		],
+		"client": [
+			"github.mrh0.beekeeping.BeekeepingClient"
+		],
+    "jei_mod_plugin": [
+      "github.mrh0.beekeeping.compat.jei.BeekeepingJEI"
+    ]
+	},
+	"depends": {
+		"fabricloader": "*",
+    "fabric-api": "*",
+		"minecraft": ">=1.19.2"
+	},
+  "suggests": {
+    "jei": "*"
+  }
+}
