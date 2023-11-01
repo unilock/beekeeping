@@ -1,47 +1,44 @@
 package github.mrh0.beekeeping.event;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
+import io.github.fabricators_of_create.porting_lib.event.client.OverlayRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Beekeeping.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientOverlay {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(Beekeeping.MODID, "textures/gui/analyzer.png");
     static int lx = 8, ly = 8;
 
-    @SubscribeEvent
-    public static void renderOverlay(final RenderGuiOverlayEvent.Pre event) {
-        var stack = event.getPoseStack();
+    public static boolean renderOverlay(PoseStack stack, float partialTicks, Window window, OverlayRenderCallback.Types type) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         var player = Minecraft.getInstance().player;
         if(player == null)
-            return;
+            return false;
         if(player.level == null)
-            return;
+            return false;
 
         if(!player.getInventory().contains(new ItemStack(Index.THERMOMETER.get())))
-            return;
+            return false;
 
         var temp = BiomeTemperature.of(player.level.getBiome(Minecraft.getInstance().player.getOnPos()).value().getBaseTemperature());
 
         //drawTextShadowed(stack, new TextComponent("Test"), 10, 10, 1f);
         drawListItem(stack, temp.getComponent(), 0, 6 + temp.ordinal());
+
+		return true;
     }
 
     public static void drawTextShadowed(PoseStack poseStack, Component text, int x, int y, float scale) {

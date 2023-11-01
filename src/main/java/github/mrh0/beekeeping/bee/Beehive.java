@@ -1,6 +1,7 @@
 package github.mrh0.beekeeping.bee;
 
 import github.mrh0.beekeeping.blocks.beehive.BeehiveBlock;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
 

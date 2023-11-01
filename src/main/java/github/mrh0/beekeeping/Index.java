@@ -1,7 +1,5 @@
 package github.mrh0.beekeeping;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.breeding.BeeLifecycle;
@@ -24,14 +22,15 @@ import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import github.mrh0.beekeeping.screen.analyzer.AnalyzerMenu;
 import github.mrh0.beekeeping.screen.apiary.ApiaryMenu;
 import github.mrh0.beekeeping.world.gen.BeehiveBiomeModifier;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import me.alphamode.forgetags.Tags;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -43,28 +42,18 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraftforge.common.Tags.Biomes;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.network.IContainerFactory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class Index {
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, Beekeeping.MODID);
-    public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, Beekeeping.MODID);
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Beekeeping.MODID);
-    public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, Beekeeping.MODID);
-    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
-            DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Beekeeping.MODID);
-    public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS =
-            DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Beekeeping.MODID);
+    public static final LazyRegistrar<Item> ITEMS =
+            LazyRegistrar.create(Registry.ITEM, Beekeeping.MODID);
+    public static final LazyRegistrar<Block> BLOCKS =
+            LazyRegistrar.create(Registry.BLOCK, Beekeeping.MODID);
+    public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITIES =
+            LazyRegistrar.create(Registry.BLOCK_ENTITY_TYPE, Beekeeping.MODID);
+    public static final LazyRegistrar<MenuType<?>> MENUS =
+            LazyRegistrar.create(Registry.MENU, Beekeeping.MODID);
+    public static final LazyRegistrar<RecipeSerializer<?>> SERIALIZERS =
+            LazyRegistrar.create(Registry.RECIPE_SERIALIZER, Beekeeping.MODID);
 
     static {
         species();
@@ -74,16 +63,15 @@ public class Index {
         menus();
         tags();
         recipes();
-        biomeModifierCodecs();
     }
 
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
-        BLOCK_ENTITIES.register(eventBus);
-        MENUS.register(eventBus);
-        SERIALIZERS.register(eventBus);
-        BIOME_MODIFIER_SERIALIZERS.register(eventBus);
+    public static void register() {
+        BLOCKS.register();
+        ITEMS.register();
+        BLOCK_ENTITIES.register();
+        MENUS.register();
+        SERIALIZERS.register();
+		BeehiveBiomeModifier.modify();
     }
 
     private static TagKey<Item> bind(String key) {
@@ -95,7 +83,7 @@ public class Index {
         var r = SpeciesRegistry.instance;
         r.register(new Specie("common", 0xFFfff2cc)
                 .setProduce(Items.HONEYCOMB, 3, 5)
-                .addBeehive(Biomes.IS_PLAINS, Config.BEEHIVE_COMMON_TRIES.get(), Config.BEEHIVE_COMMON_RARITY.get()));
+                .addBeehive(Tags.Biomes.IS_PLAINS, Config.BEEHIVE_COMMON_TRIES.get(), Config.BEEHIVE_COMMON_RARITY.get()));
         r.register(new Specie("forest", 0xFF93c47d)
                 .setProduce(Items.HONEYCOMB, 3, 5)
                 .addBeehive(BiomeTags.IS_FOREST, Config.BEEHIVE_FOREST_TRIES.get(), Config.BEEHIVE_FOREST_RARITY.get()));
@@ -125,14 +113,14 @@ public class Index {
 
         r.register(new Specie("dune", 0xFFfbbc04)
                 .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(Biomes.IS_SANDY, Config.BEEHIVE_DUNE_TRIES.get(), Config.BEEHIVE_DUNE_RARITY.get()) // TODO: Fix biome tag sandy & hot
+                .addBeehive(Tags.Biomes.IS_SANDY, Config.BEEHIVE_DUNE_TRIES.get(), Config.BEEHIVE_DUNE_RARITY.get()) // TODO: Fix biome tag sandy & hot
                 .setLifetimeGene(Gene::random5Narrow)
                 .setWeatherGene(Gene::strict)
                 .setPreferredTemperature(BiomeTemperature.WARMEST));
 
         r.register(new Specie("snowy", 0xFFefefef)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.SNOWBALL, 8, 16)
-                .addBeehive(Biomes.IS_SNOWY, Config.BEEHIVE_SNOWY_TRIES.get(), Config.BEEHIVE_SNOWY_RARITY.get())
+                .addBeehive(Tags.Biomes.IS_SNOWY, Config.BEEHIVE_SNOWY_TRIES.get(), Config.BEEHIVE_SNOWY_RARITY.get())
                 .setTemperatureGene(Gene::random3Low)
                 .setPreferredTemperature(BiomeTemperature.COLD));
 
@@ -149,7 +137,7 @@ public class Index {
 
         r.register(new Specie("fungal", 0xFF660000)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.RED_MUSHROOM, 0.5d, 0.8d)
-                .addBeehive(Biomes.IS_MUSHROOM, Config.BEEHIVE_FUNGAL_TRIES.get(), Config.BEEHIVE_FUNGAL_RARITY.get()) // TODO: fix biome tag mushroom & swamp
+                .addBeehive(Tags.Biomes.IS_MUSHROOM, Config.BEEHIVE_FUNGAL_TRIES.get(), Config.BEEHIVE_FUNGAL_RARITY.get()) // TODO: fix biome tag mushroom & swamp
                 .setTemperatureGene(Gene::random3High)
                 .setProduceGene(Gene::random5High));
 
@@ -180,7 +168,7 @@ public class Index {
 
         r.register(new Specie("malignant", 0xFF999999)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.BONE_MEAL, 3, 7)
-                .addBeehive(Biomes.IS_WASTELAND, Config.BEEHIVE_MALIGNANT_TRIES.get(), Config.BEEHIVE_MALIGNANT_RARITY.get()) // TODO: fix biome tag mesa & wasteland
+                .addBeehive(Tags.Biomes.IS_WASTELAND, Config.BEEHIVE_MALIGNANT_TRIES.get(), Config.BEEHIVE_MALIGNANT_RARITY.get()) // TODO: fix biome tag mesa & wasteland
                 .setPreferredTemperature(BiomeTemperature.WARM)
                 .setDark());
 
@@ -329,13 +317,9 @@ public class Index {
     public static RegistryObject<MenuType<AnalyzerMenu>> ANALYZER_MENU;
     public static RegistryObject<MenuType<ApiaryMenu>> APIARY_MENU;
 
-    private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
-        return MENUS.register(name, () -> IForgeMenuType.create(factory));
-    }
-
     public static void menus() {
-        ANALYZER_MENU = registerMenuType(AnalyzerMenu::new, "analyzer");
-        APIARY_MENU = registerMenuType(ApiaryMenu::new, "apiary");
+        ANALYZER_MENU = MENUS.register("analyzer", AnalyzerMenu::new);
+        APIARY_MENU = MENUS.register("apiary", ApiaryMenu::new);
     }
 
     //  TAG
@@ -347,12 +331,12 @@ public class Index {
     public static TagKey<Block> BEEHIVE_TAG;
 
     public static void tags() {
-        BEES_TAG = ItemTags.create(new ResourceLocation("beekeeping", "bees"));
-        DRONE_BEES_TAG = ItemTags.create(new ResourceLocation("beekeeping", "drone_bees"));
-        PRINCESS_BEES_TAG = ItemTags.create(new ResourceLocation("beekeeping", "princess_bees"));
-        QUEEN_BEES_TAG = ItemTags.create(new ResourceLocation("beekeeping", "queen_bees"));
-        FRAME_TAG = ItemTags.create(new ResourceLocation("beekeeping", "frames"));
-        BEEHIVE_TAG = BlockTags.create(new ResourceLocation("beekeeping", "beehives"));
+        BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "bees"));
+        DRONE_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "drone_bees"));
+        PRINCESS_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "princess_bees"));
+        QUEEN_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "queen_bees"));
+        FRAME_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "frames"));
+        BEEHIVE_TAG = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("beekeeping", "beehives"));
     }
 
     //  RECIPE
@@ -362,14 +346,5 @@ public class Index {
     public static void recipes() {
         BEE_BREEDING_RECIPE = SERIALIZERS.register("bee_breeding", () -> BeeBreedingRecipe.Serializer.INSTANCE);
         BEE_PRODUCE_RECIPE = SERIALIZERS.register("bee_produce", () -> BeeProduceRecipe.Serializer.INSTANCE);
-    }
-
-    // BIOME MODIFIER CODECS
-
-    public static RegistryObject<Codec<BeehiveBiomeModifier>> BEEHIVE_BIOME_MODIFIER_CODEC;
-
-    public static void biomeModifierCodecs() {
-        // TODO: i don't think .stable() is right?
-        BEEHIVE_BIOME_MODIFIER_CODEC = BIOME_MODIFIER_SERIALIZERS.register("beehive_biome_modifier", () -> RecordCodecBuilder.create(builder -> builder.stable(new BeehiveBiomeModifier())));
     }
 }

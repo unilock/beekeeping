@@ -1,16 +1,15 @@
 package github.mrh0.beekeeping.screen.slot;
 
-import github.mrh0.beekeeping.Index;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class TagSlot extends SlotItemHandler {
     private final TagKey<Item> tag;
 
-    public TagSlot(IItemHandler itemHandler, int index, int x, int y, TagKey<Item> tag) {
+    public TagSlot(ItemStackHandler itemHandler, int index, int x, int y, TagKey<Item> tag) {
         super(itemHandler, index, x, y);
         this.tag = tag;
     }

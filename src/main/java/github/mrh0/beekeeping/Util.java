@@ -7,8 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 
-import java.util.Arrays;
-
 public class Util {
     public static String capitalize(String str) {
         if(str == null || str.isEmpty())

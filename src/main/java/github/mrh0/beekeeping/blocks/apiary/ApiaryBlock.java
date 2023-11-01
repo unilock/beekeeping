@@ -2,6 +2,7 @@ package github.mrh0.beekeeping.blocks.apiary;
 
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.network.TogglePacket;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -24,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class ApiaryBlock extends BaseEntityBlock {
@@ -48,11 +47,6 @@ public class ApiaryBlock extends BaseEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext c) {
         return this.defaultBlockState().setValue(FACING, c.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
-        return rotate(state, direction);
     }
 
     @Override
@@ -90,10 +84,8 @@ public class ApiaryBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos,
                                  Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof ApiaryBlockEntity) {
-                ApiaryBlockEntity abe = (ApiaryBlockEntity)entity;
-                NetworkHooks.openScreen(((ServerPlayer)player), abe, pos);
+            if (level.getBlockEntity(pos) instanceof ApiaryBlockEntity abe) {
+				NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
                 TogglePacket.sync(pos, level, 0, abe.continuous);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");

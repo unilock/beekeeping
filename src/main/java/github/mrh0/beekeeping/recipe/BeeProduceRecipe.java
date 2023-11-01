@@ -188,11 +188,11 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
         @Override
         public void toNetwork(FriendlyByteBuf buf, BeeProduceRecipe recipe) {
             buf.writeUtf(recipe.specie.getName());
-            buf.writeItemStack(recipe.commonProduceUnsatisfied, false);
-            buf.writeItemStack(recipe.rareProduceUnsatisfied, false);
+            buf.writeItem(recipe.commonProduceUnsatisfied);
+            buf.writeItem(recipe.rareProduceUnsatisfied);
             buf.writeDouble(recipe.rareChanceUnsatisfied);
-            buf.writeItemStack(recipe.commonProduceSatisfied, false);
-            buf.writeItemStack(recipe.rareProduceSatisfied, false);
+            buf.writeItem(recipe.commonProduceSatisfied);
+            buf.writeItem(recipe.rareProduceSatisfied);
             buf.writeDouble(recipe.rareChanceSatisfied);
         }
     }

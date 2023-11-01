@@ -17,8 +17,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class BeeProduceRecipeCategory implements IRecipeCategory<BeeProduceRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(Beekeeping.MODID, "bee_produce");
@@ -54,7 +53,7 @@ public class BeeProduceRecipeCategory implements IRecipeCategory<BeeProduceRecip
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull BeeProduceRecipe recipe, @Nonnull IFocusGroup focusGroup) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull BeeProduceRecipe recipe, @NotNull IFocusGroup focusGroup) {
         builder.addSlot(RecipeIngredientRole.INPUT, 7, 8).addIngredients(recipe.getIngredients().get(0));
         builder.addSlot(RecipeIngredientRole.INPUT, 7, 29).addIngredients(recipe.getIngredients().get(0));
 

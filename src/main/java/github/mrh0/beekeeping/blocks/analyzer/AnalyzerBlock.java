@@ -1,6 +1,6 @@
 package github.mrh0.beekeeping.blocks.analyzer;
 
-import github.mrh0.beekeeping.Index;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class AnalyzerBlock extends BaseEntityBlock {
@@ -30,11 +28,6 @@ public class AnalyzerBlock extends BaseEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext c) {
         return this.defaultBlockState().setValue(FACING, c.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation direction) {
-        return rotate(state, direction);
     }
 
     @Override
@@ -72,9 +65,8 @@ public class AnalyzerBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos,
                                  Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof AnalyzerBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)player), (AnalyzerBlockEntity)entity, pos);
+            if (level.getBlockEntity(pos) instanceof AnalyzerBlockEntity abe) {
+                NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
