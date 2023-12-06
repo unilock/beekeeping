@@ -3,7 +3,6 @@ package github.mrh0.beekeeping.compat.jei;
 import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;
-import github.mrh0.beekeeping.network.ClientMinecraftWrapper;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -69,8 +68,8 @@ public class BeeProduceRecipeCategory implements IRecipeCategory<BeeProduceRecip
         IRecipeCategory.super.draw(recipe, recipeSlotsView, stack, mouseX, mouseY);
 
         if(recipe.getRareChance(true) > 0 && recipe.getRareChance(true) < 1)
-            ClientMinecraftWrapper.get().font.draw(stack, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
+            ClientWrapper.get().font.draw(stack, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
         if(recipe.getRareChance(false) > 0 && recipe.getRareChance(false) < 1)
-            ClientMinecraftWrapper.get().font.draw(stack, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
+			ClientWrapper.get().font.draw(stack, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
     }
 }
