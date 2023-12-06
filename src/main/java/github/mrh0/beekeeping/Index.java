@@ -25,6 +25,7 @@ import github.mrh0.beekeeping.world.gen.BeehiveBiomeModifier;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -50,8 +51,6 @@ public class Index {
             LazyRegistrar.create(Registry.BLOCK, Beekeeping.MODID);
     public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITIES =
             LazyRegistrar.create(Registry.BLOCK_ENTITY_TYPE, Beekeeping.MODID);
-    public static final LazyRegistrar<MenuType<?>> MENUS =
-            LazyRegistrar.create(Registry.MENU, Beekeeping.MODID);
     public static final LazyRegistrar<RecipeSerializer<?>> SERIALIZERS =
             LazyRegistrar.create(Registry.RECIPE_SERIALIZER, Beekeeping.MODID);
 
@@ -60,7 +59,6 @@ public class Index {
         blocks();
         items();
         blockEntities();
-        menus();
         tags();
         recipes();
     }
@@ -69,7 +67,6 @@ public class Index {
         BLOCKS.register();
         ITEMS.register();
         BLOCK_ENTITIES.register();
-        MENUS.register();
         SERIALIZERS.register();
 		BeehiveBiomeModifier.modify();
     }
@@ -314,13 +311,8 @@ public class Index {
     }
 
     //   MENU
-    public static RegistryObject<MenuType<AnalyzerMenu>> ANALYZER_MENU;
-    public static RegistryObject<MenuType<ApiaryMenu>> APIARY_MENU;
-
-    public static void menus() {
-        ANALYZER_MENU = MENUS.register("analyzer", AnalyzerMenu::new);
-        APIARY_MENU = MENUS.register("apiary", ApiaryMenu::new);
-    }
+    public static MenuType<AnalyzerMenu> ANALYZER_MENU = Registry.register(Registry.MENU, Beekeeping.get("analyzer"), new ExtendedScreenHandlerType<>(AnalyzerMenu::new));
+    public static MenuType<ApiaryMenu> APIARY_MENU = Registry.register(Registry.MENU, Beekeeping.get("apiary"), new ExtendedScreenHandlerType<>(ApiaryMenu::new));
 
     //  TAG
     public static TagKey<Item> BEES_TAG;

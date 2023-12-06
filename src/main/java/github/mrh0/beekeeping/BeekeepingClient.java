@@ -10,8 +10,8 @@ import net.minecraft.client.gui.screens.MenuScreens;
 public class BeekeepingClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		MenuScreens.register(Index.ANALYZER_MENU.get(), AnalyzerScreen::new);
-		MenuScreens.register(Index.APIARY_MENU.get(), ApiaryScreen::new);
+		MenuScreens.register(Index.ANALYZER_MENU, AnalyzerScreen::new);
+		MenuScreens.register(Index.APIARY_MENU, ApiaryScreen::new);
 
 		OverlayRenderCallback.EVENT.register(ClientOverlay::renderOverlay);
 	}

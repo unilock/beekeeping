@@ -3,8 +3,9 @@ package github.mrh0.beekeeping.blocks.analyzer;
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.screen.analyzer.AnalyzerMenu;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -18,15 +19,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
@@ -54,27 +47,16 @@ public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    public LazyOptional<ItemStackHandler> lazyItemHandler = LazyOptional.empty();
 
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.beekeeping.analyzer");
     }
 
-    @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
         return new AnalyzerMenu(id, inv, this, this.data);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-
-        return super.getCapability(cap, side);
     }
 
     @Override

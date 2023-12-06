@@ -2,6 +2,8 @@ package github.mrh0.beekeeping;
 
 import github.mrh0.beekeeping.config.Config;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -17,6 +19,9 @@ public class Beekeeping implements ModInitializer {
 		LOGGER.info("Beekeeping Init!");
 		ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         Index.register();
+
+		ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.lazyItemHandler.getValueUnsafer(), Index.ANALYZER_BLOCK_ENTITY.get());
+		ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> Direction.UP.equals(direction) ? blockEntity.lazyInputItemHandler.getValueUnsafer() : blockEntity.lazyOutputItemHandler.getValueUnsafer(), Index.APIARY_BLOCK_ENTITY.get());
     }
 
     public static ResourceLocation get(String resource) {

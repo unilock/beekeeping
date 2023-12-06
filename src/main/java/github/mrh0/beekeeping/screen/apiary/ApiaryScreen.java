@@ -6,7 +6,6 @@ import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Satisfaction;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.blocks.apiary.ApiaryBlockEntity;
-import github.mrh0.beekeeping.network.TogglePacket;
 import github.mrh0.beekeeping.screen.BeeScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.GameRenderer;
@@ -85,7 +84,7 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
     public void onLeftClicked(int x, int y) {
         if(toggle.in(x, y)) {
             //getBlockEntity().continuous = !getToggleState();
-            TogglePacket.send(getBlockPos(), getLevel(), 0, !getToggleState());
+            //TogglePacket.send(getBlockPos(), getLevel(), 0, !getToggleState());
         }
     }
 
