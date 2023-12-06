@@ -28,8 +28,9 @@
 	},
 	"depends": {
 		"fabricloader": "*",
+		"minecraft": ">=1.19.2",
     "fabric-api": "*",
-		"minecraft": ">=1.19.2"
+    "forgeconfigapiport": "*"
 	},
   "suggests": {
     "jei": "*"
