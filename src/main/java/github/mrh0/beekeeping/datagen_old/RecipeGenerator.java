@@ -1,4 +1,4 @@
-package github.mrh0.beekeeping.datagen;
+package github.mrh0.beekeeping.datagen_old;
 
 import com.mojang.datafixers.util.Pair;
 import github.mrh0.beekeeping.bee.Specie;

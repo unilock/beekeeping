@@ -1,8 +1,8 @@
-package github.mrh0.beekeeping.datagen;
+package github.mrh0.beekeeping.datagen_old;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import github.mrh0.beekeeping.datagen.loot.BlockLootTables;
+import github.mrh0.beekeeping.datagen_old.loot.BlockLootTables;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;

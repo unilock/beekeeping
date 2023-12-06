@@ -1,7 +1,7 @@
-package github.mrh0.beekeeping.datagen;
+package github.mrh0.beekeeping.datagen_old;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.datagen.graphics.BeeIconGenerator;
+import github.mrh0.beekeeping.datagen_old.graphics.BeeIconGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;

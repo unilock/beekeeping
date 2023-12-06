@@ -1,4 +1,4 @@
-package github.mrh0.beekeeping.datagen;
+package github.mrh0.beekeeping.datagen_old;
 
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;

@@ -1,19 +1,19 @@
-package github.mrh0.beekeeping.datagen;
+package github.mrh0.beekeeping.datagen_old;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class BeeProduceRecipeBuilder implements RecipeBuilder {
@@ -102,14 +102,14 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
             JsonObject rare = new JsonObject();
 
             if(commonProduce != null && !commonProduce.isEmpty()) {
-                var resourceLocation = ForgeRegistries.ITEMS.getKey(commonProduce.getItem());
+                var resourceLocation = Registry.ITEM.getKey(commonProduce.getItem());
                 obj.add("common", common);
                 common.addProperty("item", resourceLocation.toString());
                 common.addProperty("count", commonProduce.getCount());
             }
 
             if(rareProduce != null && rareChance > 0d) {
-                var resourceLocation = ForgeRegistries.ITEMS.getKey(rareProduce.getItem());
+                var resourceLocation = Registry.ITEM.getKey(rareProduce.getItem());
                 obj.add("rare", rare);
 
                 rare.addProperty("item", resourceLocation.toString());
@@ -129,13 +129,13 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
             return BeeProduceRecipe.Serializer.INSTANCE;
         }
 
-        @javax.annotation.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @javax.annotation.Nullable
+        @Nullable
         public ResourceLocation getAdvancementId() {
             return null;
         }

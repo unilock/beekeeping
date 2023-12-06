@@ -22,6 +22,9 @@
 		"client": [
 			"github.mrh0.beekeeping.BeekeepingClient"
 		],
+		"fabric-datagen": [
+			"github.mrh0.beekeeping.datagen.BeekeepingDataGenerator"
+		],
     "jei_mod_plugin": [
       "github.mrh0.beekeeping.compat.jei.BeekeepingJEI"
     ]

@@ -1,4 +1,4 @@
-package github.mrh0.beekeeping.datagen.graphics;
+package github.mrh0.beekeeping.datagen_old.graphics;
 
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Specie;
