@@ -59,6 +59,7 @@ public class Index {
         blocks();
         items();
         blockEntities();
+		menus();
         tags();
         recipes();
     }
@@ -311,8 +312,13 @@ public class Index {
     }
 
     //   MENU
-    public static MenuType<AnalyzerMenu> ANALYZER_MENU = Registry.register(Registry.MENU, Beekeeping.get("analyzer"), new ExtendedScreenHandlerType<>(AnalyzerMenu::new));
-    public static MenuType<ApiaryMenu> APIARY_MENU = Registry.register(Registry.MENU, Beekeeping.get("apiary"), new ExtendedScreenHandlerType<>(ApiaryMenu::new));
+    public static MenuType<AnalyzerMenu> ANALYZER_MENU;
+    public static MenuType<ApiaryMenu> APIARY_MENU;
+
+	public static void menus() {
+		ANALYZER_MENU = Registry.register(Registry.MENU, Beekeeping.get("analyzer"), new ExtendedScreenHandlerType<>(AnalyzerMenu::new));
+		APIARY_MENU = Registry.register(Registry.MENU, Beekeeping.get("apiary"), new ExtendedScreenHandlerType<>(ApiaryMenu::new));
+	}
 
     //  TAG
     public static TagKey<Item> BEES_TAG;
