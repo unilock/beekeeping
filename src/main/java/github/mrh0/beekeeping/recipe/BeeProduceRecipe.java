@@ -103,21 +103,26 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return BeeProduceRecipe.Serializer.INSTANCE;
+        return Serializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return BeeProduceRecipe.Type.INSTANCE;
+        return Type.INSTANCE;
     }
 
     public static class Type implements RecipeType<BeeProduceRecipe> {
         private Type() { }
-        public static final BeeProduceRecipe.Type INSTANCE = new BeeProduceRecipe.Type();
+        public static final Type INSTANCE = new Type();
+
+		@Override
+		public String toString() {
+			return Serializer.ID.toString();
+		}
     }
 
     public static class Serializer implements RecipeSerializer<BeeProduceRecipe> {
-        public static final BeeProduceRecipe.Serializer INSTANCE = new BeeProduceRecipe.Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
                 new ResourceLocation(Beekeeping.MODID,"bee_produce");
 

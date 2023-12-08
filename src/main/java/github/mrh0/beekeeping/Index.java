@@ -38,6 +38,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -53,6 +54,8 @@ public class Index {
             LazyRegistrar.create(Registry.BLOCK_ENTITY_TYPE, Beekeeping.MODID);
     public static final LazyRegistrar<RecipeSerializer<?>> SERIALIZERS =
             LazyRegistrar.create(Registry.RECIPE_SERIALIZER, Beekeeping.MODID);
+	public static final LazyRegistrar<RecipeType<?>> TYPES =
+		LazyRegistrar.create(Registry.RECIPE_TYPE, Beekeeping.MODID);
 
     static {
         species();
@@ -69,6 +72,7 @@ public class Index {
         ITEMS.register();
         BLOCK_ENTITIES.register();
         SERIALIZERS.register();
+		TYPES.register();
 		BeehiveBiomeModifier.modify();
     }
 
@@ -340,9 +344,13 @@ public class Index {
     //  RECIPE
     public static RegistryObject<RecipeSerializer<BeeBreedingRecipe>> BEE_BREEDING_RECIPE;
     public static RegistryObject<RecipeSerializer<BeeProduceRecipe>> BEE_PRODUCE_RECIPE;
+	public static RegistryObject<RecipeType<BeeBreedingRecipe>> BEE_BREEDING_TYPE;
+	public static RegistryObject<RecipeType<BeeProduceRecipe>> BEE_PRODUCE_TYPE;
 
     public static void recipes() {
         BEE_BREEDING_RECIPE = SERIALIZERS.register("bee_breeding", () -> BeeBreedingRecipe.Serializer.INSTANCE);
         BEE_PRODUCE_RECIPE = SERIALIZERS.register("bee_produce", () -> BeeProduceRecipe.Serializer.INSTANCE);
+		BEE_BREEDING_TYPE = TYPES.register("bee_breeding", () -> BeeBreedingRecipe.Type.INSTANCE);
+		BEE_PRODUCE_TYPE = TYPES.register("bee_produce", () -> BeeProduceRecipe.Type.INSTANCE);
     }
 }
