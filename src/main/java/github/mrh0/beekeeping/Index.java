@@ -256,7 +256,7 @@ public class Index {
                         type == ProduceEvent.ProduceType.DRONE || type == ProduceEvent.ProduceType.PRINCESS
                                 ? BeeLifecycle.mutateRandom(stack)
                                 : stack))
-                .shapeless(1, BASIC_FRAME.get(), Ingredient.of(BASIC_FRAME.get()), Ingredient.of(bind("forge:raw_materials/uranium")))
+                .shapeless(1, BASIC_FRAME.get(), Ingredient.of(BASIC_FRAME.get()), Ingredient.of(bind("c:raw_uranium_ores")))
                 .build());
 
         /*ITEMS.register("cursed_frame", () -> new ItemBuilder<>(new FrameItem("cursed")
