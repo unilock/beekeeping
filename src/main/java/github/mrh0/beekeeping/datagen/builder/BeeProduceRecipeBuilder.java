@@ -1,4 +1,4 @@
-package github.mrh0.beekeeping.datagen_old;
+package github.mrh0.beekeeping.datagen.builder;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
@@ -56,7 +56,7 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> recipeConsumer, ResourceLocation recipeId) {
-        recipeConsumer.accept(new BeeProduceRecipeBuilder.Result(recipeId, specie,
+        recipeConsumer.accept(new Result(recipeId, specie,
                 commonProduceUnsatisfied, rareProduceUnsatisfied, rareChanceUnsatisfied,
                 commonProduceSatisfied, rareProduceSatisfied, rareChanceSatisfied));
     }

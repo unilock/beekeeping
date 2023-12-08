@@ -1,4 +1,4 @@
-package github.mrh0.beekeeping.datagen_old;
+package github.mrh0.beekeeping.datagen.builder;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
@@ -12,7 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class BeeBreedingRecipeBuilder implements RecipeBuilder {
@@ -43,7 +42,7 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> recipeConsumer, ResourceLocation recipeId) {
-        recipeConsumer.accept(new BeeBreedingRecipeBuilder.Result(recipeId, drone, princess, offspring));
+        recipeConsumer.accept(new Result(recipeId, drone, princess, offspring));
     }
 
     public static class Result implements FinishedRecipe {
@@ -76,13 +75,13 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
             return BeeBreedingRecipe.Serializer.INSTANCE;
         }
 
-        @javax.annotation.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @javax.annotation.Nullable
+        @Nullable
         public ResourceLocation getAdvancementId() {
             return null;
         }

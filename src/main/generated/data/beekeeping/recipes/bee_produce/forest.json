@@ -1,18 +1,18 @@
 {
   "type": "beekeeping:bee_produce",
-  "specie": "forest",
   "produce": {
-    "unsatisfied": {
-      "common": {
-        "item": "minecraft:honeycomb",
-        "count": 3
-      }
-    },
     "satisfied": {
       "common": {
-        "item": "minecraft:honeycomb",
-        "count": 5
+        "count": 5,
+        "item": "minecraft:honeycomb"
+      }
+    },
+    "unsatisfied": {
+      "common": {
+        "count": 3,
+        "item": "minecraft:honeycomb"
       }
     }
-  }
+  },
+  "specie": "forest"
 }

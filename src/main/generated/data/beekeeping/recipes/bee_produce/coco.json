@@ -1,28 +1,28 @@
 {
   "type": "beekeeping:bee_produce",
-  "specie": "coco",
   "produce": {
-    "unsatisfied": {
-      "common": {
-        "item": "minecraft:honeycomb",
-        "count": 5
-      },
-      "rare": {
-        "item": "minecraft:cocoa_beans",
-        "chance": 1.0,
-        "count": 3
-      }
-    },
     "satisfied": {
       "common": {
-        "item": "minecraft:honeycomb",
-        "count": 7
+        "count": 7,
+        "item": "minecraft:honeycomb"
       },
       "rare": {
-        "item": "minecraft:cocoa_beans",
         "chance": 1.0,
-        "count": 7
+        "count": 7,
+        "item": "minecraft:cocoa_beans"
+      }
+    },
+    "unsatisfied": {
+      "common": {
+        "count": 5,
+        "item": "minecraft:honeycomb"
+      },
+      "rare": {
+        "chance": 1.0,
+        "count": 3,
+        "item": "minecraft:cocoa_beans"
       }
     }
-  }
+  },
+  "specie": "coco"
 }

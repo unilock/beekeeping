@@ -1,28 +1,28 @@
 {
   "type": "beekeeping:bee_produce",
-  "specie": "nocturnal",
   "produce": {
-    "unsatisfied": {
-      "common": {
-        "item": "minecraft:honeycomb",
-        "count": 5
-      },
-      "rare": {
-        "item": "minecraft:glowstone_dust",
-        "chance": 0.5,
-        "count": 1
-      }
-    },
     "satisfied": {
       "common": {
-        "item": "minecraft:honeycomb",
-        "count": 7
+        "count": 7,
+        "item": "minecraft:honeycomb"
       },
       "rare": {
-        "item": "minecraft:glowstone_dust",
         "chance": 0.8,
-        "count": 1
+        "count": 1,
+        "item": "minecraft:glowstone_dust"
+      }
+    },
+    "unsatisfied": {
+      "common": {
+        "count": 5,
+        "item": "minecraft:honeycomb"
+      },
+      "rare": {
+        "chance": 0.5,
+        "count": 1,
+        "item": "minecraft:glowstone_dust"
       }
     }
-  }
+  },
+  "specie": "nocturnal"
 }

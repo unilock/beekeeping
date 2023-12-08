@@ -1,28 +1,28 @@
 {
   "type": "beekeeping:bee_produce",
-  "specie": "upland",
   "produce": {
-    "unsatisfied": {
-      "common": {
-        "item": "minecraft:honeycomb",
-        "count": 3
-      },
-      "rare": {
-        "item": "minecraft:honey_block",
-        "chance": 1.0,
-        "count": 1
-      }
-    },
     "satisfied": {
       "common": {
-        "item": "minecraft:honeycomb",
-        "count": 7
+        "count": 7,
+        "item": "minecraft:honeycomb"
       },
       "rare": {
-        "item": "minecraft:honey_block",
         "chance": 1.0,
-        "count": 2
+        "count": 2,
+        "item": "minecraft:honey_block"
+      }
+    },
+    "unsatisfied": {
+      "common": {
+        "count": 3,
+        "item": "minecraft:honeycomb"
+      },
+      "rare": {
+        "chance": 1.0,
+        "count": 1,
+        "item": "minecraft:honey_block"
       }
     }
-  }
+  },
+  "specie": "upland"
 }

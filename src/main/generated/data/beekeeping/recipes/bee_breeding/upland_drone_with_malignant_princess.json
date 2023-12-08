@@ -1,6 +1,6 @@
 {
   "type": "beekeeping:bee_breeding",
   "drone": "upland",
-  "princess": "malignant",
-  "offspring": "wicked"
+  "offspring": "wicked",
+  "princess": "malignant"
 }

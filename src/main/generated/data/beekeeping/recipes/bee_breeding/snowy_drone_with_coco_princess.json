@@ -1,6 +1,6 @@
 {
   "type": "beekeeping:bee_breeding",
   "drone": "snowy",
-  "princess": "coco",
-  "offspring": "fair"
+  "offspring": "fair",
+  "princess": "coco"
 }

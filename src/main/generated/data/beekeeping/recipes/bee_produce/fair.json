@@ -1,28 +1,28 @@
 {
   "type": "beekeeping:bee_produce",
-  "specie": "fair",
   "produce": {
-    "unsatisfied": {
-      "common": {
-        "item": "minecraft:honeycomb",
-        "count": 5
-      },
-      "rare": {
-        "item": "minecraft:sugar",
-        "chance": 1.0,
-        "count": 8
-      }
-    },
     "satisfied": {
       "common": {
-        "item": "minecraft:honeycomb",
-        "count": 7
+        "count": 7,
+        "item": "minecraft:honeycomb"
       },
       "rare": {
-        "item": "minecraft:sugar",
         "chance": 1.0,
-        "count": 16
+        "count": 16,
+        "item": "minecraft:sugar"
+      }
+    },
+    "unsatisfied": {
+      "common": {
+        "count": 5,
+        "item": "minecraft:honeycomb"
+      },
+      "rare": {
+        "chance": 1.0,
+        "count": 8,
+        "item": "minecraft:sugar"
       }
     }
-  }
+  },
+  "specie": "fair"
 }

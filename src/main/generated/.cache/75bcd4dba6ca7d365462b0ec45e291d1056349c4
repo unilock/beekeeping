@@ -1,0 +1,4 @@
+// 1.19.2	2023-12-08T15:28:44.980569	Tags for minecraft:block
+9a1ec4e17a955383ecc8f0286e756b63b8190221 data/beekeeping/tags/blocks/beehives.json
+3f1c5f7df0973e3790d784df5bbf8f1a54d749c3 data/minecraft/tags/blocks/mineable/pickaxe.json
+c7a725893ded20e4cce29f775d81aa3cd8e6df7f data/minecraft/tags/blocks/mineable/axe.json
