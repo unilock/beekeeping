@@ -11,6 +11,8 @@ import github.mrh0.beekeeping.config.Config;
 import github.mrh0.beekeeping.item.frame.FrameItem;
 import github.mrh0.beekeeping.item.frame.ProduceEvent;
 import github.mrh0.beekeeping.item.frame.SatisfactionEvent;
+import github.mrh0.beekeeping.network.IHasToggleOption;
+import github.mrh0.beekeeping.network.packet.ToggleServerPacket;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import github.mrh0.beekeeping.screen.apiary.ApiaryMenu;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
@@ -20,6 +22,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -33,7 +36,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class ApiaryBlockEntity extends BlockEntity implements MenuProvider/*, IHasToggleOption*/ {
+public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHasToggleOption {
 
     private static final int LIFETIME_STEP = Config.LIFETIME_STEP.get();
     public static final int BREED_TIME = Config.BREED_TIME.get();
@@ -378,7 +381,6 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider/*, IH
         return true;
     }
 
-   /*
 	@Override
     public void onToggle(ServerPlayer player, int index, boolean value) {
         switch(index) {
@@ -388,7 +390,6 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider/*, IH
                 break;
         }
         if(player != null)
-            TogglePacket.sync(getBlockPos(), getLevel(), index, value);
+			ToggleServerPacket.send(getBlockPos(), getLevel(), index, value);
     }
-	 */
 }

@@ -1,6 +1,7 @@
 package github.mrh0.beekeeping;
 
 import github.mrh0.beekeeping.config.Config;
+import github.mrh0.beekeeping.network.BeekeepingChannel;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.Direction;
@@ -17,6 +18,8 @@ public class Beekeeping implements ModInitializer {
 	@Override
     public void onInitialize() {
 		LOGGER.info("Beekeeping Init!");
+		BeekeepingChannel.registerServer();
+
 		ModLoadingContext.registerConfig(MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         Index.register();
 

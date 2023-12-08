@@ -1,9 +1,8 @@
 package github.mrh0.beekeeping.network;
 
 import net.minecraft.server.level.ServerPlayer;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface IHasToggleOption {
-    public void onToggle(@Nullable ServerPlayer player, int index, boolean value);
+    void onToggle(@Nullable ServerPlayer player, int index, boolean value);
 }
