@@ -33,8 +33,7 @@
 		"fabricloader": "*",
 		"minecraft": ">=1.19.2",
     "fabric-api": "*",
-    "forgeconfigapiport": "*",
-		"porting_lib": "*"
+    "forgeconfigapiport": "*"
 	},
   "suggests": {
     "jei": "*"
