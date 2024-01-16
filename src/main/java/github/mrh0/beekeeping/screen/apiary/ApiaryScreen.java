@@ -29,7 +29,7 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
         inventoryLabelY = 86;
     }
 
-	private Bounds toggle = new Bounds(50, 67, 20, 8);
+    private Bounds toggle = new Bounds(50, 67, 20, 8);
     private boolean getToggleState() {
         return getBlockEntity().continuous;
     }
@@ -37,8 +37,8 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
     private Bounds health = new Bounds(76, 37, 4, 26);
     private Bounds breedProgress = new Bounds(15, 43, 32, 15);
 
-	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float partial, int mouseX, int mouseY) {
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partial, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -63,11 +63,11 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
         Satisfaction lightSatisfaction = Satisfaction.of(getMenu().data.get(4));
 
         Satisfaction s = Satisfaction.calc(weatherSatisfaction, temperatureSatisfaction, lightSatisfaction);
-		guiGraphics.blit(TEXTURE, satisfaction.getX(), satisfaction.getY(), imageWidth, 32 + s.ordinal()*satisfaction.h, satisfaction.w, satisfaction.h);
+        guiGraphics.blit(TEXTURE, satisfaction.getX(), satisfaction.getY(), imageWidth, 32 + s.ordinal()*satisfaction.h, satisfaction.w, satisfaction.h);
     }
 
     private void drawToggle(GuiGraphics guiGraphics, int i) {
-		guiGraphics.blit(TEXTURE, toggle.getX(), toggle.getY(), imageWidth, i*toggle.h, toggle.w, toggle.h);
+        guiGraphics.blit(TEXTURE, toggle.getX(), toggle.getY(), imageWidth, i*toggle.h, toggle.w, toggle.h);
     }
 
     private void drawBreedProgress(GuiGraphics guiGraphics, double f) {
@@ -126,10 +126,10 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
     @Override
     protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if(toggle.in(mouseX, mouseY)) {
-			guiGraphics.renderComponentTooltip(this.font, getToggleState() ? toggleOnTip : toggleOffTip, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, getToggleState() ? toggleOnTip : toggleOffTip, mouseX, mouseY);
         }
         else if(satisfaction.in(mouseX, mouseY) && !getQueen().isEmpty()) {
-			guiGraphics.renderComponentTooltip(this.font, buildSatisfactionTooltip(getQueen()), mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, buildSatisfactionTooltip(getQueen()), mouseX, mouseY);
         }
         else
             super.renderTooltip(guiGraphics, mouseX, mouseY);

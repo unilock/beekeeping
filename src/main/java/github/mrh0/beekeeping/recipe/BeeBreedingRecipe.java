@@ -88,10 +88,10 @@ public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
         private Type() { }
         public static final Type INSTANCE = new Type();
 
-		@Override
-		public String toString() {
-			return Serializer.ID.toString();
-		}
+        @Override
+        public String toString() {
+            return Serializer.ID.toString();
+        }
     }
 
     public static class Serializer implements RecipeSerializer<BeeBreedingRecipe> {

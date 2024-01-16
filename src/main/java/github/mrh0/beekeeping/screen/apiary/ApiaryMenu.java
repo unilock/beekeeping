@@ -36,16 +36,16 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-		if (this.blockEntity.lazyInputItemHandler.isPresent()) {
-			this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 0, 15, 60, Index.DRONE_BEES_TAG));
-			this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 1, 15, 23, Index.PRINCESS_BEES_TAG));
-			this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 2, 52, 42, Index.QUEEN_BEES_TAG));
-			this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 3, 52, 17, Index.FRAME_TAG));
-		}
+        if (this.blockEntity.lazyInputItemHandler.isPresent()) {
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 0, 15, 60, Index.DRONE_BEES_TAG));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 1, 15, 23, Index.PRINCESS_BEES_TAG));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 2, 52, 42, Index.QUEEN_BEES_TAG));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 3, 52, 17, Index.FRAME_TAG));
+        }
 
-		if (this.blockEntity.lazyOutputItemHandler.isPresent()) {
-			addOutputInventory(this.blockEntity.lazyOutputItemHandler.getValueUnsafer());
-		}
+        if (this.blockEntity.lazyOutputItemHandler.isPresent()) {
+            addOutputInventory(this.blockEntity.lazyOutputItemHandler.getValueUnsafer());
+        }
 
         addDataSlots(data);
     }

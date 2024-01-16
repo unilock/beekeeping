@@ -104,13 +104,13 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         if(lifetimeBounds.in(mouseX, mouseY))
             guiGraphics.renderComponentTooltip(this.font, lifetimeDescription, mouseX, mouseY);
         else if(weatherBounds.in(mouseX, mouseY))
-			guiGraphics.renderComponentTooltip(this.font, weatherDescription, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, weatherDescription, mouseX, mouseY);
         else if(temperatureBounds.in(mouseX, mouseY))
-			guiGraphics.renderComponentTooltip(this.font, temperatureDescription, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, temperatureDescription, mouseX, mouseY);
         else if(lightBounds.in(mouseX, mouseY))
-			guiGraphics.renderComponentTooltip(this.font, lightDescription, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, lightDescription, mouseX, mouseY);
         else if(produceBounds.in(mouseX, mouseY))
-			guiGraphics.renderComponentTooltip(this.font, produceDescription, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, produceDescription, mouseX, mouseY);
     }
 
     @Override

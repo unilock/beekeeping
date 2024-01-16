@@ -84,7 +84,7 @@ public class ApiaryBlock extends BaseEntityBlock {
                                  Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
             if (level.getBlockEntity(pos) instanceof ApiaryBlockEntity abe) {
-				NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
+                NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
                 ToggleServerPacket.send(pos, level, 0, abe.continuous);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");

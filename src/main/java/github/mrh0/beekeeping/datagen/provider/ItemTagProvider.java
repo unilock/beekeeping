@@ -13,23 +13,23 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
-	public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
-		super(output, completableFuture, blockTagProvider);
-	}
+    public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
+        super(output, completableFuture, blockTagProvider);
+    }
 
-	@Override
-	protected void addTags(HolderLookup.Provider arg) {
-		for(Specie specie : SpeciesRegistry.instance.getAll()) {
-			tag(Index.BEES_TAG)
-				.add(BuiltInRegistries.ITEM.getResourceKey(specie.droneItem).orElseThrow())
-				.add(BuiltInRegistries.ITEM.getResourceKey(specie.princessItem).orElseThrow())
-				.add(BuiltInRegistries.ITEM.getResourceKey(specie.queenItem).orElseThrow());
-			tag(Index.DRONE_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.droneItem).orElseThrow());
-			tag(Index.PRINCESS_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.princessItem).orElseThrow());
-			tag(Index.QUEEN_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.queenItem).orElseThrow());
-		}
-		for(FrameItem frame : FrameItem.frames) {
-			tag(Index.FRAME_TAG).add(BuiltInRegistries.ITEM.getResourceKey(frame).orElseThrow());
-		}
-	}
+    @Override
+    protected void addTags(HolderLookup.Provider arg) {
+        for(Specie specie : SpeciesRegistry.instance.getAll()) {
+            tag(Index.BEES_TAG)
+                .add(BuiltInRegistries.ITEM.getResourceKey(specie.droneItem).orElseThrow())
+                .add(BuiltInRegistries.ITEM.getResourceKey(specie.princessItem).orElseThrow())
+                .add(BuiltInRegistries.ITEM.getResourceKey(specie.queenItem).orElseThrow());
+            tag(Index.DRONE_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.droneItem).orElseThrow());
+            tag(Index.PRINCESS_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.princessItem).orElseThrow());
+            tag(Index.QUEEN_BEES_TAG).add(BuiltInRegistries.ITEM.getResourceKey(specie.queenItem).orElseThrow());
+        }
+        for(FrameItem frame : FrameItem.frames) {
+            tag(Index.FRAME_TAG).add(BuiltInRegistries.ITEM.getResourceKey(frame).orElseThrow());
+        }
+    }
 }

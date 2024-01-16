@@ -80,12 +80,12 @@ public abstract class BeeScreen<M extends BeeMenu<E>, E extends BlockEntity> ext
     }
 
     public void drawImagePartHorizontal(GuiGraphics guiGraphics, ResourceLocation texture, Bounds bounds, int x, int y, double part) {
-		guiGraphics.blit(texture, bounds.getX(), bounds.getY(), x, y, (int)(((double)bounds.w) * part), bounds.h);
+        guiGraphics.blit(texture, bounds.getX(), bounds.getY(), x, y, (int)(((double)bounds.w) * part), bounds.h);
     }
 
     public void drawImagePartBottomUp(GuiGraphics guiGraphics, ResourceLocation texture, Bounds bounds, int x, int y, double part) {
         int i = (int)((double)bounds.h*part);
-		guiGraphics.blit(texture, bounds.getX(), bounds.getY() + bounds.h - i, x, y + bounds.h - i, bounds.w, i);
+        guiGraphics.blit(texture, bounds.getX(), bounds.getY() + bounds.h - i, x, y + bounds.h - i, bounds.w, i);
     }
 
     public E getBlockEntity() {

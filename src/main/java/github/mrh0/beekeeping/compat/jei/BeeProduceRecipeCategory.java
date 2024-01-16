@@ -63,13 +63,13 @@ public class BeeProduceRecipeCategory implements IRecipeCategory<BeeProduceRecip
         builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 29).addItemStack(recipe.getRareProduce(false));
     }
 
-	@Override
+    @Override
     public void draw(BeeProduceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 
         if(recipe.getRareChance(true) > 0 && recipe.getRareChance(true) < 1)
-			guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
+            guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
         if(recipe.getRareChance(false) > 0 && recipe.getRareChance(false) < 1)
-			guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
+            guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
     }
 }

@@ -113,24 +113,24 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
             setChanged();
         }
 
-		@Override
-		public boolean isItemValid(int slot, ItemVariant resource, int count) {
-			if(resource.toStack().is(Index.DRONE_BEES_TAG) && slot == 0)
-				return super.isItemValid(slot, resource, count);
-			if(resource.toStack().is(Index.PRINCESS_BEES_TAG) && slot == 1)
-				return super.isItemValid(slot, resource, count);
-			if(resource.toStack().is(Index.QUEEN_BEES_TAG) && slot == 2)
-				return super.isItemValid(slot, resource, count);
-			if(resource.toStack().is(Index.FRAME_TAG) && slot == 3)
-				return super.isItemValid(slot, resource, count);
-			return false;
-		}
-	};
+        @Override
+        public boolean isItemValid(int slot, ItemVariant resource, int count) {
+            if(resource.toStack().is(Index.DRONE_BEES_TAG) && slot == 0)
+                return super.isItemValid(slot, resource, count);
+            if(resource.toStack().is(Index.PRINCESS_BEES_TAG) && slot == 1)
+                return super.isItemValid(slot, resource, count);
+            if(resource.toStack().is(Index.QUEEN_BEES_TAG) && slot == 2)
+                return super.isItemValid(slot, resource, count);
+            if(resource.toStack().is(Index.FRAME_TAG) && slot == 3)
+                return super.isItemValid(slot, resource, count);
+            return false;
+        }
+    };
 
     private final ItemStackHandler outputItemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
-			checkLock = false;
+            checkLock = false;
             setChanged();
         }
     };
@@ -193,7 +193,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
     }
 
     public LazyOptional<ItemStackHandler> lazyInputItemHandler = LazyOptional.empty();
-	public LazyOptional<ItemStackHandler> lazyOutputItemHandler = LazyOptional.empty();
+    public LazyOptional<ItemStackHandler> lazyOutputItemHandler = LazyOptional.empty();
 
     @Override
     public @NotNull Component getDisplayName() {
@@ -205,7 +205,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         return new ApiaryMenu(id, inv, this, this.data);
     }
 
-	@Override
+    @Override
     public void onLoad() {
         super.onLoad();
         lazyInputItemHandler = LazyOptional.of(() -> inputItemHandler);
@@ -321,68 +321,68 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecie().droneItem);
         drone = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.DRONE, drone);
 
-		try (Transaction transaction = Transaction.openOuter()) {
-			if (continuous) {
-				if (!actuallyAttemptInsertSlot(transaction, input, 0, drone)) return false;
-				if (!actuallyAttemptInsertSlot(transaction, input, 1, princess)) return false;
-			} else {
-				if (!actuallyAttemptInsert(transaction, output, princess)) return false;
-				if (!actuallyAttemptInsert(transaction, output, drone)) return false;
-			}
+        try (Transaction transaction = Transaction.openOuter()) {
+            if (continuous) {
+                if (!actuallyAttemptInsertSlot(transaction, input, 0, drone)) return false;
+                if (!actuallyAttemptInsertSlot(transaction, input, 1, princess)) return false;
+            } else {
+                if (!actuallyAttemptInsert(transaction, output, princess)) return false;
+                if (!actuallyAttemptInsert(transaction, output, drone)) return false;
+            }
 
-			if (!actuallyAttemptInsert(transaction, output, commonProduce)) return false;
-			if (!actuallyAttemptInsert(transaction, output, rareProduce)) return false;
+            if (!actuallyAttemptInsert(transaction, output, commonProduce)) return false;
+            if (!actuallyAttemptInsert(transaction, output, rareProduce)) return false;
 
-			transaction.commit();
+            transaction.commit();
 
-			return true;
-		}
+            return true;
+        }
     }
 
-	private boolean actuallyAttemptInsert(Transaction transaction, ItemStackHandler storage, ItemStack stack) {
-		try (Transaction nested = Transaction.openNested(transaction)) {
-			if (!stack.isEmpty()) {
-				int count = stack.getCount();
-				long amount = storage.insert(ItemVariant.of(stack), count, nested);
-				if (amount == count) {
-					nested.commit();
-					return true;
-				}
-			} else {
-				return true;
-			}
-		}
+    private boolean actuallyAttemptInsert(Transaction transaction, ItemStackHandler storage, ItemStack stack) {
+        try (Transaction nested = Transaction.openNested(transaction)) {
+            if (!stack.isEmpty()) {
+                int count = stack.getCount();
+                long amount = storage.insert(ItemVariant.of(stack), count, nested);
+                if (amount == count) {
+                    nested.commit();
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	private boolean actuallyAttemptInsertSlot(Transaction transaction, ItemStackHandler storage, int slot, ItemStack stack) {
-		try (Transaction nested = Transaction.openNested(transaction)) {
-			if (!stack.isEmpty()) {
-				int count = stack.getCount();
-				long amount = storage.insertSlot(slot, ItemVariant.of(stack), count, nested);
-				if (amount == count) {
-					nested.commit();
-					return true;
-				}
-			} else {
-				return true;
-			}
-		}
+    private boolean actuallyAttemptInsertSlot(Transaction transaction, ItemStackHandler storage, int slot, ItemStack stack) {
+        try (Transaction nested = Transaction.openNested(transaction)) {
+            if (!stack.isEmpty()) {
+                int count = stack.getCount();
+                long amount = storage.insertSlot(slot, ItemVariant.of(stack), count, nested);
+                if (amount == count) {
+                    nested.commit();
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
+    @Override
     public void onToggle(ServerPlayer player, int index, boolean value) {
         switch(index) {
             case 0:
                 continuous = value;
-				checkLock = false;
+                checkLock = false;
                 setChanged();
                 break;
         }
         if(player != null)
-			ToggleServerPacket.send(getBlockPos(), getLevel(), index, value);
+            ToggleServerPacket.send(getBlockPos(), getLevel(), index, value);
     }
 }

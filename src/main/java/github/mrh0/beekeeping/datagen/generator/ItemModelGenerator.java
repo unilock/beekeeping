@@ -15,11 +15,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class ItemModelGenerator extends ItemModelProvider {
-	public ItemModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
-		super(output, modid, existingFileHelper);
-	}
+    public ItemModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
+        super(output, modid, existingFileHelper);
+    }
 
-	@Override
+    @Override
     protected void registerModels() {
         for(Specie specie : SpeciesRegistry.instance.getAll()) {
             simpleItem(specie.droneItem);

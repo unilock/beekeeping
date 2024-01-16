@@ -17,28 +17,28 @@ loom {
         }
     }
 
-	runs {
-		datagen {
-			inherit client
-			name "Data Generation"
-			vmArg "-Dfabric-api.datagen"
-			vmArg "-Dfabric-api.datagen.output-dir=${file('src/main/generated')}"
-			vmArg "-Dfabric-api.datagen.modid=${archives_base_name}"
-			vmArg "-Dporting_lib.datagen.existing_resources=${file('src/main/resources')}"
+    runs {
+        datagen {
+            inherit client
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file('src/main/generated')}"
+            vmArg "-Dfabric-api.datagen.modid=${archives_base_name}"
+            vmArg "-Dporting_lib.datagen.existing_resources=${file('src/main/resources')}"
 
-			runDir "build/datagen"
-		}
-	}
+            runDir "build/datagen"
+        }
+    }
 }
 
 sourceSets {
-	main {
-		resources {
-			srcDirs += [
-				'src/main/generated'
-			]
-		}
-	}
+    main {
+        resources {
+            srcDirs += [
+                'src/main/generated'
+            ]
+        }
+    }
 }
 
 repositories {
@@ -46,7 +46,7 @@ repositories {
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
     maven { url = "https://maven.blamejared.com/" } // JEI
     maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib
-	maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Porting Lib (2)
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Porting Lib (2)
     maven { url = "https://jitpack.io/" } // JitPack
 }
 
@@ -61,10 +61,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation include("io.github.fabricators_of_create.Porting-Lib:base:${project.portinglib_version}")
-	modImplementation "io.github.fabricators_of_create.Porting-Lib:model_generators:${project.portinglib_version}"
+    modImplementation include("io.github.fabricators_of_create.Porting-Lib:base:${project.portinglib_version}")
+    modImplementation "io.github.fabricators_of_create.Porting-Lib:model_generators:${project.portinglib_version}"
 
-	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
 
     // Compile against the JEI API but do not include it at runtime
     modCompileOnlyApi "mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}"
@@ -87,7 +87,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-	withSourcesJar()
+    withSourcesJar()
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17

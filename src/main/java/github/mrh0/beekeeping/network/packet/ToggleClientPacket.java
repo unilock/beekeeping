@@ -13,23 +13,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ToggleClientPacket {
-	public static void send(BlockPos pos, Level level, int index, boolean value) {
-		FriendlyByteBuf buf = PacketByteBufs.create();
+    public static void send(BlockPos pos, Level level, int index, boolean value) {
+        FriendlyByteBuf buf = PacketByteBufs.create();
 
-		buf.writeBlockPos(pos);
-		buf.writeInt(index);
-		buf.writeBoolean(value);
+        buf.writeBlockPos(pos);
+        buf.writeInt(index);
+        buf.writeBoolean(value);
 
-		ClientPlayNetworking.send(BeekeepingChannel.TOGGLE_C2S_ID, buf);
-	}
+        ClientPlayNetworking.send(BeekeepingChannel.TOGGLE_C2S_ID, buf);
+    }
 
-	public static void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
-		BlockPos pos = buf.readBlockPos();
-		BlockEntity te = handler.getLevel().getChunkAt(pos).getBlockEntity(pos);
-		if (te != null) {
-			if (te instanceof IHasToggleOption to) {
-				to.onToggle(null, buf.readInt(), buf.readBoolean());
-			}
-		}
-	}
+    public static void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        BlockPos pos = buf.readBlockPos();
+        BlockEntity te = handler.getLevel().getChunkAt(pos).getBlockEntity(pos);
+        if (te != null) {
+            if (te instanceof IHasToggleOption to) {
+                to.onToggle(null, buf.readInt(), buf.readBoolean());
+            }
+        }
+    }
 }

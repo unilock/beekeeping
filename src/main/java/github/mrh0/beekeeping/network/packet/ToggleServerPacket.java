@@ -17,26 +17,26 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ToggleServerPacket {
-	public static void send(BlockPos pos, Level level, int index, boolean value) {
-		FriendlyByteBuf buf = PacketByteBufs.create();
+    public static void send(BlockPos pos, Level level, int index, boolean value) {
+        FriendlyByteBuf buf = PacketByteBufs.create();
 
-		buf.writeBlockPos(pos);
-		buf.writeInt(index);
-		buf.writeBoolean(value);
+        buf.writeBlockPos(pos);
+        buf.writeInt(index);
+        buf.writeBoolean(value);
 
-		((ServerLevel) level).players().forEach(player -> ServerPlayNetworking.send(player, BeekeepingChannel.TOGGLE_S2C_ID, buf));
-	}
+        ((ServerLevel) level).players().forEach(player -> ServerPlayNetworking.send(player, BeekeepingChannel.TOGGLE_S2C_ID, buf));
+    }
 
-	public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
-		BlockPos pos = buf.readBlockPos();
-		BlockEntity te = player.level().getChunkAt(pos).getBlockEntity(pos); // Level#getBlockEntity returns null if not client-side...?
-		if (te != null) {
-			if (te instanceof IHasToggleOption to) {
-				to.onToggle(player, buf.readInt(), buf.readBoolean());
-				Packet<ClientGamePacketListener> teUpdatePacket = te.getUpdatePacket();
-				if (teUpdatePacket != null)
-					responseSender.sendPacket(teUpdatePacket);
-			}
-		}
-	}
+    public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        BlockPos pos = buf.readBlockPos();
+        BlockEntity te = player.level().getChunkAt(pos).getBlockEntity(pos); // Level#getBlockEntity returns null if not client-side...?
+        if (te != null) {
+            if (te instanceof IHasToggleOption to) {
+                to.onToggle(player, buf.readInt(), buf.readBoolean());
+                Packet<ClientGamePacketListener> teUpdatePacket = te.getUpdatePacket();
+                if (teUpdatePacket != null)
+                    responseSender.sendPacket(teUpdatePacket);
+            }
+        }
+    }
 }

@@ -9,21 +9,21 @@ import io.github.fabricators_of_create.porting_lib.models.generators.block.Block
 import net.minecraft.data.PackOutput;
 
 public class BlockStateGenerator extends BlockStateProvider {
-	public BlockStateGenerator(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
-		super(output, modid, exFileHelper);
-	}
+    public BlockStateGenerator(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
+        super(output, modid, exFileHelper);
+    }
 
-	@Override
-	protected void registerStatesAndModels() {
-		for(Specie specie : SpeciesRegistry.instance.getAll()) {
-			if(specie.hasBeehive()) {
-				simpleBlock(specie.beehive.block.get(), models().cubeBottomTop(specie.getName() + "_beehive",
-						Beekeeping.get("block/beehives/" + specie.getName() + "_side"),
-						Beekeeping.get("block/beehives/" + specie.getName() + "_bottom"),
-						Beekeeping.get("block/beehives/" + specie.getName() + "_top")
-				));
-				System.out.println("\"block.beekeeping." + specie.getName() + "_beehive\": \"" + Util.capitalize(specie.getName()) + " Beehive\",");
-			}
-		}
-	}
+    @Override
+    protected void registerStatesAndModels() {
+        for(Specie specie : SpeciesRegistry.instance.getAll()) {
+            if(specie.hasBeehive()) {
+                simpleBlock(specie.beehive.block.get(), models().cubeBottomTop(specie.getName() + "_beehive",
+                        Beekeeping.get("block/beehives/" + specie.getName() + "_side"),
+                        Beekeeping.get("block/beehives/" + specie.getName() + "_bottom"),
+                        Beekeeping.get("block/beehives/" + specie.getName() + "_top")
+                ));
+                System.out.println("\"block.beekeeping." + specie.getName() + "_beehive\": \"" + Util.capitalize(specie.getName()) + " Beehive\",");
+            }
+        }
+    }
 }

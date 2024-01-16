@@ -12,21 +12,21 @@ import net.minecraft.tags.BlockTags;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
-	public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(output, registriesFuture);
-	}
+    public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
+    }
 
-	@Override
-	protected void addTags(HolderLookup.Provider arg) {
-		for(Specie specie : SpeciesRegistry.instance.getAll()) {
-			if(!specie.hasBeehive()) continue;
-			tag(Index.BEEHIVE_TAG).add(BuiltInRegistries.BLOCK.getResourceKey(specie.beehive.block.get()).orElseThrow());
-			tag(BlockTags.MINEABLE_WITH_AXE).add(BuiltInRegistries.BLOCK.getResourceKey(specie.beehive.block.get()).orElseThrow());
-		}
+    @Override
+    protected void addTags(HolderLookup.Provider arg) {
+        for(Specie specie : SpeciesRegistry.instance.getAll()) {
+            if(!specie.hasBeehive()) continue;
+            tag(Index.BEEHIVE_TAG).add(BuiltInRegistries.BLOCK.getResourceKey(specie.beehive.block.get()).orElseThrow());
+            tag(BlockTags.MINEABLE_WITH_AXE).add(BuiltInRegistries.BLOCK.getResourceKey(specie.beehive.block.get()).orElseThrow());
+        }
 
-		tag(BlockTags.MINEABLE_WITH_AXE)
-			.add(BuiltInRegistries.BLOCK.getResourceKey(Index.APIARY_BLOCK.get()).orElseThrow());
-		tag(BlockTags.MINEABLE_WITH_PICKAXE)
-			.add(BuiltInRegistries.BLOCK.getResourceKey(Index.ANALYZER_BLOCK.get()).orElseThrow());
-	}
+        tag(BlockTags.MINEABLE_WITH_AXE)
+            .add(BuiltInRegistries.BLOCK.getResourceKey(Index.APIARY_BLOCK.get()).orElseThrow());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .add(BuiltInRegistries.BLOCK.getResourceKey(Index.ANALYZER_BLOCK.get()).orElseThrow());
+    }
 }

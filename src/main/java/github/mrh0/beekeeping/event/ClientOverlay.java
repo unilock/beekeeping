@@ -46,10 +46,10 @@ public class ClientOverlay {
     }
 
     public static void drawText(GuiGraphics guiGraphics, Component text, int x, int y, float scale, int color) {
-		guiGraphics.pose().pushPose();
-		guiGraphics.pose().scale(scale, scale, scale);
-		guiGraphics.drawString(Minecraft.getInstance().font, text, (int) (x / scale), (int) (y / scale), color);
-		guiGraphics.pose().popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(scale, scale, scale);
+        guiGraphics.drawString(Minecraft.getInstance().font, text, (int) (x / scale), (int) (y / scale), color);
+        guiGraphics.pose().popPose();
     }
 
     private static void drawListItem(GuiGraphics guiGraphics, Component text, int index, int image) {
