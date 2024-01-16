@@ -5,7 +5,7 @@ import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -102,14 +102,14 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
             JsonObject rare = new JsonObject();
 
             if(commonProduce != null && !commonProduce.isEmpty()) {
-                var resourceLocation = Registry.ITEM.getKey(commonProduce.getItem());
+                var resourceLocation = BuiltInRegistries.ITEM.getKey(commonProduce.getItem());
                 obj.add("common", common);
                 common.addProperty("item", resourceLocation.toString());
                 common.addProperty("count", commonProduce.getCount());
             }
 
             if(rareProduce != null && rareChance > 0d) {
-                var resourceLocation = Registry.ITEM.getKey(rareProduce.getItem());
+                var resourceLocation = BuiltInRegistries.ITEM.getKey(rareProduce.getItem());
                 obj.add("rare", rare);
 
                 rare.addProperty("item", resourceLocation.toString());

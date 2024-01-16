@@ -2,7 +2,6 @@ package github.mrh0.beekeeping.bee.item;
 
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.genes.*;
-import github.mrh0.beekeeping.group.ItemGroup;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,7 +19,7 @@ public abstract class BeeItem extends Item {
     private final boolean foil;
 
     public BeeItem(Specie specie, Properties props, boolean foil) {
-        super(props.tab(ItemGroup.BEES));
+        super(props);
         this.specie = specie;
         this.foil = foil;
     }

@@ -1,12 +1,11 @@
 package github.mrh0.beekeeping.event;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,7 @@ public class ClientOverlay {
             new ResourceLocation(Beekeeping.MODID, "textures/gui/analyzer.png");
     static int lx = 8, ly = 8;
 
-    public static void renderOverlay(PoseStack stack, float partialTicks) {
+    public static void renderOverlay(GuiGraphics guiGraphics, float partialTicks) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -25,41 +24,41 @@ public class ClientOverlay {
         var player = Minecraft.getInstance().player;
         if(player == null)
             return;
-        if(player.level == null)
+        if(player.level() == null)
             return;
 
         if(!player.getInventory().contains(new ItemStack(Index.THERMOMETER.get())))
             return;
 
-        var temp = BiomeTemperature.of(player.level.getBiome(Minecraft.getInstance().player.getOnPos()).value().getBaseTemperature());
+        var temp = BiomeTemperature.of(player.level().getBiome(Minecraft.getInstance().player.getOnPos()).value().getBaseTemperature());
 
         //drawTextShadowed(stack, new TextComponent("Test"), 10, 10, 1f);
-        drawListItem(stack, temp.getComponent(), 0, 6 + temp.ordinal());
+        drawListItem(guiGraphics, temp.getComponent(), 0, 6 + temp.ordinal());
     }
 
-    public static void drawTextShadowed(PoseStack poseStack, Component text, int x, int y, float scale) {
-        drawText(poseStack, text.plainCopy(), x + 1, y + 1, scale, 4210752);
-        drawText(poseStack, text, x, y, scale, 16777215);
+    public static void drawTextShadowed(GuiGraphics guiGraphics, Component text, int x, int y, float scale) {
+        drawText(guiGraphics, text.plainCopy(), x + 1, y + 1, scale, 4210752);
+        drawText(guiGraphics, text, x, y, scale, 16777215);
     }
 
-    public static void drawText(PoseStack poseStack, Component text, int x, int y, float scale) {
-        drawText(poseStack, text, x, y, scale, 4210752);
+    public static void drawText(GuiGraphics guiGraphics, Component text, int x, int y, float scale) {
+        drawText(guiGraphics, text, x, y, scale, 4210752);
     }
 
-    public static void drawText(PoseStack poseStack, Component text, int x, int y, float scale, int color) {
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
-        Minecraft.getInstance().font.draw(poseStack, text, (float)(x) / scale, (float)(y) / scale, color);
-        poseStack.popPose();
+    public static void drawText(GuiGraphics guiGraphics, Component text, int x, int y, float scale, int color) {
+		guiGraphics.pose().pushPose();
+		guiGraphics.pose().scale(scale, scale, scale);
+		guiGraphics.drawString(Minecraft.getInstance().font, text, (int) (x / scale), (int) (y / scale), color);
+		guiGraphics.pose().popPose();
     }
 
-    private static void drawListItem(PoseStack poseStack, Component text, int index, int image) {
-        drawTextShadowed(poseStack, text, lx + 12, ly + 14*index, 1f);
+    private static void drawListItem(GuiGraphics guiGraphics, Component text, int index, int image) {
+        drawTextShadowed(guiGraphics, text, lx + 12, ly + 14*index, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        blit(poseStack, lx, ly + 14*index, 176, 8*image, 8, 8);
+        blit(guiGraphics, lx, ly + 14*index, 176, 8*image, 8, 8);
     }
 
-    public static void blit(PoseStack p_93229_, int p_93230_, int p_93231_, int p_93232_, int p_93233_, int p_93234_, int p_93235_) {
-        GuiComponent.blit(p_93229_, p_93230_, p_93231_, 0, (float)p_93232_, (float)p_93233_, p_93234_, p_93235_, 256, 256);
+    public static void blit(GuiGraphics guiGraphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight) {
+        guiGraphics.blit(TEXTURE, x, y, 0, (float)uOffset, (float)vOffset, uWidth, vHeight, 256, 256);
     }
 }

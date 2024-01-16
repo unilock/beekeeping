@@ -6,7 +6,7 @@ import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.datagen.builder.BeeBreedingRecipeBuilder;
 import github.mrh0.beekeeping.datagen.builder.BeeProduceRecipeBuilder;
 import github.mrh0.beekeeping.item.ItemBuilder;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -18,12 +18,12 @@ import net.minecraft.world.level.ItemLike;
 import java.util.function.Consumer;
 
 public class RecipeProvider extends FabricRecipeProvider {
-	public RecipeProvider(FabricDataGenerator dataGenerator) {
-		super(dataGenerator);
+	public RecipeProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void generateRecipes(Consumer<FinishedRecipe> rc) {
+	public void buildRecipes(Consumer<FinishedRecipe> rc) {
 		for(Specie specie : SpeciesRegistry.instance.getAll()) {
 			if(specie.produce == null)
 				continue;

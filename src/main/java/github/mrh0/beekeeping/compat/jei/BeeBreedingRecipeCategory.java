@@ -55,6 +55,6 @@ public class BeeBreedingRecipeCategory implements IRecipeCategory<BeeBreedingRec
         builder.addSlot(RecipeIngredientRole.INPUT, 7, 8).addIngredients(recipe.getIngredients().get(0));
         builder.addSlot(RecipeIngredientRole.INPUT, 44, 8).addIngredients(recipe.getIngredients().get(1));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 8).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 8).addItemStack(recipe.getResultItem(null));
     }
 }

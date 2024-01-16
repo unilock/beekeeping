@@ -4,13 +4,13 @@ import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
-import net.minecraft.data.DataGenerator;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.BlockStateProvider;
+import net.minecraft.data.PackOutput;
 
 public class BlockStateGenerator extends BlockStateProvider {
-	public BlockStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, Beekeeping.MODID, exFileHelper);
+	public BlockStateGenerator(PackOutput output, String modid, ExistingFileHelper exFileHelper) {
+		super(output, modid, exFileHelper);
 	}
 
 	@Override

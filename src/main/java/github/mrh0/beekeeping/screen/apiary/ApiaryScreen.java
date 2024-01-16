@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.screen.apiary;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Satisfaction;
 import github.mrh0.beekeeping.bee.item.BeeItem;
@@ -9,6 +8,7 @@ import github.mrh0.beekeeping.blocks.apiary.ApiaryBlockEntity;
 import github.mrh0.beekeeping.network.packet.ToggleClientPacket;
 import github.mrh0.beekeeping.screen.BeeScreen;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,7 +29,7 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
         inventoryLabelY = 86;
     }
 
-    private Bounds toggle = new Bounds(50, 67, 20, 8);
+	private Bounds toggle = new Bounds(50, 67, 20, 8);
     private boolean getToggleState() {
         return getBlockEntity().continuous;
     }
@@ -37,48 +37,48 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
     private Bounds health = new Bounds(76, 37, 4, 26);
     private Bounds breedProgress = new Bounds(15, 43, 32, 15);
 
-    @Override
-    protected void renderBg(PoseStack poseStack, float partial, int mouseX, int mouseY) {
+	@Override
+	protected void renderBg(GuiGraphics guiGraphics, float partial, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = getXOffset();
         int y = getYOffset();
 
-        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
-        drawToggle(poseStack, (toggle.in(mouseX, mouseY) ? 2 : 0) + (getToggleState() ? 1 : 0));
+        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        drawToggle(guiGraphics, (toggle.in(mouseX, mouseY) ? 2 : 0) + (getToggleState() ? 1 : 0));
 
         if(getQueen() != null && !getQueen().isEmpty() && getQueen().getTag() != null) {
-            drawImagePartBottomUp(poseStack, health, imageWidth, 87, BeeItem.getHealthOf(getQueen()));
+            drawImagePartBottomUp(guiGraphics, TEXTURE, health, imageWidth, 87, BeeItem.getHealthOf(getQueen()));
 
-            drawSatisfaction(poseStack);
+            drawSatisfaction(guiGraphics);
         }
 
-        drawBreedProgress(poseStack, (double)getMenu().data.get(0)/(double)getBlockEntity().BREED_TIME);
+        drawBreedProgress(guiGraphics, (double)getMenu().data.get(0)/(double)getBlockEntity().BREED_TIME);
     }
 
-    private void drawSatisfaction(PoseStack poseStack) {
+    private void drawSatisfaction(GuiGraphics guiGraphics) {
         Satisfaction weatherSatisfaction = Satisfaction.of(getMenu().data.get(2));
         Satisfaction temperatureSatisfaction = Satisfaction.of(getMenu().data.get(3));
         Satisfaction lightSatisfaction = Satisfaction.of(getMenu().data.get(4));
 
         Satisfaction s = Satisfaction.calc(weatherSatisfaction, temperatureSatisfaction, lightSatisfaction);
-        this.blit(poseStack, satisfaction.getX(), satisfaction.getY(), imageWidth, 32 + s.ordinal()*satisfaction.h, satisfaction.w, satisfaction.h);
+		guiGraphics.blit(TEXTURE, satisfaction.getX(), satisfaction.getY(), imageWidth, 32 + s.ordinal()*satisfaction.h, satisfaction.w, satisfaction.h);
     }
 
-    private void drawToggle(PoseStack poseStack, int i) {
-        this.blit(poseStack, toggle.getX(), toggle.getY(), imageWidth, i*toggle.h, toggle.w, toggle.h);
+    private void drawToggle(GuiGraphics guiGraphics, int i) {
+		guiGraphics.blit(TEXTURE, toggle.getX(), toggle.getY(), imageWidth, i*toggle.h, toggle.w, toggle.h);
     }
 
-    private void drawBreedProgress(PoseStack poseStack, double f) {
-        drawImagePartHorizontal(poseStack, breedProgress, imageWidth, 56, f);
+    private void drawBreedProgress(GuiGraphics guiGraphics, double f) {
+        drawImagePartHorizontal(guiGraphics, TEXTURE, breedProgress, imageWidth, 56, f);
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, delta);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
@@ -124,15 +124,15 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
     }
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+    protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if(toggle.in(mouseX, mouseY)) {
-            renderComponentTooltip(poseStack, getToggleState() ? toggleOnTip : toggleOffTip, mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, getToggleState() ? toggleOnTip : toggleOffTip, mouseX, mouseY);
         }
         else if(satisfaction.in(mouseX, mouseY) && !getQueen().isEmpty()) {
-            renderComponentTooltip(poseStack, buildSatisfactionTooltip(getQueen()), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, buildSatisfactionTooltip(getQueen()), mouseX, mouseY);
         }
         else
-            super.renderTooltip(poseStack, mouseX, mouseY);
+            super.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     public ItemStack getQueen() {

@@ -23,14 +23,14 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
     public final ContainerData data;
 
     public ApiaryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
     }
 
     public ApiaryMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(Index.APIARY_MENU, id);
         checkContainerSize(inv, 10);
         blockEntity = ((ApiaryBlockEntity) entity);
-        this.level = inv.player.level;
+        this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);

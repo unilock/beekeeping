@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.screen.analyzer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.genes.*;
@@ -9,6 +8,7 @@ import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.blocks.analyzer.AnalyzerBlockEntity;
 import github.mrh0.beekeeping.screen.BeeScreen;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,10 +32,10 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         return new Bounds(lx, ly + 14*index - 2, imageWidth - lx, 12);
     }
 
-    private void drawListItem(PoseStack poseStack, Component text, int index, int image) {
-        drawText(poseStack, text, lx + 12, ly + 14*index, 1f);
+    private void drawListItem(GuiGraphics guiGraphics, Component text, int index, int image) {
+        drawText(guiGraphics, text, lx + 12, ly + 14*index, 1f);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        blit(poseStack, lx + getXOffset(), ly + 14*index + getYOffset(), imageWidth, 8*image, 8, 8);
+        guiGraphics.blit(TEXTURE, lx + getXOffset(), ly + 14*index + getYOffset(), imageWidth, 8*image, 8, 8);
     }
 
     private Bounds lifetimeBounds = getListBounds(0);
@@ -45,20 +45,20 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
     private Bounds produceBounds = getListBounds(4);
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partial, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float partial, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = getXOffset();
         int y = getYOffset();
 
-        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         if(getAnalyzed() != null && getSpecie() != null) {
-            drawText(poseStack, Component.translatable("item.beekeeping.species." + getSpecie().getName()), 39, 24, 1.75f, getSpecie().getColor());
+            drawText(guiGraphics, Component.translatable("item.beekeeping.species." + getSpecie().getName()), 29, 14, 1.75f, getSpecie().getColor());
         }
         else
-            drawText(poseStack, Component.translatable("title.beekeeping.analyzer.insert"), 39, 24, 1.75f);
+            drawText(guiGraphics, Component.translatable("title.beekeeping.analyzer.insert"), 29, 14, 1.75f);
         /*float temp = getLevel().getBiomeManager().getBiome(getBlockPos()).value().getBaseTemperature();
         drawText(poseStack, Component.translatable("title.beekeeping.analyzer.temp").append(": ").append(temp+""), 14, 44, 1f);
         float rain = getLevel().getBiomeManager().getBiome(getBlockPos()).value().getDownfall();
@@ -76,15 +76,15 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         int rareProduceBonus = (int)((rareProduceGene.getChance()-1d)*100d);
 
         int line = 0;
-        drawListItem(poseStack, LifetimeGene.of(LifetimeGene.get(getAnalyzed().getTag())).getComponent(), line++, 4);
-        drawListItem(poseStack, WeatherToleranceGene.of(WeatherToleranceGene.get(getAnalyzed().getTag())).getComponent(), line++, 3);
-        drawListItem(poseStack, TemperatureToleranceGene.of(TemperatureToleranceGene.get(getAnalyzed().getTag())).getComponent()
+        drawListItem(guiGraphics, LifetimeGene.of(LifetimeGene.get(getAnalyzed().getTag())).getComponent(), line++, 4);
+        drawListItem(guiGraphics, WeatherToleranceGene.of(WeatherToleranceGene.get(getAnalyzed().getTag())).getComponent(), line++, 3);
+        drawListItem(guiGraphics, TemperatureToleranceGene.of(TemperatureToleranceGene.get(getAnalyzed().getTag())).getComponent()
                 .append(" ").append(getSpecie().preferredTemperature.getComponent()), line++, 6 + temperatureImage);
-        drawListItem(poseStack,
+        drawListItem(guiGraphics,
                 getSpecie().isNocturnal ?
                 lightTolerance.getComponent().append(" ").append(Component.translatable("text.beekeeping.nocturnal").withStyle(ChatFormatting.DARK_BLUE)) : lightTolerance.getComponent(),
                 line++, lightToleranceImage);
-        drawListItem(poseStack,
+        drawListItem(guiGraphics,
                 getSpecie().isHasRareProduce() ? rareProduceGene.getComponent().append(" ").append((rareProduceBonus >= 0 ? "+" : "") + rareProduceBonus + "%")
                  : Component.literal("").append(rareProduceGene.getComponent().withStyle(ChatFormatting.STRIKETHROUGH))
                                         .append(" ").append(Component.translatable("text.beekeeping.none").withStyle(ChatFormatting.RED)),
@@ -98,26 +98,26 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
     private static List<Component> produceDescription = List.of(Component.translatable("tooltip.beekeeping.gene.produce"));
 
     @Override
-    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-        super.renderTooltip(poseStack, mouseX, mouseY);
+    protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderTooltip(guiGraphics, mouseX, mouseY);
         if(getSpecie() == null) return;
         if(lifetimeBounds.in(mouseX, mouseY))
-            renderComponentTooltip(poseStack, lifetimeDescription, mouseX, mouseY);
+            guiGraphics.renderComponentTooltip(this.font, lifetimeDescription, mouseX, mouseY);
         else if(weatherBounds.in(mouseX, mouseY))
-            renderComponentTooltip(poseStack, weatherDescription, mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, weatherDescription, mouseX, mouseY);
         else if(temperatureBounds.in(mouseX, mouseY))
-            renderComponentTooltip(poseStack, temperatureDescription, mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, temperatureDescription, mouseX, mouseY);
         else if(lightBounds.in(mouseX, mouseY))
-            renderComponentTooltip(poseStack, lightDescription, mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, lightDescription, mouseX, mouseY);
         else if(produceBounds.in(mouseX, mouseY))
-            renderComponentTooltip(poseStack, produceDescription, mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, produceDescription, mouseX, mouseY);
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, delta);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     public ItemStack getAnalyzed() {

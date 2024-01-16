@@ -21,14 +21,14 @@ public class AnalyzerMenu extends BeeMenu<AnalyzerBlockEntity> {
     private final ContainerData data;
 
     public AnalyzerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public AnalyzerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(Index.ANALYZER_MENU, id);
         checkContainerSize(inv, 1);
         blockEntity = ((AnalyzerBlockEntity) entity);
-        this.level = inv.player.level;
+        this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);

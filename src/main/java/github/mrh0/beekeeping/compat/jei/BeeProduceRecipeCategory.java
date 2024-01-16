@@ -1,6 +1,5 @@
 package github.mrh0.beekeeping.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
@@ -13,6 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -63,13 +63,13 @@ public class BeeProduceRecipeCategory implements IRecipeCategory<BeeProduceRecip
         builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 29).addItemStack(recipe.getRareProduce(false));
     }
 
-    @Override
-    public void draw(BeeProduceRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        IRecipeCategory.super.draw(recipe, recipeSlotsView, stack, mouseX, mouseY);
+	@Override
+    public void draw(BeeProduceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 
         if(recipe.getRareChance(true) > 0 && recipe.getRareChance(true) < 1)
-            ClientWrapper.get().font.draw(stack, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
+			guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(true)*100) + "%", 100, 12, 4210752);
         if(recipe.getRareChance(false) > 0 && recipe.getRareChance(false) < 1)
-			ClientWrapper.get().font.draw(stack, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
+			guiGraphics.drawString(ClientWrapper.get().font, (int)(recipe.getRareChance(false)*100) + "%", 100, 34, 4210752);
     }
 }

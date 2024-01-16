@@ -2,6 +2,7 @@ package github.mrh0.beekeeping.item;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -19,7 +20,7 @@ public class ItemBuilder <T extends Item> {
     }
 
     public ItemBuilder<T> shapeless(int count, ItemLike condition, Ingredient...ingredients) {
-        var builder = new ShapelessRecipeBuilder(item, count);
+        var builder = new ShapelessRecipeBuilder(RecipeCategory.MISC, item, count);
         for(Ingredient ingredient : ingredients) {
             builder.requires(ingredient);
         }

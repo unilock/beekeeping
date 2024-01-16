@@ -5,21 +5,21 @@ import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.item.frame.FrameItem;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemModelGenerator extends ItemModelProvider {
-    public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Beekeeping.MODID, existingFileHelper);
-    }
+	public ItemModelGenerator(PackOutput output, String modid, ExistingFileHelper existingFileHelper) {
+		super(output, modid, existingFileHelper);
+	}
 
-    @Override
+	@Override
     protected void registerModels() {
         for(Specie specie : SpeciesRegistry.instance.getAll()) {
             simpleItem(specie.droneItem);
@@ -48,19 +48,19 @@ public class ItemModelGenerator extends ItemModelProvider {
     }
 
     private ItemModelBuilder simpleItem(Item item, String path) {
-        return withExistingParent(Registry.ITEM.getKey(item).getPath(),
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
-                new ResourceLocation(Beekeeping.MODID,"item/" + path + Registry.ITEM.getKey(item).getPath()));
+                new ResourceLocation(Beekeeping.MODID,"item/" + path + BuiltInRegistries.ITEM.getKey(item).getPath()));
     }
 
     private ItemModelBuilder handheldItem(Item item) {
-        return withExistingParent(Registry.ITEM.getKey(item).getPath(),
+        return withExistingParent(BuiltInRegistries.ITEM.getKey(item).getPath(),
                 new ResourceLocation("item/handheld")).texture("layer0",
-                new ResourceLocation(Beekeeping.MODID,"item/" + Registry.ITEM.getKey(item).getPath()));
+                new ResourceLocation(Beekeeping.MODID,"item/" + BuiltInRegistries.ITEM.getKey(item).getPath()));
     }
 
     private ItemModelBuilder blockItem(Block block) {
-        var resourceLocation = Registry.BLOCK.getKey(block);
+        var resourceLocation = BuiltInRegistries.BLOCK.getKey(block);
         return withExistingParent(resourceLocation.getPath(),
                 new ResourceLocation(Beekeeping.MODID, "block/" + resourceLocation.getPath()));
     }

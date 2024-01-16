@@ -22,11 +22,13 @@ import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import github.mrh0.beekeeping.screen.analyzer.AnalyzerMenu;
 import github.mrh0.beekeeping.screen.apiary.ApiaryMenu;
 import github.mrh0.beekeeping.world.gen.BeehiveBiomeModifier;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -47,15 +49,15 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 public class Index {
     public static final LazyRegistrar<Item> ITEMS =
-            LazyRegistrar.create(Registry.ITEM, Beekeeping.MODID);
+            LazyRegistrar.create(Registries.ITEM, Beekeeping.MODID);
     public static final LazyRegistrar<Block> BLOCKS =
-            LazyRegistrar.create(Registry.BLOCK, Beekeeping.MODID);
+            LazyRegistrar.create(Registries.BLOCK, Beekeeping.MODID);
     public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITIES =
-            LazyRegistrar.create(Registry.BLOCK_ENTITY_TYPE, Beekeeping.MODID);
+            LazyRegistrar.create(Registries.BLOCK_ENTITY_TYPE, Beekeeping.MODID);
     public static final LazyRegistrar<RecipeSerializer<?>> SERIALIZERS =
-            LazyRegistrar.create(Registry.RECIPE_SERIALIZER, Beekeeping.MODID);
+            LazyRegistrar.create(Registries.RECIPE_SERIALIZER, Beekeeping.MODID);
 	public static final LazyRegistrar<RecipeType<?>> TYPES =
-		LazyRegistrar.create(Registry.RECIPE_TYPE, Beekeeping.MODID);
+		LazyRegistrar.create(Registries.RECIPE_TYPE, Beekeeping.MODID);
 
     static {
         species();
@@ -74,10 +76,11 @@ public class Index {
         SERIALIZERS.register();
 		TYPES.register();
 		BeehiveBiomeModifier.modify();
+		ItemGroup.register();
     }
 
     private static TagKey<Item> bind(String key) {
-        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(key));
+        return TagKey.create(Registries.ITEM, new ResourceLocation(key));
     }
 
     //  SPECIE
@@ -292,16 +295,16 @@ public class Index {
 
     public static void blocks() {
         ANALYZER_BLOCK = BLOCKS.register("analyzer", AnalyzerBlock::new);
-        ITEMS.register("analyzer", () -> new BlockItem(ANALYZER_BLOCK.get(), new Item.Properties().tab(ItemGroup.BEES)));
+        ITEMS.register("analyzer", () -> new BlockItem(ANALYZER_BLOCK.get(), new Item.Properties()));
         APIARY_BLOCK = BLOCKS.register("apiary", ApiaryBlock::new);
-        ITEMS.register("apiary", () -> new BlockItem(APIARY_BLOCK.get(), new Item.Properties().tab(ItemGroup.BEES)));
+        ITEMS.register("apiary", () -> new BlockItem(APIARY_BLOCK.get(), new Item.Properties()));
 
         for(Specie specie : SpeciesRegistry.instance.getAll()) {
             if(!specie.hasBeehive())
                 continue;
-            specie.beehive.block = BLOCKS.register(specie.beehive.getName(), () -> new BeehiveBlock(BlockBehaviour.Properties.of(Blocks.BEEHIVE.defaultBlockState().getMaterial()), specie));
-            ITEMS.register(specie.beehive.getName(), () -> new BlockItem(specie.beehive.block.get(), new Item.Properties().tab(ItemGroup.BEES)));
-        }
+            specie.beehive.block = BLOCKS.register(specie.beehive.getName(), () -> new BeehiveBlock(BlockBehaviour.Properties.copy(Blocks.BEEHIVE), specie));
+            ITEMS.register(specie.beehive.getName(), () -> new BlockItem(specie.beehive.block.get(), new Item.Properties()));
+		}
     }
 
     //  BLOCK ENTITY
@@ -320,8 +323,8 @@ public class Index {
     public static MenuType<ApiaryMenu> APIARY_MENU;
 
 	public static void menus() {
-		ANALYZER_MENU = Registry.register(Registry.MENU, Beekeeping.get("analyzer"), new ExtendedScreenHandlerType<>(AnalyzerMenu::new));
-		APIARY_MENU = Registry.register(Registry.MENU, Beekeeping.get("apiary"), new ExtendedScreenHandlerType<>(ApiaryMenu::new));
+		ANALYZER_MENU = Registry.register(BuiltInRegistries.MENU, Beekeeping.get("analyzer"), new ExtendedScreenHandlerType<>(AnalyzerMenu::new));
+		APIARY_MENU = Registry.register(BuiltInRegistries.MENU, Beekeeping.get("apiary"), new ExtendedScreenHandlerType<>(ApiaryMenu::new));
 	}
 
     //  TAG
@@ -333,12 +336,12 @@ public class Index {
     public static TagKey<Block> BEEHIVE_TAG;
 
     public static void tags() {
-        BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "bees"));
-        DRONE_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "drone_bees"));
-        PRINCESS_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "princess_bees"));
-        QUEEN_BEES_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "queen_bees"));
-        FRAME_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("beekeeping", "frames"));
-        BEEHIVE_TAG = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("beekeeping", "beehives"));
+        BEES_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("beekeeping", "bees"));
+        DRONE_BEES_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("beekeeping", "drone_bees"));
+        PRINCESS_BEES_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("beekeeping", "princess_bees"));
+        QUEEN_BEES_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("beekeeping", "queen_bees"));
+        FRAME_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("beekeeping", "frames"));
+        BEEHIVE_TAG = TagKey.create(Registries.BLOCK, new ResourceLocation("beekeeping", "beehives"));
     }
 
     //  RECIPE

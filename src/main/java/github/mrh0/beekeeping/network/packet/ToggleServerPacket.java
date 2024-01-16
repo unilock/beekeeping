@@ -29,7 +29,7 @@ public class ToggleServerPacket {
 
 	public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
 		BlockPos pos = buf.readBlockPos();
-		BlockEntity te = player.getLevel().getChunkAt(pos).getBlockEntity(pos); // Level#getBlockEntity returns null if not client-side...?
+		BlockEntity te = player.level().getChunkAt(pos).getBlockEntity(pos); // Level#getBlockEntity returns null if not client-side...?
 		if (te != null) {
 			if (te instanceof IHasToggleOption to) {
 				to.onToggle(player, buf.readInt(), buf.readBoolean());

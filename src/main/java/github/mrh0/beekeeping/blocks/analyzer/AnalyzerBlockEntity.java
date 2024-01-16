@@ -84,8 +84,8 @@ public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void drop() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlotCount());
+        for (int i = 0; i < itemHandler.getSlotCount(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 

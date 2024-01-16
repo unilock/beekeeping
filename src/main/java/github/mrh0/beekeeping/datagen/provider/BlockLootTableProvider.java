@@ -3,7 +3,7 @@ package github.mrh0.beekeeping.datagen.provider;
 import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -23,12 +23,12 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 	private static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
 	private static final LootItemCondition.Builder HAS_NO_SILK_TOUCH = HAS_SILK_TOUCH.invert();
 
-	public BlockLootTableProvider(FabricDataGenerator dataGenerator) {
+	public BlockLootTableProvider(FabricDataOutput dataGenerator) {
 		super(dataGenerator);
 	}
 
 	@Override
-	protected void generateBlockLootTables() {
+	public void generate() {
 		this.dropSelf(Index.ANALYZER_BLOCK.get());
 		this.dropSelf(Index.APIARY_BLOCK.get());
 

@@ -6,6 +6,7 @@ import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.Specie;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -82,7 +83,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer container) {
+    public ItemStack assemble(SimpleContainer container, RegistryAccess registryAccess) {
         return ItemStack.EMPTY;
     }
 
@@ -92,7 +93,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return ItemStack.EMPTY.copy();
     }
 

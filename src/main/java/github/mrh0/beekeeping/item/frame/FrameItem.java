@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.item.frame;
 
 import github.mrh0.beekeeping.bee.Satisfaction;
-import github.mrh0.beekeeping.group.ItemGroup;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,7 +22,7 @@ public class FrameItem extends Item {
     public final String name;
 
     public FrameItem(String name) {
-        super(new Properties().stacksTo(16).tab(ItemGroup.BEES));
+        super(new Properties().stacksTo(16));
         this.name = name;
         frames.add(this);
     }

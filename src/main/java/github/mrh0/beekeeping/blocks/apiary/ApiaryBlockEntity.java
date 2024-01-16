@@ -113,15 +113,15 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         }
 
 		@Override
-		public boolean isItemValid(int slot, ItemVariant resource, long amount) {
+		public boolean isItemValid(int slot, ItemVariant resource, int count) {
 			if(resource.toStack().is(Index.DRONE_BEES_TAG) && slot == 0)
-				return super.isItemValid(slot, resource, amount);
+				return super.isItemValid(slot, resource, count);
 			if(resource.toStack().is(Index.PRINCESS_BEES_TAG) && slot == 1)
-				return super.isItemValid(slot, resource, amount);
+				return super.isItemValid(slot, resource, count);
 			if(resource.toStack().is(Index.QUEEN_BEES_TAG) && slot == 2)
-				return super.isItemValid(slot, resource, amount);
+				return super.isItemValid(slot, resource, count);
 			if(resource.toStack().is(Index.FRAME_TAG) && slot == 3)
-				return super.isItemValid(slot, resource, amount);
+				return super.isItemValid(slot, resource, count);
 			return false;
 		}
 	};
@@ -234,14 +234,14 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
     }
 
     public void drop() {
-        SimpleContainer input = new SimpleContainer(inputItemHandler.getSlots());
-        for (int i = 0; i < inputItemHandler.getSlots(); i++) {
+        SimpleContainer input = new SimpleContainer(inputItemHandler.getSlotCount());
+        for (int i = 0; i < inputItemHandler.getSlotCount(); i++) {
             input.setItem(i, inputItemHandler.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, input);
 
-        SimpleContainer output = new SimpleContainer(outputItemHandler.getSlots());
-        for (int i = 0; i < outputItemHandler.getSlots(); i++) {
+        SimpleContainer output = new SimpleContainer(outputItemHandler.getSlotCount());
+        for (int i = 0; i < outputItemHandler.getSlotCount(); i++) {
             output.setItem(i, outputItemHandler.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, output);
@@ -319,66 +319,75 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecie().droneItem);
         drone = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.DRONE, drone);
 
-		Transaction transaction = Transaction.openOuter();
+		try (Transaction transaction = Transaction.openOuter()) {
+			if (continuous) {
+				try (Transaction nested = Transaction.openNested(transaction)) {
+					if (!drone.isEmpty()) {
+						long amount = input.insertSlot(0, ItemVariant.of(drone), drone.getCount(), nested);
+						if (amount == drone.getCount()) {
+							nested.commit();
+						} else {
+							return false;
+						}
+					}
+				}
 
-        if(continuous) {
-            if(!input.getStackInSlot(0).isEmpty())
-                if(!drone.isEmpty() && output.simulateInsert(ItemVariant.of(drone), drone.getCount(), transaction) != drone.getCount())
-                    return false;
-            if(!input.getStackInSlot(1).isEmpty())
-                if(!princess.isEmpty() && output.simulateInsert(ItemVariant.of(princess), princess.getCount(), transaction) != princess.getCount())
-                    return false;
+				try (Transaction nested = Transaction.openNested(transaction)) {
+					if (!princess.isEmpty()) {
+						long amount = input.insertSlot(1, ItemVariant.of(princess), princess.getCount(), nested);
+						if (amount == princess.getCount()) {
+							nested.commit();
+						} else {
+							return false;
+						}
+					}
+				}
+			} else {
+				try (Transaction nested = Transaction.openNested(transaction)) {
+					if (!princess.isEmpty()) {
+						long amount = output.insert(ItemVariant.of(princess), princess.getCount(), nested);
+						if (amount == princess.getCount()) {
+							nested.commit();
+						}
+					}
+				}
 
-            if(!commonProduce.isEmpty() && output.simulateInsert(ItemVariant.of(commonProduce), commonProduce.getCount(), transaction) != commonProduce.getCount())
-                return false;
-			if(!rareProduce.isEmpty() && output.simulateInsert(ItemVariant.of(rareProduce), rareProduce.getCount(), transaction) != rareProduce.getCount())
-				return false;
-
-            if(input.getStackInSlot(0).isEmpty())
-                input.setStackInSlot(0, drone);
-            else {
-				Transaction nested = Transaction.openNested(transaction);
-				if(!drone.isEmpty())
-					output.insertSlot(0, ItemVariant.of(drone), drone.getCount(), nested);
-				nested.commit();
+				try (Transaction nested = Transaction.openNested(transaction)) {
+					if (!drone.isEmpty()) {
+						long amount = output.insert(ItemVariant.of(drone), drone.getCount(), nested);
+						if (amount == drone.getCount()) {
+							nested.commit();
+						}
+					}
+				}
 			}
 
-            if(input.getStackInSlot(1).isEmpty())
-                input.setStackInSlot(1, princess);
-            else {
-				Transaction nested = Transaction.openNested(transaction);
-				if(!princess.isEmpty())
-					output.insertSlot(1, ItemVariant.of(princess), princess.getCount(), nested);
-				nested.commit();
+			try (Transaction nested = Transaction.openNested(transaction)) {
+				if (!commonProduce.isEmpty()) {
+					long amount = output.insert(ItemVariant.of(commonProduce), commonProduce.getCount(), nested);
+					if (amount == commonProduce.getCount()) {
+						nested.commit();
+					} else {
+						return false;
+					}
+				}
 			}
-        }
-        else {
-            if(!princess.isEmpty() && output.simulateInsert(ItemVariant.of(princess), princess.getCount(), transaction) != princess.getCount())
-                return false;
-            if(!drone.isEmpty() && output.simulateInsert(ItemVariant.of(drone), drone.getCount(), transaction) != drone.getCount())
-                return false;
-			if(!commonProduce.isEmpty() && output.simulateInsert(ItemVariant.of(commonProduce), commonProduce.getCount(), transaction) != commonProduce.getCount())
-				return false;
-			if(!rareProduce.isEmpty() && output.simulateInsert(ItemVariant.of(rareProduce), rareProduce.getCount(), transaction) != rareProduce.getCount())
-				return false;
 
-			Transaction nested = Transaction.openNested(transaction);
-			if(!princess.isEmpty())
-				output.insert(ItemVariant.of(princess), princess.getCount(), nested);
-			if(!drone.isEmpty())
-				output.insert(ItemVariant.of(drone), drone.getCount(), nested);
-			nested.commit();
-        }
+			try (Transaction nested = Transaction.openNested(transaction)) {
+				if (!rareProduce.isEmpty()) {
+					long amount = output.insert(ItemVariant.of(rareProduce), rareProduce.getCount(), nested);
+					if (amount == rareProduce.getCount()) {
+						nested.commit();
+					} else {
+						return false;
+					}
+				}
+			}
 
-		Transaction nested = Transaction.openNested(transaction);
-		if(!commonProduce.isEmpty())
-			output.insert(ItemVariant.of(commonProduce), commonProduce.getCount(), nested);
-		if(!rareProduce.isEmpty())
-			output.insert(ItemVariant.of(rareProduce), rareProduce.getCount(), nested);
-		nested.commit();
+			transaction.commit();
 
-		transaction.commit();
-        return true;
+			return true;
+		}
     }
 
 	@Override
