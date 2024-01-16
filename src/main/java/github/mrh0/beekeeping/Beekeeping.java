@@ -11,6 +11,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("UnstableApiUsage")
 public class Beekeeping implements ModInitializer {
     public static final String MODID = "beekeeping";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);

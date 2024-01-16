@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHasToggleOption {
 
     private static final int LIFETIME_STEP = Config.LIFETIME_STEP.get();
@@ -129,6 +130,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
     private final ItemStackHandler outputItemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
+			checkLock = false;
             setChanged();
         }
     };
@@ -321,68 +323,15 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
 
 		try (Transaction transaction = Transaction.openOuter()) {
 			if (continuous) {
-				try (Transaction nested = Transaction.openNested(transaction)) {
-					if (!drone.isEmpty()) {
-						long amount = input.insertSlot(0, ItemVariant.of(drone), drone.getCount(), nested);
-						if (amount == drone.getCount()) {
-							nested.commit();
-						} else {
-							return false;
-						}
-					}
-				}
-
-				try (Transaction nested = Transaction.openNested(transaction)) {
-					if (!princess.isEmpty()) {
-						long amount = input.insertSlot(1, ItemVariant.of(princess), princess.getCount(), nested);
-						if (amount == princess.getCount()) {
-							nested.commit();
-						} else {
-							return false;
-						}
-					}
-				}
+				if (!actuallyAttemptInsertSlot(transaction, input, 0, drone)) return false;
+				if (!actuallyAttemptInsertSlot(transaction, input, 1, princess)) return false;
 			} else {
-				try (Transaction nested = Transaction.openNested(transaction)) {
-					if (!princess.isEmpty()) {
-						long amount = output.insert(ItemVariant.of(princess), princess.getCount(), nested);
-						if (amount == princess.getCount()) {
-							nested.commit();
-						}
-					}
-				}
-
-				try (Transaction nested = Transaction.openNested(transaction)) {
-					if (!drone.isEmpty()) {
-						long amount = output.insert(ItemVariant.of(drone), drone.getCount(), nested);
-						if (amount == drone.getCount()) {
-							nested.commit();
-						}
-					}
-				}
+				if (!actuallyAttemptInsert(transaction, output, princess)) return false;
+				if (!actuallyAttemptInsert(transaction, output, drone)) return false;
 			}
 
-			try (Transaction nested = Transaction.openNested(transaction)) {
-				if (!commonProduce.isEmpty()) {
-					long amount = output.insert(ItemVariant.of(commonProduce), commonProduce.getCount(), nested);
-					if (amount == commonProduce.getCount()) {
-						nested.commit();
-					} else {
-						return false;
-					}
-				}
-			}
-
-			try (Transaction nested = Transaction.openNested(transaction)) {
-				if (!rareProduce.isEmpty()) {
-					long amount = output.insert(ItemVariant.of(rareProduce), rareProduce.getCount(), nested);
-					if (amount == rareProduce.getCount()) {
-						nested.commit();
-					} else {
-						return false;
-					}
-				}
-			}
+			if (!actuallyAttemptInsert(transaction, output, commonProduce)) return false;
+			if (!actuallyAttemptInsert(transaction, output, rareProduce)) return false;
 
 			transaction.commit();
 
@@ -390,11 +339,46 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
 		}
     }
 
+	private boolean actuallyAttemptInsert(Transaction transaction, ItemStackHandler storage, ItemStack stack) {
+		try (Transaction nested = Transaction.openNested(transaction)) {
+			if (!stack.isEmpty()) {
+				int count = stack.getCount();
+				long amount = storage.insert(ItemVariant.of(stack), count, nested);
+				if (amount == count) {
+					nested.commit();
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean actuallyAttemptInsertSlot(Transaction transaction, ItemStackHandler storage, int slot, ItemStack stack) {
+		try (Transaction nested = Transaction.openNested(transaction)) {
+			if (!stack.isEmpty()) {
+				int count = stack.getCount();
+				long amount = storage.insertSlot(slot, ItemVariant.of(stack), count, nested);
+				if (amount == count) {
+					nested.commit();
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	@Override
     public void onToggle(ServerPlayer player, int index, boolean value) {
         switch(index) {
             case 0:
                 continuous = value;
+				checkLock = false;
                 setChanged();
                 break;
         }
