@@ -2,7 +2,6 @@ package github.mrh0.beekeeping.group;
 
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Index;
-import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
@@ -20,8 +19,9 @@ public class ItemGroup {
         .build());
 
     public static void register() {
-        Event<ItemGroupEvents.ModifyEntries> event = ItemGroupEvents.modifyEntriesEvent(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Beekeeping.get("bees")));
-        Index.ITEMS.getEntries().forEach(item -> event.register(entries -> entries.accept(item.get())));
-        Index.BLOCKS.getEntries().forEach(item -> event.register(entries -> entries.accept(item.get())));
+        ItemGroupEvents.modifyEntriesEvent(ResourceKey.create(Registries.CREATIVE_MODE_TAB, Beekeeping.get("bees"))).register(entries -> {
+            Index.ITEMS.getEntries().forEach(item -> entries.accept(item.get()));
+            Index.BLOCKS.getEntries().forEach(block -> entries.accept(block.get()));
+        });
     }
 }
