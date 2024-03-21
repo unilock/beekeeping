@@ -45,7 +45,7 @@ repositories {
     maven { url = "https://maven.parchmentmc.org/" } // Parchment
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
     maven { url = "https://maven.blamejared.com/" } // JEI
-    maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib
+    maven { url = "https://mvn.devos.one/releases/" } // Porting Lib
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Porting Lib (2)
     maven { url = "https://jitpack.io/" } // JitPack
 }

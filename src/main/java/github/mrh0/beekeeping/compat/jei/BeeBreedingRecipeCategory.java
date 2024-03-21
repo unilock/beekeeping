@@ -1,8 +1,8 @@
 package github.mrh0.beekeeping.compat.jei;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
+import github.mrh0.beekeeping.registry.ModBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -27,7 +27,7 @@ public class BeeBreedingRecipeCategory implements IRecipeCategory<BeeBreedingRec
 
     public BeeBreedingRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 112, 32);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Index.APIARY_BLOCK.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.APIARY));
     }
 
     @Override

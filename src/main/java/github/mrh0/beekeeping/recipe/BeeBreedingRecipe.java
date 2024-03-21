@@ -2,7 +2,7 @@ package github.mrh0.beekeeping.recipe;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Specie;
+import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -19,11 +19,11 @@ import net.minecraft.world.level.Level;
 
 public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
-    private final Specie drone, princess, offspring;
+    private final Species drone, princess, offspring;
     private final NonNullList<Ingredient> recipeItems;
     private final ItemStack output;
 
-    public BeeBreedingRecipe(ResourceLocation id, Specie drone, Specie princess, Specie offspring) {
+    public BeeBreedingRecipe(ResourceLocation id, Species drone, Species princess, Species offspring) {
         this.id = id;
         this.drone = drone;
         this.princess = princess;
@@ -35,7 +35,7 @@ public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
         this.output = new ItemStack(offspring.queenItem);
     }
 
-    public Specie getOffspring() {
+    public Species getOffspring() {
         return this.offspring;
     }
 
@@ -101,19 +101,19 @@ public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public BeeBreedingRecipe fromJson(ResourceLocation id, JsonObject json) {
-            Specie droneSpecie = Specie.getByName(GsonHelper.getAsString(json, "drone"));
-            Specie princessSpecie = Specie.getByName(GsonHelper.getAsString(json, "princess"));
-            Specie offspringSpecie = Specie.getByName(GsonHelper.getAsString(json, "offspring"));
+            Species droneSpecies = Species.getByName(GsonHelper.getAsString(json, "drone"));
+            Species princessSpecies = Species.getByName(GsonHelper.getAsString(json, "princess"));
+            Species offspringSpecies = Species.getByName(GsonHelper.getAsString(json, "offspring"));
 
-            return new BeeBreedingRecipe(id, droneSpecie, princessSpecie, offspringSpecie);
+            return new BeeBreedingRecipe(id, droneSpecies, princessSpecies, offspringSpecies);
         }
 
         @Override
         public BeeBreedingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            Specie droneSpecie = Specie.getByName(buf.readUtf());
-            Specie princessSpecie = Specie.getByName(buf.readUtf());
-            Specie offspringSpecie = Specie.getByName(buf.readUtf());
-            return new BeeBreedingRecipe(id, droneSpecie, princessSpecie, offspringSpecie);
+            Species droneSpecies = Species.getByName(buf.readUtf());
+            Species princessSpecies = Species.getByName(buf.readUtf());
+            Species offspringSpecies = Species.getByName(buf.readUtf());
+            return new BeeBreedingRecipe(id, droneSpecies, princessSpecies, offspringSpecies);
         }
 
         @Override

@@ -2,7 +2,7 @@ package github.mrh0.beekeeping.datagen.builder;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Specie;
+import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -15,11 +15,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public class BeeBreedingRecipeBuilder implements RecipeBuilder {
-    private final Specie drone;
-    private final Specie princess;
-    private final Specie offspring;
+    private final Species drone;
+    private final Species princess;
+    private final Species offspring;
 
-    public BeeBreedingRecipeBuilder(Specie drone, Specie princess, Specie offspring) {
+    public BeeBreedingRecipeBuilder(Species drone, Species princess, Species offspring) {
         this.drone = drone;
         this.princess = princess;
         this.offspring = offspring;
@@ -47,11 +47,11 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
 
     public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
-        private final Specie drone;
-        private final Specie princess;
-        private final Specie offspring;
+        private final Species drone;
+        private final Species princess;
+        private final Species offspring;
 
-        public Result(ResourceLocation id, Specie drone, Specie princess, Specie offspring) {
+        public Result(ResourceLocation id, Species drone, Species princess, Species offspring) {
             this.id = id;
             this.drone = drone;
             this.princess = princess;

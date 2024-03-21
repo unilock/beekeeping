@@ -1,7 +1,9 @@
 package github.mrh0.beekeeping.screen.analyzer;
 
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.blocks.analyzer.AnalyzerBlockEntity;
+import github.mrh0.beekeeping.registry.ModBlocks;
+import github.mrh0.beekeeping.registry.ModMenus;
+import github.mrh0.beekeeping.registry.ModTags;
 import github.mrh0.beekeeping.screen.BeeMenu;
 import github.mrh0.beekeeping.screen.slot.TagSlot;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,7 +27,7 @@ public class AnalyzerMenu extends BeeMenu<AnalyzerBlockEntity> {
     }
 
     public AnalyzerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(Index.ANALYZER_MENU, id);
+        super(ModMenus.ANALYZER, id);
         checkContainerSize(inv, 1);
         blockEntity = ((AnalyzerBlockEntity) entity);
         this.level = inv.player.level();
@@ -35,7 +37,7 @@ public class AnalyzerMenu extends BeeMenu<AnalyzerBlockEntity> {
         addPlayerHotbar(inv);
 
         if (this.blockEntity.lazyItemHandler.isPresent()) {
-            this.addSlot(new TagSlot(this.blockEntity.lazyItemHandler.getValueUnsafer(), 0, 12, 21, Index.BEES_TAG));
+            this.addSlot(new TagSlot(this.blockEntity.lazyItemHandler.getValueUnsafer(), 0, 12, 21, ModTags.Items.BEES));
         }
 
         addDataSlots(data);
@@ -92,8 +94,7 @@ public class AnalyzerMenu extends BeeMenu<AnalyzerBlockEntity> {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, Index.ANALYZER_BLOCK.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.ANALYZER);
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

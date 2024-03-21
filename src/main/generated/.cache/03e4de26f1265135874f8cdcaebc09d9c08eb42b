@@ -1,6 +1,0 @@
-// 1.19.2	2023-12-08T15:28:44.980207	Tags for minecraft:item
-be6295fc8d3110cf43c9b82f132f8eab8de6841b data/beekeeping/tags/items/drone_bees.json
-12cf3df3a33658a9ebcf1304c64f21c41cb4090e data/beekeeping/tags/items/bees.json
-95f1c89d7f8446ad4dda1fae336c72f279af4f96 data/beekeeping/tags/items/frames.json
-2ce1199d943f716386b306bb800b87d796d1d433 data/beekeeping/tags/items/queen_bees.json
-eafabb5ca209438221e79ae1bef3e16cc35b1ee8 data/beekeeping/tags/items/princess_bees.json

@@ -1,8 +1,13 @@
 package github.mrh0.beekeeping.bee.breeding;
 
 import github.mrh0.beekeeping.Util;
-import github.mrh0.beekeeping.bee.Specie;
-import github.mrh0.beekeeping.bee.genes.*;
+import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.genes.Gene;
+import github.mrh0.beekeeping.bee.genes.LifetimeGene;
+import github.mrh0.beekeeping.bee.genes.LightToleranceGene;
+import github.mrh0.beekeeping.bee.genes.RareProduceGene;
+import github.mrh0.beekeeping.bee.genes.TemperatureToleranceGene;
+import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
@@ -14,7 +19,7 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class BeeLifecycle {
-    public static Specie getOffspringSpecie(Level level, ItemStack drone, ItemStack princess) {
+    public static Species getOffspringSpecies(Level level, ItemStack drone, ItemStack princess) {
         SimpleContainer inv = new SimpleContainer(2);
         inv.setItem(0, drone);
         inv.setItem(1, princess);
@@ -26,7 +31,7 @@ public class BeeLifecycle {
         return match.get().getOffspring();
     }
 
-    public static CompoundTag getOffspringTag(ItemStack drone, ItemStack princess, Specie offspring, SelectFunction fn) {
+    public static CompoundTag getOffspringTag(ItemStack drone, ItemStack princess, Species offspring, SelectFunction fn) {
         CompoundTag tag = new CompoundTag();
         BeeItem.init(tag, offspring.queenItem,
                 fn.select(LifetimeGene.get(drone.getTag()), LifetimeGene.get(princess.getTag())),

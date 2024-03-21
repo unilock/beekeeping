@@ -1,8 +1,7 @@
 package github.mrh0.beekeeping.blocks.apiary;
 
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.bee.Satisfaction;
-import github.mrh0.beekeeping.bee.Specie;
+import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.breeding.BeeLifecycle;
 import github.mrh0.beekeeping.bee.genes.Gene;
 import github.mrh0.beekeeping.bee.genes.RareProduceGene;
@@ -14,6 +13,8 @@ import github.mrh0.beekeeping.item.frame.SatisfactionEvent;
 import github.mrh0.beekeeping.network.IHasToggleOption;
 import github.mrh0.beekeeping.network.packet.ToggleServerPacket;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
+import github.mrh0.beekeeping.registry.ModBlockEntities;
+import github.mrh0.beekeeping.registry.ModTags;
 import github.mrh0.beekeeping.screen.apiary.ApiaryMenu;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -44,7 +45,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
 
     protected final ContainerData data;
     public ApiaryBlockEntity(BlockPos pos, BlockState state) {
-        super(Index.APIARY_BLOCK_ENTITY.get(), pos, state);
+        super(ModBlockEntities.APIARY, pos, state);
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -83,7 +84,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
 
     public boolean continuous = false;
     public int breedProgressTime = 0;
-    private Specie offspringCache = null;
+    private Species offspringCache = null;
 
     public ItemStack getDrone() {
         return inputItemHandler.getStackInSlot(0);
@@ -115,13 +116,13 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
 
         @Override
         public boolean isItemValid(int slot, ItemVariant resource, int count) {
-            if(resource.toStack().is(Index.DRONE_BEES_TAG) && slot == 0)
+            if(resource.toStack().is(ModTags.Items.DRONES) && slot == 0)
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(Index.PRINCESS_BEES_TAG) && slot == 1)
+            if(resource.toStack().is(ModTags.Items.PRINCESSES) && slot == 1)
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(Index.QUEEN_BEES_TAG) && slot == 2)
+            if(resource.toStack().is(ModTags.Items.QUEENS) && slot == 2)
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(Index.FRAME_TAG) && slot == 3)
+            if(resource.toStack().is(ModTags.Items.FRAMES) && slot == 3)
                 return super.isItemValid(slot, resource, count);
             return false;
         }
@@ -152,7 +153,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         if(princess.getTag() == null)
             BeeItem.init(princess);
 
-        offspringCache = BeeLifecycle.getOffspringSpecie(getLevel(), drone, princess);
+        offspringCache = BeeLifecycle.getOffspringSpecies(getLevel(), drone, princess);
     }
 
     private void preformBreeding() {
@@ -174,15 +175,15 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
             return;
         }
 
-        Specie specie = BeeItem.speciesOf(getQueen());
-        if(specie == null) {
+        Species species = BeeItem.speciesOf(getQueen());
+        if(species == null) {
             satisfactionCache = Satisfaction.NOT_WORKING;
             return;
         }
 
-        lightSatisfactionCache = specie.getLightSatisfaction(getQueen(), getLevel(), getBlockPos());
-        weatherSatisfactionCache = specie.getWeatherSatisfaction(getQueen(), getLevel(), getBlockPos());
-        temperatureSatisfactionCache = specie.getTemperatureSatisfaction(getQueen(), getLevel(), getBlockPos());
+        lightSatisfactionCache = species.getLightSatisfaction(getQueen(), getLevel(), getBlockPos());
+        weatherSatisfactionCache = species.getWeatherSatisfaction(getQueen(), getLevel(), getBlockPos());
+        temperatureSatisfactionCache = species.getTemperatureSatisfaction(getQueen(), getLevel(), getBlockPos());
 
         lightSatisfactionCache = FrameItem.onSatisfaction(getFrame(), getLevel(), getBlockPos(), SatisfactionEvent.SatisfactionType.LIGHT, getQueen(), lightSatisfactionCache);
         weatherSatisfactionCache = FrameItem.onSatisfaction(getFrame(), getLevel(), getBlockPos(), SatisfactionEvent.SatisfactionType.WEATHER, getQueen(), weatherSatisfactionCache);
@@ -277,8 +278,8 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
             return;
         slowTick = 0;
         ItemStack queen = getQueen();
-        Specie specie = BeeItem.speciesOf(queen);
-        if(specie == null)
+        Species species = BeeItem.speciesOf(queen);
+        if(species == null)
             return;
         if(queen.getTag() == null)
             BeeItem.init(queen);
@@ -315,10 +316,10 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         ItemStack rareProduce = bpr.getRolledRareProduce(satisfied, chance);
         rareProduce = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.RARE, rareProduce);
 
-        ItemStack princess = BeeLifecycle.clone(queen, bpr.getSpecie().princessItem);
+        ItemStack princess = BeeLifecycle.clone(queen, bpr.getSpecies().princessItem);
         princess = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.PRINCESS, princess);
 
-        ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecie().droneItem);
+        ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecies().droneItem);
         drone = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.DRONE, drone);
 
         try (Transaction transaction = Transaction.openOuter()) {

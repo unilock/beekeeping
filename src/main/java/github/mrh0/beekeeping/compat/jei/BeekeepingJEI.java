@@ -1,9 +1,9 @@
 package github.mrh0.beekeeping.compat.jei;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
+import github.mrh0.beekeeping.registry.ModBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -47,8 +47,7 @@ public class BeekeepingJEI implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(Index.APIARY_BLOCK.get()), beeBreedingType);
-
-        registration.addRecipeCatalyst(new ItemStack(Index.APIARY_BLOCK.get()), beeProduceType);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.APIARY), beeBreedingType);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.APIARY), beeProduceType);
     }
 }

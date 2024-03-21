@@ -11,7 +11,7 @@ public class BeehiveBiomeModifier {
         /*
         // TODO: this is probably not ideal and we should probably move all the beehive placement into data jsons akin to:
         // https://github.com/MinecraftForge/MinecraftForge/blob/1.19.x/src/generated_test/resources/data/biome_modifiers_test/forge/biome_modifier/add_basalt.json
-        for (Specie species : SpeciesRegistry.instance.getAll()) {
+        for (Species species : SpeciesRegistry.instance.getAll()) {
             if (species.hasBeehive()) {
                 var configuredFeature = FeatureUtils.register(
                     Beekeeping.get(species.beehive.getName() + "_configured").toString(),

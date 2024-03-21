@@ -1,7 +1,12 @@
 package github.mrh0.beekeeping.bee.item;
 
-import github.mrh0.beekeeping.bee.Specie;
-import github.mrh0.beekeeping.bee.genes.*;
+import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.genes.Gene;
+import github.mrh0.beekeeping.bee.genes.LifetimeGene;
+import github.mrh0.beekeeping.bee.genes.LightToleranceGene;
+import github.mrh0.beekeeping.bee.genes.RareProduceGene;
+import github.mrh0.beekeeping.bee.genes.TemperatureToleranceGene;
+import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -15,12 +20,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public abstract class BeeItem extends Item {
-    private final Specie specie;
+    private final Species species;
     private final boolean foil;
 
-    public BeeItem(Specie specie, Properties props, boolean foil) {
+    public BeeItem(Species species, Properties props, boolean foil) {
         super(props);
-        this.specie = specie;
+        this.species = species;
         this.foil = foil;
     }
 
@@ -88,11 +93,11 @@ public abstract class BeeItem extends Item {
         BeeItem beeItem = (BeeItem) stack.getItem();
 
         init(tag, beeItem,
-                Gene.eval(beeItem.specie.lifetimeGene),
-                Gene.eval(beeItem.specie.weatherGene),
-                Gene.eval(beeItem.specie.temperatureGene),
-                Gene.eval(beeItem.specie.lightGene),
-                Gene.eval(beeItem.specie.produceGene)
+                Gene.eval(beeItem.species.lifetimeGene),
+                Gene.eval(beeItem.species.weatherGene),
+                Gene.eval(beeItem.species.temperatureGene),
+                Gene.eval(beeItem.species.lightGene),
+                Gene.eval(beeItem.species.produceGene)
         );
 
     }
@@ -161,17 +166,17 @@ public abstract class BeeItem extends Item {
         //list.add(Component.literal("health: " + getHealth(stack.getTag())));
     }
 
-    public static Specie speciesOf(ItemStack stack) {
+    public static Species speciesOf(ItemStack stack) {
         if(stack == null)
             return null;
         if(stack.isEmpty())
             return null;
         if(!(stack.getItem() instanceof BeeItem))
             return null;
-        return ((BeeItem) stack.getItem()).specie;
+        return ((BeeItem) stack.getItem()).species;
     }
 
-    public static boolean is(ItemStack stack, Specie specie) {
-        return speciesOf(stack) == specie;
+    public static boolean is(ItemStack stack, Species species) {
+        return speciesOf(stack) == species;
     }
 }

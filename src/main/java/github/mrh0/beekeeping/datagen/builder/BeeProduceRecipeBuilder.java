@@ -2,7 +2,7 @@ package github.mrh0.beekeeping.datagen.builder;
 
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Specie;
+import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public class BeeProduceRecipeBuilder implements RecipeBuilder {
-    private final Specie specie;
+    private final Species species;
     private final ItemStack commonProduceUnsatisfied;
     private final ItemStack rareProduceUnsatisfied;
     private final double rareChanceUnsatisfied;
@@ -26,10 +26,10 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
     private final ItemStack rareProduceSatisfied;
     private final double rareChanceSatisfied;
 
-    public BeeProduceRecipeBuilder(Specie specie,
-           ItemStack commonProduceUnsatisfied, ItemStack rareProduceUnsatisfied, double rareChanceUnsatisfied,
-           ItemStack commonProduceSatisfied, ItemStack rareProduceSatisfied, double rareChanceSatisfied) {
-        this.specie = specie;
+    public BeeProduceRecipeBuilder(Species species,
+                                   ItemStack commonProduceUnsatisfied, ItemStack rareProduceUnsatisfied, double rareChanceUnsatisfied,
+                                   ItemStack commonProduceSatisfied, ItemStack rareProduceSatisfied, double rareChanceSatisfied) {
+        this.species = species;
         this.commonProduceUnsatisfied = commonProduceUnsatisfied;
         this.rareProduceUnsatisfied = rareProduceUnsatisfied;
         this.rareChanceUnsatisfied = rareChanceUnsatisfied;
@@ -56,14 +56,14 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> recipeConsumer, ResourceLocation recipeId) {
-        recipeConsumer.accept(new Result(recipeId, specie,
+        recipeConsumer.accept(new Result(recipeId, species,
                 commonProduceUnsatisfied, rareProduceUnsatisfied, rareChanceUnsatisfied,
                 commonProduceSatisfied, rareProduceSatisfied, rareChanceSatisfied));
     }
 
     public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
-        private final Specie specie;
+        private final Species species;
         private final ItemStack commonProduceUnsatisfied;
         private final ItemStack rareProduceUnsatisfied;
         private final double rareChanceUnsatisfied;
@@ -72,11 +72,11 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
         private final ItemStack rareProduceSatisfied;
         private final double rareChanceSatisfied;
 
-        public Result(ResourceLocation id, Specie specie,
+        public Result(ResourceLocation id, Species species,
                       ItemStack commonProduceUnsatisfied, ItemStack rareProduceUnsatisfied, double rareChanceUnsatisfied,
                       ItemStack commonProduceSatisfied, ItemStack rareProduceSatisfied, double rareChanceSatisfied) {
             this.id = id;
-            this.specie = specie;
+            this.species = species;
             this.commonProduceUnsatisfied = commonProduceUnsatisfied;
             this.rareProduceUnsatisfied = rareProduceUnsatisfied;
             this.rareChanceUnsatisfied = rareChanceUnsatisfied;
@@ -88,7 +88,7 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
 
         @Override
         public void serializeRecipeData(JsonObject json) {
-            json.addProperty("specie", specie.getName());
+            json.addProperty("species", species.getName());
             JsonObject produce = new JsonObject();
             json.add("produce", produce);
 
@@ -121,7 +121,7 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
 
         @Override
         public ResourceLocation getId() {
-            return new ResourceLocation(Beekeeping.MODID, "bee_produce/" + specie.getName());
+            return new ResourceLocation(Beekeeping.MODID, "bee_produce/" + species.getName());
         }
 
         @Override

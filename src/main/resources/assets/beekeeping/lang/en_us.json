@@ -96,7 +96,7 @@
 
   "item.beekeeping.basic_frame": "Basic Frame",
   "item.beekeeping.glowing_frame": "Glowing Frame",
-  "item.beekeeping.water_proof_frame": "Water Proof Frame",
+  "item.beekeeping.waterproof_frame": "Waterproof Frame",
   "item.beekeeping.insulated_frame": "Insulated Frame",
   "item.beekeeping.cursed_frame": "Cursed Frame",
   "item.beekeeping.blessed_frame": "Blessed Frame",
@@ -105,11 +105,11 @@
   "item.beekeeping.thermometer": "Thermometer",
 
   "tooltip.beekeeping.frame.basic": "Basic accommodation for your bees.",
-  "tooltip.beekeeping.frame.glowing": "Improves you bees tolerance for darkness.",
-  "tooltip.beekeeping.frame.water_proof": "Improves you bees tolerance for wet weather.",
-  "tooltip.beekeeping.frame.insulated": "Improves you bees tolerance for extreme climates.",
-  "tooltip.beekeeping.frame.cursed": "Will cause the queen to always have the worst genes form both parents.",
-  "tooltip.beekeeping.frame.blessed": "Will cause the queen to always have the best genes form both parents.",
+  "tooltip.beekeeping.frame.glowing": "Improves your bees' tolerance for darkness.",
+  "tooltip.beekeeping.frame.waterproof": "Improves your bees' tolerance for wet weather.",
+  "tooltip.beekeeping.frame.insulated": "Improves your bees' tolerance for extreme climates.",
+  "tooltip.beekeeping.frame.cursed": "Will cause the queen to always have the worst genes from both parents.",
+  "tooltip.beekeeping.frame.blessed": "Will cause the queen to always have the best genes from both parents.",
   "tooltip.beekeeping.frame.mutation": "Will occasionally cause the offspring to have mutated genes.",
 
   "block.beekeeping.common_beehive": "Common Beehive",
@@ -125,7 +125,7 @@
   "block.beekeeping.ender_beehive": "Ender Beehive",
 
   "block.beekeeping.apiary":"Apiary",
-  "block.beekeeping.analyzer":"Bee-Analyzer",
+  "block.beekeeping.analyzer":"Beealyzer",
 
   "tooltip.beekeeping.gene.not_analyzed": "Analyze to reveal genes.",
   "tooltip.beekeeping.gene.lifetime": "Lifetime",

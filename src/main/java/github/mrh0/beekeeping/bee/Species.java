@@ -12,11 +12,13 @@ import github.mrh0.beekeeping.bee.item.PrincessBee;
 import github.mrh0.beekeeping.bee.item.QueenBee;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
 import github.mrh0.beekeeping.config.Config;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class Specie {
+public class Species {
     private final String name;
     private boolean foil = false;
     private int color;
@@ -53,7 +55,7 @@ public class Specie {
 
     public List<Pair<String, String>> breeding;
 
-    public Specie(String name, int color) {
+    public Species(String name, int color) {
         this.name = name;
         this.color = color;
         this.resource = new ResourceLocation(mod, name);
@@ -73,46 +75,46 @@ public class Specie {
     }
 
     public DroneBee buildDroneItem() {
-        this.droneItem = new DroneBee(this, new Item.Properties().stacksTo(1), foil);
+        this.droneItem = new DroneBee(this, new FabricItemSettings().stacksTo(1), foil);
         return this.droneItem;
     }
 
     public PrincessBee buildPrincessItem() {
-        this.princessItem = new PrincessBee(this, new Item.Properties().stacksTo(1), foil);
+        this.princessItem = new PrincessBee(this, new FabricItemSettings().stacksTo(1), foil);
         return this.princessItem;
     }
 
     public QueenBee buildQueenItem() {
-        this.queenItem = new QueenBee(this, new Item.Properties().stacksTo(1), foil);
+        this.queenItem = new QueenBee(this, new FabricItemSettings().stacksTo(1), foil);
         return this.queenItem;
     }
 
-    public Specie setWeatherGene(Gene.RandomFunction fn) {
+    public Species setWeatherGene(Gene.RandomFunction fn) {
         this.weatherGene = fn;
         return this;
     }
 
-    public Specie setTemperatureGene(Gene.RandomFunction fn) {
+    public Species setTemperatureGene(Gene.RandomFunction fn) {
         this.temperatureGene = fn;
         return this;
     }
 
-    public Specie setLightGene(Gene.RandomFunction fn) {
+    public Species setLightGene(Gene.RandomFunction fn) {
         this.lightGene = fn;
         return this;
     }
 
-    public Specie setProduceGene(Gene.RandomFunction fn) {
+    public Species setProduceGene(Gene.RandomFunction fn) {
         this.produceGene = fn;
         return this;
     }
 
-    public Specie setLifetimeGene(Gene.RandomFunction fn) {
+    public Species setLifetimeGene(Gene.RandomFunction fn) {
         this.lifetimeGene = fn;
         return this;
     }
 
-    public Specie setPreferredTemperature(BiomeTemperature temp) {
+    public Species setPreferredTemperature(BiomeTemperature temp) {
         preferredTemperature = temp;
         return this;
     }
@@ -124,7 +126,7 @@ public class Specie {
         return sunlight > limit && isDay;
     }
 
-    public Specie setNocturnal() {
+    public Species setNocturnal() {
         isNocturnal = true;
         return this;
     }
@@ -171,61 +173,61 @@ public class Specie {
         };
     }
 
-    public Specie addBeehive(TagKey<Biome> biomeType, int tries, int rarity) {
+    public Species addBeehive(TagKey<Biome> biomeType, int tries, int rarity) {
         this.beehive = new Beehive(this, biomeType, tries, rarity);
         return this;
     }
 
-    public Specie addBeehive(TagKey<Biome> biomeType, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
+    public Species addBeehive(TagKey<Biome> biomeType, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
         this.beehive = new Beehive(this, biomeType, tries, rarity, modifier, feature, blockPlaceAllow);
         return this;
     }
 
-    public Specie setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied) {
-        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied, null, 0, 0, 0, 0);
+    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied) {
+        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied, Items.AIR, 0, 0, 0, 0);
         return this;
     }
 
-    public Specie setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare,
-                             double rareChanceUnsatisfied, double rareChanceSatisfied) {
+    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare,
+                              double rareChanceUnsatisfied, double rareChanceSatisfied) {
         this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
                 rare, 1, 1, rareChanceUnsatisfied, rareChanceSatisfied);
         hasRareProduce = true;
         return this;
     }
 
-    public Specie setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied,
-                             double rareChanceUnsatisfied, double rareChanceSatisfied) {
+    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied,
+                              double rareChanceUnsatisfied, double rareChanceSatisfied) {
         this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
                 rare, rareCountUnsatisfied, rareCountSatisfied, rareChanceUnsatisfied, rareChanceSatisfied);
         hasRareProduce = true;
         return this;
     }
 
-    public Specie setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied) {
+    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied) {
         this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
                 rare, rareCountUnsatisfied, rareCountSatisfied, 1d, 1d);
         hasRareProduce = true;
         return this;
     }
 
-    public Specie breedFrom(String bee1, String bee2) {
+    public Species breedFrom(String bee1, String bee2) {
         breeding.add(new Pair<>(bee1, bee2));
         breeding.add(new Pair<>(bee2, bee1));
         return this;
     }
 
-    public Specie breedStrictFrom(String drone, String princess) {
+    public Species breedStrictFrom(String drone, String princess) {
         breeding.add(new Pair<>(drone, princess));
         return this;
     }
 
-    public Specie setDark() {
+    public Species setDark() {
         this.dark = true;
         return this;
     }
 
-    public Specie setFoil() {
+    public Species setFoil() {
         this.foil = true;
         return this;
     }
@@ -242,11 +244,11 @@ public class Specie {
         return this.beehive != null;
     }
 
-    public static Specie getByName(String name) {
-        return SpeciesRegistry.instance.get(name);
+    public static Species getByName(String name) {
+        return SpeciesRegistry.INSTANCE.get(name);
     }
 
-    public static Specie getByIndex(int index) {
-        return SpeciesRegistry.instance.get(index);
+    public static Species getByIndex(int index) {
+        return SpeciesRegistry.INSTANCE.get(index);
     }
 }

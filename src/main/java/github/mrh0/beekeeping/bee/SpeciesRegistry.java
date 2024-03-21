@@ -6,25 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 public class SpeciesRegistry {
-    public static final SpeciesRegistry instance = new SpeciesRegistry();
-    private final List<Specie> speciesList = new ArrayList<>();
-    private final Map<String, Specie> speciesMap = new HashMap<>();
+    public static final SpeciesRegistry INSTANCE = new SpeciesRegistry();
+    private final List<Species> speciesList = new ArrayList<>();
+    private final Map<String, Species> speciesMap = new HashMap<>();
 
-    public Specie register(Specie specie) {
-        speciesList.add(specie);
-        speciesMap.put(specie.getName(), specie);
-        return specie;
+    public Species register(Species species) {
+        speciesList.add(species);
+        speciesMap.put(species.getName(), species);
+        return species;
     }
 
-    public Specie get(String name) {
+    public Species get(String name) {
         return speciesMap.get(name);
     }
 
-    public Specie get(int index) {
+    public Species get(int index) {
         return speciesList.get(index);
     }
 
-    public List<Specie> getAll() {
+    public List<Species> getAll() {
         return speciesList;
     }
 }

@@ -1,7 +1,7 @@
 package github.mrh0.beekeeping.blocks.analyzer;
 
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.bee.item.BeeItem;
+import github.mrh0.beekeeping.registry.ModBlockEntities;
 import github.mrh0.beekeeping.screen.analyzer.AnalyzerMenu;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     public AnalyzerBlockEntity(BlockPos pos, BlockState state) {
-        super(Index.ANALYZER_BLOCK_ENTITY.get(), pos, state);
+        super(ModBlockEntities.ANALYZER, pos, state);
         data = new SimpleContainerData(2);
     }
 

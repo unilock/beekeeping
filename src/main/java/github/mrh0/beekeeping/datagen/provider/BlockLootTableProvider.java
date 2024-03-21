@@ -1,8 +1,8 @@
 package github.mrh0.beekeeping.datagen.provider;
 
-import github.mrh0.beekeeping.Index;
-import github.mrh0.beekeeping.bee.Specie;
+import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.registry.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -29,14 +29,13 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        this.dropSelf(Index.ANALYZER_BLOCK.get());
-        this.dropSelf(Index.APIARY_BLOCK.get());
+        this.dropSelf(ModBlocks.ANALYZER);
+        this.dropSelf(ModBlocks.APIARY);
 
-        for(Specie specie : SpeciesRegistry.instance.getAll()) {
-            if(!specie.hasBeehive())
-                continue;
-            this.add(specie.beehive.block.get(),
-                    (block) -> beehiveLootTable(specie.beehive.block.get(), specie.queenItem, specie.princessItem, specie.droneItem));
+        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
+            if (species.hasBeehive()) {
+                this.add(species.beehive.block, block -> beehiveLootTable(species.beehive.block, species.queenItem, species.princessItem, species.droneItem));
+            }
         }
     }
 

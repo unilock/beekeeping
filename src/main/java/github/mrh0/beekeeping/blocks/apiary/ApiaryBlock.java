@@ -1,7 +1,7 @@
 package github.mrh0.beekeeping.blocks.apiary;
 
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.network.packet.ToggleServerPacket;
+import github.mrh0.beekeeping.registry.ModBlockEntities;
 import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +11,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,25 +37,26 @@ public class ApiaryBlock extends BaseEntityBlock {
         super(Properties.copy(Blocks.OAK_PLANKS));
     }
 
-    private static VoxelShape shape = Shapes.or(
+    private static final VoxelShape SHAPE = Shapes.or(
             Block.box(0,0,0, 16,9,16),
             Block.box(1,1,1, 15,16,15),
             Block.box(0,13,0, 16,16,16)
     );
 
     @Override
-    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
-        return shape;
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext c) {
-        return this.defaultBlockState().setValue(FACING, c.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, Rotation direction) {
-        return state.setValue(FACING, direction.rotate(state.getValue(FACING)));
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
@@ -76,12 +82,12 @@ public class ApiaryBlock extends BaseEntityBlock {
                 ((ApiaryBlockEntity) blockEntity).drop();
             }
         }
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos,
-                                 Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
             if (level.getBlockEntity(pos) instanceof ApiaryBlockEntity abe) {
                 NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
@@ -103,9 +109,10 @@ public class ApiaryBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> beType) {
-        if(level.isClientSide())
+        if (level.isClientSide()) {
             return null;
-        return createTickerHelper(beType, Index.APIARY_BLOCK_ENTITY.get(),
-                ApiaryBlockEntity::tick);
+        } else {
+            return createTickerHelper(beType, ModBlockEntities.APIARY, ApiaryBlockEntity::tick);
+        }
     }
 }

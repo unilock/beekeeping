@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.bee;
 
 import github.mrh0.beekeeping.blocks.beehive.BeehiveBlock;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -14,17 +13,17 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import java.util.function.Function;
 
 public class Beehive {
-    public final Specie specie;
+    public final Species species;
     public final TagKey<Biome> biomeTag;
     public final int tries;
     public final int rarity;
     public final PlacementModifier modifier;
     public final Feature<RandomPatchConfiguration> feature;
     public final Function<BlockPos, Boolean> blockPlaceAllow;
-    public RegistryObject<BeehiveBlock> block;
+    public BeehiveBlock block;
 
-    public Beehive(Specie specie, TagKey<Biome> biomeTag, int tries, int rarity) {
-        this.specie = specie;
+    public Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity) {
+        this.species = species;
         this.biomeTag = biomeTag;
         this.tries = tries;
         this.rarity = rarity;
@@ -33,8 +32,8 @@ public class Beehive {
         this.blockPlaceAllow = pos -> true;
     }
 
-    public Beehive(Specie specie, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
-        this.specie = specie;
+    public Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
+        this.species = species;
         this.biomeTag = biomeTag;
         this.tries = tries;
         this.rarity = rarity;
@@ -44,7 +43,7 @@ public class Beehive {
     }
 
     public String getName() {
-        return specie.getName() + "_beehive";
+        return species.getName() + "_beehive";
     }
 
     public boolean acceptsBiome(Holder<Biome> biome) {

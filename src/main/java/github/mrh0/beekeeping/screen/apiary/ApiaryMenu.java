@@ -1,7 +1,9 @@
 package github.mrh0.beekeeping.screen.apiary;
 
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.blocks.apiary.ApiaryBlockEntity;
+import github.mrh0.beekeeping.registry.ModBlocks;
+import github.mrh0.beekeeping.registry.ModMenus;
+import github.mrh0.beekeeping.registry.ModTags;
 import github.mrh0.beekeeping.screen.BeeMenu;
 import github.mrh0.beekeeping.screen.slot.TagSlot;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
@@ -27,7 +29,7 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
     }
 
     public ApiaryMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(Index.APIARY_MENU, id);
+        super(ModMenus.APIARY, id);
         checkContainerSize(inv, 10);
         blockEntity = ((ApiaryBlockEntity) entity);
         this.level = inv.player.level();
@@ -37,10 +39,10 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
         addPlayerHotbar(inv);
 
         if (this.blockEntity.lazyInputItemHandler.isPresent()) {
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 0, 15, 60, Index.DRONE_BEES_TAG));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 1, 15, 23, Index.PRINCESS_BEES_TAG));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 2, 52, 42, Index.QUEEN_BEES_TAG));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 3, 52, 17, Index.FRAME_TAG));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 0, 15, 60, ModTags.Items.DRONES));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 1, 15, 23, ModTags.Items.PRINCESSES));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 2, 52, 42, ModTags.Items.QUEENS));
+            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 3, 52, 17, ModTags.Items.FRAMES));
         }
 
         if (this.blockEntity.lazyOutputItemHandler.isPresent()) {
@@ -101,8 +103,7 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                player, Index.APIARY_BLOCK.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.APIARY);
     }
 
     private void addOutputInventory(ItemStackHandler handler) {

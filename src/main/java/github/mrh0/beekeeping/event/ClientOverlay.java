@@ -2,8 +2,8 @@ package github.mrh0.beekeeping.event;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.Index;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
+import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class ClientOverlay {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(Beekeeping.MODID, "textures/gui/analyzer.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Beekeeping.MODID, "textures/gui/analyzer.png");
     static int lx = 8, ly = 8;
 
     public static void renderOverlay(GuiGraphics guiGraphics, float partialTicks) {
@@ -22,12 +21,7 @@ public class ClientOverlay {
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         var player = Minecraft.getInstance().player;
-        if(player == null)
-            return;
-        if(player.level() == null)
-            return;
-
-        if(!player.getInventory().contains(new ItemStack(Index.THERMOMETER.get())))
+        if (player == null || player.level() == null || !player.getInventory().contains(new ItemStack(ModItems.THERMOMETER)))
             return;
 
         var temp = BiomeTemperature.of(player.level().getBiome(Minecraft.getInstance().player.getOnPos()).value().getBaseTemperature());
