@@ -18,14 +18,17 @@ public class BeehiveBlock extends Block {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (state.getBlock() == this)
+        if (state.getBlock() == this) {
             return anySolid(level, pos);
+        }
+
         return true;
     }
 
     private boolean anySolid(LevelReader level, BlockPos blockpos) {
         for (Direction dir : Direction.values()) {
             BlockPos pos = blockpos.relative(dir);
+
             if (level.getBlockState(pos).isFaceSturdy(level, pos, dir.getOpposite())) {
                 return species.beehive.blockPlaceAllow.apply(blockpos);
             }

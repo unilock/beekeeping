@@ -33,14 +33,15 @@ public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) {
             if(slot == 0) {
                 ItemStack stack = getAnalyzed();
-                if(stack.isEmpty())
+
+                if (stack.isEmpty() || !(stack.getItem() instanceof BeeItem) || BeeItem.isAnalyzed(stack)) {
                     return;
-                if(!(stack.getItem() instanceof BeeItem))
-                    return;
-                if(BeeItem.isAnalyzed(stack))
-                    return;
-                if(stack.getTag() == null)
+                }
+
+                if (stack.getTag() == null) {
                     BeeItem.init(stack);
+                }
+
                 BeeItem.setAnalyzed(stack.getTag(), true);
             }
             setChanged();

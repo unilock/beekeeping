@@ -106,24 +106,36 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
         @Override
         protected void onContentsChanged(int slot) {
             checkLock = false;
-            if(slot < 3) {
-                if(getLevel().isClientSide())
+
+            if (slot < 3) {
+                if (getLevel() == null || getLevel().isClientSide()) {
                     return;
+                }
+
                 breedCheck();
             }
+
             setChanged();
         }
 
         @Override
         public boolean isItemValid(int slot, ItemVariant resource, int count) {
-            if(resource.toStack().is(ModTags.Items.DRONES) && slot == 0)
+            if (resource.toStack().is(ModTags.Items.DRONES) && slot == 0) {
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(ModTags.Items.PRINCESSES) && slot == 1)
+            }
+
+            if (resource.toStack().is(ModTags.Items.PRINCESSES) && slot == 1) {
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(ModTags.Items.QUEENS) && slot == 2)
+            }
+
+            if (resource.toStack().is(ModTags.Items.QUEENS) && slot == 2) {
                 return super.isItemValid(slot, resource, count);
-            if(resource.toStack().is(ModTags.Items.FRAMES) && slot == 3)
+            }
+
+            if (resource.toStack().is(ModTags.Items.FRAMES) && slot == 3) {
                 return super.isItemValid(slot, resource, count);
+            }
+
             return false;
         }
     };
@@ -261,7 +273,7 @@ public class ApiaryBlockEntity extends BlockEntity implements MenuProvider, IHas
     }
 
     public void localTick() {
-        if(getLevel().isClientSide())
+        if(getLevel() == null || getLevel().isClientSide())
             return;
 
         if(getQueen().isEmpty() && !getDrone().isEmpty() && !getPrincess().isEmpty()) {
