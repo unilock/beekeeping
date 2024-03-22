@@ -4,6 +4,7 @@ import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.breeding.BeeLifecycle;
+import github.mrh0.beekeeping.group.ItemGroup;
 import github.mrh0.beekeeping.item.ThermometerItem;
 import github.mrh0.beekeeping.item.frame.FrameItem;
 import github.mrh0.beekeeping.item.frame.ProduceEvent;
@@ -30,6 +31,7 @@ public class ModItems {
 
     private static <T extends Item> T register(String path, T item) {
         Registry.register(BuiltInRegistries.ITEM, Beekeeping.get(path), item);
+        ItemGroup.add(item);
         return item;
     }
 }
