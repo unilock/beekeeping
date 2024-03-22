@@ -18,8 +18,8 @@ public class ModBlockEntities {
     public static final BlockEntityType<ApiaryBlockEntity> APIARY = register("apiary", ApiaryBlockEntity::new, ModBlocks.APIARY);
 
     public static void init() {
-        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.lazyItemHandler.getValueUnsafer(), ANALYZER);
-        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> Direction.UP.equals(direction) ? blockEntity.lazyInputItemHandler.getValueUnsafer() : blockEntity.lazyOutputItemHandler.getValueUnsafer(), APIARY);
+        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> blockEntity.inventoryWrapper, ANALYZER);
+        ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> Direction.UP.equals(direction) ? blockEntity.inputInventoryWrapper : blockEntity.outputInventoryWrapper, APIARY);
     }
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String path, FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {

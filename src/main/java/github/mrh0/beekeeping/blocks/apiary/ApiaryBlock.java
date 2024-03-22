@@ -2,11 +2,10 @@ package github.mrh0.beekeeping.blocks.apiary;
 
 import github.mrh0.beekeeping.network.packet.ToggleServerPacket;
 import github.mrh0.beekeeping.registry.ModBlockEntities;
-import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -88,16 +87,18 @@ public class ApiaryBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!level.isClientSide()) {
-            if (level.getBlockEntity(pos) instanceof ApiaryBlockEntity abe) {
-                NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof ApiaryBlockEntity abe) {
+            MenuProvider provider = state.getMenuProvider(level, pos);
+
+            if (provider != null) {
+                player.openMenu(provider);
                 ToggleServerPacket.send(pos, level, 0, abe.continuous);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable
@@ -109,7 +110,7 @@ public class ApiaryBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> beType) {
-        if (level.isClientSide()) {
+        if (level.isClientSide) {
             return null;
         } else {
             return createTickerHelper(beType, ModBlockEntities.APIARY, ApiaryBlockEntity::tick);

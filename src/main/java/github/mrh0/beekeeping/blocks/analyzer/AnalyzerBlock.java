@@ -1,10 +1,9 @@
 package github.mrh0.beekeeping.blocks.analyzer;
 
-import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -68,15 +67,17 @@ public class AnalyzerBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!level.isClientSide()) {
-            if (level.getBlockEntity(pos) instanceof AnalyzerBlockEntity abe) {
-                NetworkHooks.openScreen((ServerPlayer)player, abe, pos);
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof AnalyzerBlockEntity) {
+            MenuProvider provider = state.getMenuProvider(level, pos);
+
+            if (provider != null) {
+                player.openMenu(provider);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Nullable

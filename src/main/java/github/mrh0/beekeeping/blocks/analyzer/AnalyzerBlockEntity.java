@@ -3,13 +3,15 @@ package github.mrh0.beekeeping.blocks.analyzer;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.registry.ModBlockEntities;
 import github.mrh0.beekeeping.screen.analyzer.AnalyzerMenu;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,34 +23,43 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
+@SuppressWarnings("UnstableApiUsage")
+public class AnalyzerBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory {
     protected final ContainerData data;
     public AnalyzerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ANALYZER, pos, state);
         data = new SimpleContainerData(2);
     }
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    public final SimpleContainer container = new SimpleContainer(1) {
         @Override
-        protected void onContentsChanged(int slot) {
-            if(slot == 0) {
-                ItemStack stack = getAnalyzed();
+        public boolean canPlaceItem(int index, ItemStack stack) {
+            if (stack.getItem() instanceof BeeItem) {
+                return super.canPlaceItem(index, stack);
+            }
 
-                if (stack.isEmpty() || !(stack.getItem() instanceof BeeItem) || BeeItem.isAnalyzed(stack)) {
-                    return;
-                }
+            return false;
+        }
 
+        @Override
+        public void setChanged() {
+            ItemStack stack = getAnalyzed();
+
+            if (!stack.isEmpty() && stack.getItem() instanceof BeeItem && !BeeItem.isAnalyzed(stack)) {
                 if (stack.getTag() == null) {
                     BeeItem.init(stack);
                 }
 
                 BeeItem.setAnalyzed(stack.getTag(), true);
             }
-            setChanged();
+
+            super.setChanged();
+
+            AnalyzerBlockEntity.this.setChanged();
         }
     };
 
-    public LazyOptional<ItemStackHandler> lazyItemHandler = LazyOptional.empty();
+    public final InventoryStorage inventoryWrapper = InventoryStorage.of(container, null);
 
     @Override
     public Component getDisplayName() {
@@ -61,39 +72,27 @@ public class AnalyzerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
-    }
-
-    @Override
-    public void invalidateCaps()  {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
-    }
-
-    @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
         super.saveAdditional(tag);
+        tag.put("inventory", container.createTag());
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        container.fromTag(nbt.getList("inventory", Tag.TAG_LIST));
     }
 
     public void drop() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlotCount());
-        for (int i = 0; i < itemHandler.getSlotCount(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        Containers.dropContents(this.level, this.worldPosition, container);
     }
 
     public ItemStack getAnalyzed() {
-        return itemHandler.getStackInSlot(0);
+        return container.getItem(0);
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(this.getBlockPos());
     }
 }

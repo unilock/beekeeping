@@ -36,9 +36,7 @@ public class AnalyzerMenu extends BeeMenu<AnalyzerBlockEntity> {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        if (this.blockEntity.lazyItemHandler.isPresent()) {
-            this.addSlot(new TagSlot(this.blockEntity.lazyItemHandler.getValueUnsafer(), 0, 12, 21, ModTags.Items.BEES));
-        }
+        addSlot(new TagSlot(this.blockEntity.container, 0, 12, 21, ModTags.Items.BEES));
 
         addDataSlots(data);
     }

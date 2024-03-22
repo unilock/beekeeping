@@ -6,9 +6,8 @@ import github.mrh0.beekeeping.registry.ModMenus;
 import github.mrh0.beekeeping.registry.ModTags;
 import github.mrh0.beekeeping.screen.BeeMenu;
 import github.mrh0.beekeeping.screen.slot.TagSlot;
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -38,16 +37,12 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        if (this.blockEntity.lazyInputItemHandler.isPresent()) {
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 0, 15, 60, ModTags.Items.DRONES));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 1, 15, 23, ModTags.Items.PRINCESSES));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 2, 52, 42, ModTags.Items.QUEENS));
-            this.addSlot(new TagSlot(this.blockEntity.lazyInputItemHandler.getValueUnsafer(), 3, 52, 17, ModTags.Items.FRAMES));
-        }
+        addSlot(new TagSlot(this.blockEntity.inputContainer, 0, 15, 60, ModTags.Items.DRONES));
+        addSlot(new TagSlot(this.blockEntity.inputContainer, 1, 15, 23, ModTags.Items.PRINCESSES));
+        addSlot(new TagSlot(this.blockEntity.inputContainer, 2, 52, 42, ModTags.Items.QUEENS));
+        addSlot(new TagSlot(this.blockEntity.inputContainer, 3, 52, 17, ModTags.Items.FRAMES));
 
-        if (this.blockEntity.lazyOutputItemHandler.isPresent()) {
-            addOutputInventory(this.blockEntity.lazyOutputItemHandler.getValueUnsafer());
-        }
+        addOutputInventory(this.blockEntity.outputContainer);
 
         addDataSlots(data);
     }
@@ -106,10 +101,10 @@ public class ApiaryMenu extends BeeMenu<ApiaryBlockEntity> {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.APIARY);
     }
 
-    private void addOutputInventory(ItemStackHandler handler) {
+    private void addOutputInventory(SimpleContainer container) {
         for (int i = 0; i < 2; ++i) {
             for (int l = 0; l < 3; ++l) {
-                this.addSlot(new SlotItemHandler(handler, l + i * 3, 116 + l * 18, 33 + i * 18));
+                this.addSlot(new Slot(container, l + i * 3, 116 + l * 18, 33 + i * 18));
             }
         }
     }

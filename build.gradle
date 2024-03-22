@@ -61,7 +61,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation include("io.github.fabricators_of_create.Porting-Lib:base:${project.portinglib_version}")
+    modImplementation include("io.github.fabricators_of_create.Porting-Lib:tags:${project.portinglib_version}")
     modImplementation "io.github.fabricators_of_create.Porting-Lib:model_generators:${project.portinglib_version}"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
