@@ -1,6 +1,5 @@
 package github.mrh0.beekeeping.datagen.generator;
 
-import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.item.BeeItem;
@@ -10,20 +9,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class BeeIconGenerator {
-    public static File getResource(String path) {
-        try {
-            return Paths.get(Beekeeping.class.getResource(path).toURI()).toFile();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static void makeAll() throws IOException {
         String rp = Path.of("../../src/main/resources/icons").toAbsolutePath().toString();
         File bee = Path.of(rp, "bee.png").toFile();

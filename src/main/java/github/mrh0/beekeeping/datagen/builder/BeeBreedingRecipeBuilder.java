@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -25,24 +26,27 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
         this.offspring = offspring;
     }
 
+    @NotNull
     @Override
-    public RecipeBuilder unlockedBy(String name, CriterionTriggerInstance trigger) {
+    public RecipeBuilder unlockedBy(@NotNull String name, @NotNull CriterionTriggerInstance trigger) {
         return this;
     }
 
+    @NotNull
     @Override
     public RecipeBuilder group(@Nullable String groupName) {
         return this;
     }
 
+    @NotNull
     @Override
     public Item getResult() {
         return offspring.queenItem;
     }
 
     @Override
-    public void save(Consumer<FinishedRecipe> recipeConsumer, ResourceLocation recipeId) {
-        recipeConsumer.accept(new Result(recipeId, drone, princess, offspring));
+    public void save(Consumer<FinishedRecipe> recipeConsumer, @NotNull ResourceLocation recipeId) {
+        recipeConsumer.accept(new Result(drone, princess, offspring));
     }
 
     public static class Result implements FinishedRecipe {
@@ -51,8 +55,8 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
         private final Species princess;
         private final Species offspring;
 
-        public Result(ResourceLocation id, Species drone, Species princess, Species offspring) {
-            this.id = id;
+        public Result(Species drone, Species princess, Species offspring) {
+            this.id = new ResourceLocation(Beekeeping.MODID, "bee_breeding/" + drone.getName() + "_drone_with_" + princess.getName() + "_princess");
             this.drone = drone;
             this.princess = princess;
             this.offspring = offspring;
@@ -65,11 +69,13 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
             json.addProperty("offspring", offspring.getName());
         }
 
+        @NotNull
         @Override
         public ResourceLocation getId() {
-            return new ResourceLocation(Beekeeping.MODID, "bee_breeding/" + drone.getName() + "_drone_with_" + princess.getName() + "_princess");
+            return this.id;
         }
 
+        @NotNull
         @Override
         public RecipeSerializer<?> getType() {
             return BeeBreedingRecipe.Serializer.INSTANCE;
@@ -82,6 +88,7 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
         }
 
         @Nullable
+        @Override
         public ResourceLocation getAdvancementId() {
             return null;
         }

@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -39,24 +40,27 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
         this.rareChanceSatisfied = rareChanceSatisfied;
     }
 
+    @NotNull
     @Override
-    public RecipeBuilder unlockedBy(String name, CriterionTriggerInstance trigger) {
+    public RecipeBuilder unlockedBy(@NotNull String name, @NotNull CriterionTriggerInstance trigger) {
         return this;
     }
 
+    @NotNull
     @Override
     public RecipeBuilder group(@Nullable String groupName) {
         return this;
     }
 
+    @NotNull
     @Override
     public Item getResult() {
         return commonProduceUnsatisfied.getItem();
     }
 
     @Override
-    public void save(Consumer<FinishedRecipe> recipeConsumer, ResourceLocation recipeId) {
-        recipeConsumer.accept(new Result(recipeId, species,
+    public void save(Consumer<FinishedRecipe> recipeConsumer, @NotNull ResourceLocation recipeId) {
+        recipeConsumer.accept(new Result(species,
                 commonProduceUnsatisfied, rareProduceUnsatisfied, rareChanceUnsatisfied,
                 commonProduceSatisfied, rareProduceSatisfied, rareChanceSatisfied));
     }
@@ -72,10 +76,10 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
         private final ItemStack rareProduceSatisfied;
         private final double rareChanceSatisfied;
 
-        public Result(ResourceLocation id, Species species,
+        public Result(Species species,
                       ItemStack commonProduceUnsatisfied, ItemStack rareProduceUnsatisfied, double rareChanceUnsatisfied,
                       ItemStack commonProduceSatisfied, ItemStack rareProduceSatisfied, double rareChanceSatisfied) {
-            this.id = id;
+            this.id = new ResourceLocation(Beekeeping.MODID, "bee_produce/" + species.getName());
             this.species = species;
             this.commonProduceUnsatisfied = commonProduceUnsatisfied;
             this.rareProduceUnsatisfied = rareProduceUnsatisfied;
@@ -119,11 +123,13 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
             return obj;
         }
 
+        @NotNull
         @Override
         public ResourceLocation getId() {
-            return new ResourceLocation(Beekeeping.MODID, "bee_produce/" + species.getName());
+            return this.id;
         }
 
+        @NotNull
         @Override
         public RecipeSerializer<?> getType() {
             return BeeProduceRecipe.Serializer.INSTANCE;

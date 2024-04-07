@@ -34,11 +34,13 @@ public class RecipeProvider extends FabricRecipeProvider {
             }
         }
 
-        /*ShapelessRecipeBuilder.shapeless(Index.BASIC_FRAME.get())
+        /*
+        ShapelessRecipeBuilder.shapeless(Index.BASIC_FRAME.get())
                 .requires(Index.BASIC_FRAME.get())
                 .unlockedBy("has_item", inventoryTrigger(ItemPredicate.Builder.item()
                         .of(Index.BASIC_FRAME.get()).build()))
-                .save(rc);*/
+                .save(rc);
+         */
 
         for (Pair<RecipeBuilder, ItemLike> pair : ItemBuilder.recipes) {
             pair.getFirst().unlockedBy("has_item", inventoryTrigger(ItemPredicate.Builder.item().of(pair.getSecond()).build())).save(rc);
