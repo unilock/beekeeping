@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -7,7 +7,7 @@ base {
     archivesName = project.archives_base_name
 }
 
-version = "${project.mod_version}+${project.minecraft_version}"
+version = "${project.mod_version}+${project.minecraft_version}+fabric"
 group = project.maven_group
 
 loom {
@@ -46,7 +46,7 @@ repositories {
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
     maven { url = "https://maven.blamejared.com/" } // JEI
     maven { url = "https://mvn.devos.one/releases/" } // Porting Lib
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Porting Lib (2)
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release/" } // Porting Lib (2)
     maven { url = "https://jitpack.io/" } // JitPack
 }
 
