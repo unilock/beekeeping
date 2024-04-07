@@ -21,11 +21,11 @@ public class ModSpecies {
 
         r.register(new Species("common", 0xFFfff2cc)
                 .setProduce(Items.HONEYCOMB, 3, 5)
-                .addBeehive(Tags.Biomes.IS_PLAINS, Config.BEEHIVE_COMMON_TRIES.get(), Config.BEEHIVE_COMMON_RARITY.get()));
+                .addBeehive(Tags.Biomes.IS_PLAINS, 2, 16));
 
         r.register(new Species("forest", 0xFF93c47d)
                 .setProduce(Items.HONEYCOMB, 3, 5)
-                .addBeehive(BiomeTags.IS_FOREST, Config.BEEHIVE_FOREST_TRIES.get(), Config.BEEHIVE_FOREST_RARITY.get()));
+                .addBeehive(BiomeTags.IS_FOREST, 4, 10));
 
         r.register(new Species("tempered", 0xFFb6d7a8)
                 .setProduce(Items.HONEYCOMB, 7, 9)
@@ -34,7 +34,7 @@ public class ModSpecies {
 
         r.register(new Species("tropical", 0xFF6aa84f)
                 .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(BiomeTags.IS_JUNGLE, Config.BEEHIVE_TROPICAL_TRIES.get(), Config.BEEHIVE_TROPICAL_RARITY.get())
+                .addBeehive(BiomeTags.IS_JUNGLE, 4, 10)
                 .setLifetimeGene(Gene::random5Narrow)
                 .setPreferredTemperature(BiomeTemperature.WARM));
 
@@ -45,21 +45,21 @@ public class ModSpecies {
 
         r.register(new Species("upland", 0xFFff9900)
                 .setProduce(Items.HONEYCOMB, 3, 7, Items.HONEY_BLOCK, 1, 2)
-                .addBeehive(BiomeTags.IS_SAVANNA, Config.BEEHIVE_UPLAND_TRIES.get(), Config.BEEHIVE_UPLAND_RARITY.get())
+                .addBeehive(BiomeTags.IS_SAVANNA, 4, 16)
                 .setLifetimeGene(Gene::random5Narrow)
                 .setWeatherGene(Gene::strict)
                 .setPreferredTemperature(BiomeTemperature.WARMEST));
 
         r.register(new Species("dune", 0xFFfbbc04)
                 .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(Tags.Biomes.IS_SANDY, Config.BEEHIVE_DUNE_TRIES.get(), Config.BEEHIVE_DUNE_RARITY.get()) // TODO: Fix biome tag sandy & hot
+                .addBeehive(Tags.Biomes.IS_SANDY, 3, 12) // TODO: Fix biome tag sandy & hot
                 .setLifetimeGene(Gene::random5Narrow)
                 .setWeatherGene(Gene::strict)
                 .setPreferredTemperature(BiomeTemperature.WARMEST));
 
         r.register(new Species("snowy", 0xFFefefef)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.SNOWBALL, 8, 16)
-                .addBeehive(Tags.Biomes.IS_SNOWY, Config.BEEHIVE_SNOWY_TRIES.get(), Config.BEEHIVE_SNOWY_RARITY.get())
+                .addBeehive(Tags.Biomes.IS_SNOWY, 4, 16)
                 .setTemperatureGene(Gene::random3Low)
                 .setPreferredTemperature(BiomeTemperature.COLD));
 
@@ -76,7 +76,7 @@ public class ModSpecies {
 
         r.register(new Species("fungal", 0xFF660000)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.RED_MUSHROOM, 0.5d, 0.8d)
-                .addBeehive(Tags.Biomes.IS_MUSHROOM, Config.BEEHIVE_FUNGAL_TRIES.get(), Config.BEEHIVE_FUNGAL_RARITY.get()) // TODO: fix biome tag mushroom & swamp
+                .addBeehive(Tags.Biomes.IS_MUSHROOM, 3, 10) // TODO: fix biome tag mushroom & swamp
                 .setTemperatureGene(Gene::random3High)
                 .setProduceGene(Gene::random5High));
 
@@ -93,7 +93,7 @@ public class ModSpecies {
 
         r.register(new Species("dugout", 0xFF7f6000)
                 .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(BiomeTags.IS_OVERWORLD, Config.BEEHIVE_DUGOUT_TRIES.get(), Config.BEEHIVE_DUGOUT_RARITY.get(), PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
+                .addBeehive(BiomeTags.IS_OVERWORLD, 3, 2, PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
                 .setTemperatureGene(Gene::random3High)
                 .setLightGene(Gene::any)
                 .setPreferredTemperature(BiomeTemperature.COLD));
@@ -105,7 +105,7 @@ public class ModSpecies {
 
         r.register(new Species("malignant", 0xFF999999)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.BONE_MEAL, 3, 7)
-                .addBeehive(Tags.Biomes.IS_WASTELAND, Config.BEEHIVE_MALIGNANT_TRIES.get(), Config.BEEHIVE_MALIGNANT_RARITY.get()) // TODO: fix biome tag mesa & wasteland
+                .addBeehive(Tags.Biomes.IS_WASTELAND, 1, 8) // TODO: fix biome tag mesa & wasteland
                 .setPreferredTemperature(BiomeTemperature.WARM)
                 .setDark());
 
@@ -124,7 +124,7 @@ public class ModSpecies {
 
         r.register(new Species("scorched", 0xFFff9900)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.COAL, 2, 5)
-                .addBeehive(BiomeTags.IS_NETHER, Config.BEEHIVE_SCORCHED_TRIES.get(), Config.BEEHIVE_SCORCHED_RARITY.get(), PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
+                .addBeehive(BiomeTags.IS_NETHER, 6, 6, PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
                 .setPreferredTemperature(BiomeTemperature.WARMEST)
                 .setLightGene(Gene::any)
                 .setDark());
@@ -153,7 +153,7 @@ public class ModSpecies {
 
         r.register(new Species("ender", 0xFF134f5c)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.ENDER_PEARL, 0.2d, 0.4d)
-                .addBeehive(BiomeTags.IS_END, Config.BEEHIVE_ENDER_TRIES.get(), Config.BEEHIVE_ENDER_RARITY.get())
+                .addBeehive(BiomeTags.IS_END, 2, 16)
                 .setPreferredTemperature(BiomeTemperature.COLD)
                 .setLightGene(Gene::any)
                 .setDark());
