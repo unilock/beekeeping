@@ -1,47 +1,29 @@
 package github.mrh0.beekeeping.world.gen;
 
 import github.mrh0.beekeeping.Beekeeping;
-import net.fabricmc.fabric.api.biome.v1.BiomeModification;
+import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class BeehiveBiomeModifier {
-    private static final BiomeModification BIOME_MODIFICATION = BiomeModifications.create(Beekeeping.get("biome_modification"));
-
     public static void modify() {
-        /*
-        // TODO: this is probably not ideal and we should probably move all the beehive placement into data jsons akin to:
-        // https://github.com/MinecraftForge/MinecraftForge/blob/1.19.x/src/generated_test/resources/data/biome_modifiers_test/forge/biome_modifier/add_basalt.json
-        for (Species species : SpeciesRegistry.instance.getAll()) {
+        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
             if (species.hasBeehive()) {
-                var configuredFeature = FeatureUtils.register(
-                    Beekeeping.get(species.beehive.getName() + "_configured").toString(),
-                    species.beehive.feature,
-                    new RandomPatchConfiguration(
-                        species.beehive.tries,
-                        16,
-                        2,
-                        PlacementUtils.onlyWhenEmpty(
-                            Feature.SIMPLE_BLOCK,
-                            new SimpleBlockConfiguration(
-                                BlockStateProvider.simple(species.beehive.block.get())
-                            )
-                        )
-                    )
-                );
+                var id = Beekeeping.get(species.beehive.getName() + "_placed");
 
-                var placedFeature = PlacementUtils.register(
-                    Beekeeping.get(species.beehive.getName() + "_placed").toString(),
-                    configuredFeature,
-                    RarityFilter.onAverageOnceEvery(species.beehive.rarity), InSquarePlacement.spread(), species.beehive.modifier, BiomeFilter.biome()
-                );
+                Registry.register(BuiltInRegistries.FEATURE, id, species.beehive.feature);
 
-                BIOME_MODIFICATION.add(
-                    ModificationPhase.ADDITIONS,
-                    selectionCtx -> species.beehive.acceptsBiome(selectionCtx.getBiomeRegistryEntry()),
-                    modificationCtx -> modificationCtx.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeature.value())
+                BiomeModifications.addFeature(
+                        selectionCtx -> species.beehive.acceptsBiome(selectionCtx.getBiomeRegistryEntry()),
+                        GenerationStep.Decoration.VEGETAL_DECORATION,
+                        ResourceKey.create(Registries.PLACED_FEATURE, id)
                 );
             }
         }
-         */
     }
 }

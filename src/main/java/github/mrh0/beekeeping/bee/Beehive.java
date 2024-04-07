@@ -7,6 +7,7 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 
@@ -28,7 +29,7 @@ public class Beehive {
         this.tries = tries;
         this.rarity = rarity;
         this.modifier = PlacementUtils.HEIGHTMAP;
-        this.feature = Feature.RANDOM_PATCH;
+        this.feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
         this.blockPlaceAllow = pos -> true;
     }
 

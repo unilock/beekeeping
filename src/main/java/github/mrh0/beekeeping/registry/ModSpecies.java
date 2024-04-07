@@ -9,7 +9,8 @@ import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 
 public class ModSpecies {
     //
@@ -92,7 +93,7 @@ public class ModSpecies {
 
         r.register(new Species("dugout", 0xFF7f6000)
                 .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(BiomeTags.IS_OVERWORLD, Config.BEEHIVE_DUGOUT_TRIES.get(), Config.BEEHIVE_DUGOUT_RARITY.get(), PlacementUtils.FULL_RANGE, Feature.RANDOM_PATCH, pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
+                .addBeehive(BiomeTags.IS_OVERWORLD, Config.BEEHIVE_DUGOUT_TRIES.get(), Config.BEEHIVE_DUGOUT_RARITY.get(), PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
                 .setTemperatureGene(Gene::random3High)
                 .setLightGene(Gene::any)
                 .setPreferredTemperature(BiomeTemperature.COLD));
@@ -123,7 +124,7 @@ public class ModSpecies {
 
         r.register(new Species("scorched", 0xFFff9900)
                 .setProduce(Items.HONEYCOMB, 5, 7, Items.COAL, 2, 5)
-                .addBeehive(BiomeTags.IS_NETHER, Config.BEEHIVE_SCORCHED_TRIES.get(), Config.BEEHIVE_SCORCHED_RARITY.get(), PlacementUtils.FULL_RANGE, Feature.RANDOM_PATCH, pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
+                .addBeehive(BiomeTags.IS_NETHER, Config.BEEHIVE_SCORCHED_TRIES.get(), Config.BEEHIVE_SCORCHED_RARITY.get(), PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
                 .setPreferredTemperature(BiomeTemperature.WARMEST)
                 .setLightGene(Gene::any)
                 .setDark());

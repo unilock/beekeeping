@@ -8,6 +8,7 @@ import github.mrh0.beekeeping.datagen.provider.BlockLootTableProvider;
 import github.mrh0.beekeeping.datagen.provider.BlockTagProvider;
 import github.mrh0.beekeeping.datagen.provider.ItemTagProvider;
 import github.mrh0.beekeeping.datagen.provider.RecipeProvider;
+import github.mrh0.beekeeping.datagen.provider.WorldGenProvider;
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -32,5 +33,6 @@ public class BeekeepingDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider((output, registriesFuture) -> new BlockStateGenerator(output, Beekeeping.MODID, existingFileHelper));
         pack.addProvider((output, registriesFuture) -> new ItemModelGenerator(output, Beekeeping.MODID, existingFileHelper));
         pack.addProvider((output, registriesFuture) -> new ItemTagProvider(output, registriesFuture, blockTags));
+        pack.addProvider(WorldGenProvider::new);
     }
 }
