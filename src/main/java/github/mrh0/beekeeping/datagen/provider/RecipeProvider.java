@@ -5,15 +5,11 @@ import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.datagen.builder.BeeBreedingRecipeBuilder;
 import github.mrh0.beekeeping.datagen.builder.BeeProduceRecipeBuilder;
-import github.mrh0.beekeeping.item.ItemBuilder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Consumer;
 
@@ -41,10 +37,6 @@ public class RecipeProvider extends FabricRecipeProvider {
                         .of(Index.BASIC_FRAME.get()).build()))
                 .save(rc);
          */
-
-        for (Pair<RecipeBuilder, ItemLike> pair : ItemBuilder.recipes) {
-            pair.getFirst().unlockedBy("has_item", inventoryTrigger(ItemPredicate.Builder.item().of(pair.getSecond()).build())).save(rc);
-        }
     }
 
     private void breed(Consumer<FinishedRecipe> recipeConsumer, Species drone, Species princess, Species offspring) {
