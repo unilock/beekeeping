@@ -79,7 +79,7 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
         public Result(Species species,
                       ItemStack commonProduceUnsatisfied, ItemStack rareProduceUnsatisfied, double rareChanceUnsatisfied,
                       ItemStack commonProduceSatisfied, ItemStack rareProduceSatisfied, double rareChanceSatisfied) {
-            this.id = new ResourceLocation(Beekeeping.MODID, "bee_produce/" + species.getName());
+            this.id = new ResourceLocation(Beekeeping.MODID, "bee_produce/" + species.name);
             this.species = species;
             this.commonProduceUnsatisfied = commonProduceUnsatisfied;
             this.rareProduceUnsatisfied = rareProduceUnsatisfied;
@@ -92,7 +92,7 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
 
         @Override
         public void serializeRecipeData(JsonObject json) {
-            json.addProperty("species", species.getName());
+            json.addProperty("species", species.name);
             JsonObject produce = new JsonObject();
             json.add("produce", produce);
 
@@ -100,19 +100,19 @@ public class BeeProduceRecipeBuilder implements RecipeBuilder {
             produce.add("satisfied", makeProduce(commonProduceSatisfied, rareProduceSatisfied, rareChanceSatisfied));
         }
 
-        private JsonObject makeProduce(@Nullable ItemStack commonProduce, @Nullable ItemStack rareProduce, double rareChance) {
+        private JsonObject makeProduce(ItemStack commonProduce, ItemStack rareProduce, double rareChance) {
             JsonObject obj = new JsonObject();
             JsonObject common = new JsonObject();
             JsonObject rare = new JsonObject();
 
-            if(commonProduce != null && !commonProduce.isEmpty()) {
+            if(!commonProduce.isEmpty()) {
                 var resourceLocation = BuiltInRegistries.ITEM.getKey(commonProduce.getItem());
                 obj.add("common", common);
                 common.addProperty("item", resourceLocation.toString());
                 common.addProperty("count", commonProduce.getCount());
             }
 
-            if(rareProduce != null && rareChance > 0d) {
+            if(!rareProduce.isEmpty()) {
                 var resourceLocation = BuiltInRegistries.ITEM.getKey(rareProduce.getItem());
                 obj.add("rare", rare);
 

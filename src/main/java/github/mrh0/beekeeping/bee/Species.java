@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.bee;
 
 import com.mojang.datafixers.util.Pair;
-import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.genes.Gene;
 import github.mrh0.beekeeping.bee.genes.LightToleranceGene;
@@ -14,128 +13,65 @@ import github.mrh0.beekeeping.biome.BiomeTemperature;
 import github.mrh0.beekeeping.config.Config;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 public class Species {
-    private final String name;
-    private boolean foil = false;
-    private int color;
-    private boolean dark = false;
-    private boolean hasRareProduce = false;
-    private final ResourceLocation resource;
-    public DroneBee droneItem;
-    public PrincessBee princessItem;
-    public QueenBee queenItem;
-    public static String mod = Beekeeping.MODID;
+    public final String name;
+    public final int color;
+    public final boolean dark;
+    public final boolean foil;
+    public final boolean nocturnal;
+    public final BiomeTemperature preferredTemperature;
+    public final Gene.RandomFunction lifetimeGene;
+    public final Gene.RandomFunction lightGene;
+    public final Gene.RandomFunction produceGene;
+    public final Gene.RandomFunction temperatureGene;
+    public final Gene.RandomFunction weatherGene;
+    public final Produce produce;
+    public final Pair<String, String> parents;
 
-    public Gene.RandomFunction lifetimeGene = Gene::random5Narrow;
-    public Gene.RandomFunction weatherGene = Gene::strict;
-    public Gene.RandomFunction temperatureGene = Gene::picky;
-    public Gene.RandomFunction lightGene = Gene::strict;
-    public Gene.RandomFunction produceGene = Gene::random5Narrow;
+    public final DroneBee droneItem;
+    public final PrincessBee princessItem;
+    public final QueenBee queenItem;
 
-    public boolean isNocturnal = false;
-    public BiomeTemperature preferredTemperature = BiomeTemperature.TEMPERED;
-
-    public Beehive beehive = null;
-    public Produce produce = null;
-
-    public List<Pair<String, String>> breeding;
-
-    public Species(String name, int color) {
+    private Species(String name, int color, boolean dark, boolean foil, boolean nocturnal, BiomeTemperature preferredTemperature, Gene.RandomFunction lifetimeGene, Gene.RandomFunction lightGene, Gene.RandomFunction produceGene, Gene.RandomFunction temperatureGene, Gene.RandomFunction weatherGene, Produce produce, Pair<String, String> parents) {
         this.name = name;
         this.color = color;
-        this.resource = new ResourceLocation(mod, name);
-        this.breeding = new ArrayList<>();
-    }
+        this.dark = dark;
+        this.foil = foil;
+        this.nocturnal = nocturnal;
+        this.preferredTemperature = preferredTemperature;
+        this.lifetimeGene = lifetimeGene;
+        this.lightGene = lightGene;
+        this.produceGene = produceGene;
+        this.temperatureGene = temperatureGene;
+        this.weatherGene = weatherGene;
+        this.produce = produce;
+        this.parents = parents;
 
-    public ResourceLocation getResourceLocation() {
-        return resource;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public DroneBee buildDroneItem() {
         this.droneItem = new DroneBee(this, new FabricItemSettings().stacksTo(1), foil);
-        return this.droneItem;
-    }
-
-    public PrincessBee buildPrincessItem() {
         this.princessItem = new PrincessBee(this, new FabricItemSettings().stacksTo(1), foil);
-        return this.princessItem;
-    }
-
-    public QueenBee buildQueenItem() {
         this.queenItem = new QueenBee(this, new FabricItemSettings().stacksTo(1), foil);
-        return this.queenItem;
-    }
-
-    public Species setWeatherGene(Gene.RandomFunction fn) {
-        this.weatherGene = fn;
-        return this;
-    }
-
-    public Species setTemperatureGene(Gene.RandomFunction fn) {
-        this.temperatureGene = fn;
-        return this;
-    }
-
-    public Species setLightGene(Gene.RandomFunction fn) {
-        this.lightGene = fn;
-        return this;
-    }
-
-    public Species setProduceGene(Gene.RandomFunction fn) {
-        this.produceGene = fn;
-        return this;
-    }
-
-    public Species setLifetimeGene(Gene.RandomFunction fn) {
-        this.lifetimeGene = fn;
-        return this;
-    }
-
-    public Species setPreferredTemperature(BiomeTemperature temp) {
-        preferredTemperature = temp;
-        return this;
     }
 
     public boolean hasSatisfactoryLightLevel(int sunlight, boolean isDay) {
         int limit = Config.LIGHT_GENE_MIN_LIGHT.get();
-        if(isNocturnal)
-            return sunlight > limit && !isDay;
-        return sunlight > limit && isDay;
-    }
 
-    public Species setNocturnal() {
-        isNocturnal = true;
-        return this;
+        if (nocturnal) {
+            return sunlight > limit && !isDay;
+        } else {
+            return sunlight > limit && isDay;
+        }
     }
 
     public Satisfaction getLightSatisfaction(ItemStack stack, Level level, BlockPos pos) {
-        if(Config.IGNORE_LIGHT_SATISFACTION.get())
+        if (Config.IGNORE_LIGHT_SATISFACTION.get()) {
             return Satisfaction.SATISFIED;
-        LightToleranceGene tolerance = LightToleranceGene.of(LightToleranceGene.get(stack.getTag()));
+        }
+
         int sunlight = Util.getSunlight(level, pos);
+        LightToleranceGene tolerance = LightToleranceGene.of(LightToleranceGene.get(stack.getTag()));
 
         return switch (tolerance) {
             case PICKY -> hasSatisfactoryLightLevel(sunlight, level.isDay()) ? Satisfaction.SATISFIED : Satisfaction.UNSATISFIED;
@@ -144,26 +80,12 @@ public class Species {
         };
     }
 
-    public Satisfaction getWeatherSatisfaction(ItemStack stack, Level level, BlockPos pos) {
-        if(Config.IGNORE_WEATHER_SATISFACTION.get())
-            return Satisfaction.SATISFIED;
-        WeatherToleranceGene tolerance = WeatherToleranceGene.of(WeatherToleranceGene.get(stack.getTag()));
-        if(level.isThundering())
-            return Satisfaction.NOT_WORKING;
-
-        return switch (tolerance) {
-            case PICKY -> level.isRaining() ? Satisfaction.UNSATISFIED : Satisfaction.SATISFIED;
-            case STRICT -> level.isRaining() ? Satisfaction.NOT_WORKING : Satisfaction.SATISFIED;
-            default -> Satisfaction.SATISFIED;
-        };
-    }
-
     public Satisfaction getTemperatureSatisfaction(ItemStack stack, Level level, BlockPos pos) {
-        if(Config.IGNORE_TEMPERATURE_SATISFACTION.get())
+        if(Config.IGNORE_TEMPERATURE_SATISFACTION.get()) {
             return Satisfaction.SATISFIED;
-        float f = level.getBiomeManager().getBiome(pos).value().getBaseTemperature();
-        BiomeTemperature temp = BiomeTemperature.of(f);
+        }
 
+        BiomeTemperature temp = BiomeTemperature.of(level.getBiomeManager().getBiome(pos).value().getBaseTemperature());
         TemperatureToleranceGene tolerance = TemperatureToleranceGene.of(TemperatureToleranceGene.get(stack.getTag()));
 
         return switch (tolerance) {
@@ -173,82 +95,113 @@ public class Species {
         };
     }
 
-    public Species addBeehive(TagKey<Biome> biomeType, int tries, int rarity) {
-        this.beehive = new Beehive(this, biomeType, tries, rarity);
-        return this;
+    public Satisfaction getWeatherSatisfaction(ItemStack stack, Level level, BlockPos pos) {
+        if (Config.IGNORE_WEATHER_SATISFACTION.get()) {
+            return Satisfaction.SATISFIED;
+        }
+
+        if (level.isThundering()) {
+            return Satisfaction.NOT_WORKING;
+        }
+
+        WeatherToleranceGene tolerance = WeatherToleranceGene.of(WeatherToleranceGene.get(stack.getTag()));
+
+        return switch (tolerance) {
+            case PICKY -> level.isRaining() ? Satisfaction.UNSATISFIED : Satisfaction.SATISFIED;
+            case STRICT -> level.isRaining() ? Satisfaction.NOT_WORKING : Satisfaction.SATISFIED;
+            default -> Satisfaction.SATISFIED;
+        };
     }
 
-    public Species addBeehive(TagKey<Biome> biomeType, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
-        this.beehive = new Beehive(this, biomeType, tries, rarity, modifier, feature, blockPlaceAllow);
-        return this;
+    public static Builder builder(String name) {
+        return new Builder(name);
     }
 
-    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied) {
-        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied, Items.AIR, 0, 0, 0, 0);
-        return this;
-    }
+    public static class Builder {
+        final String name;
+        int color = 0x00000000;
+        boolean dark = false;
+        boolean foil = false;
+        boolean nocturnal = false;
+        BiomeTemperature preferredTemperature = BiomeTemperature.TEMPERED;
+        Gene.RandomFunction lifetimeGene = Gene::random5Narrow;
+        Gene.RandomFunction lightGene = Gene::strict;
+        Gene.RandomFunction produceGene = Gene::random5Narrow;
+        Gene.RandomFunction temperatureGene = Gene::picky;
+        Gene.RandomFunction weatherGene = Gene::strict;
+        Produce produce;
+        Pair<String, String> parents;
 
-    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare,
-                              double rareChanceUnsatisfied, double rareChanceSatisfied) {
-        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
-                rare, 1, 1, rareChanceUnsatisfied, rareChanceSatisfied);
-        hasRareProduce = true;
-        return this;
-    }
+        public Builder(String name) {
+            this.name = name;
+        }
 
-    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied,
-                              double rareChanceUnsatisfied, double rareChanceSatisfied) {
-        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
-                rare, rareCountUnsatisfied, rareCountSatisfied, rareChanceUnsatisfied, rareChanceSatisfied);
-        hasRareProduce = true;
-        return this;
-    }
+        public Species build() {
+            if (this.produce == null) {
+                throw new IllegalArgumentException("Species produce cannot be null!");
+            }
 
-    public Species setProduce(Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied) {
-        this.produce = new Produce(common, commonCountUnsatisfied, commonCountSatisfied,
-                rare, rareCountUnsatisfied, rareCountSatisfied, 1d, 1d);
-        hasRareProduce = true;
-        return this;
-    }
+            return new Species(this.name, this.color, this.dark, this.foil, this.nocturnal, this.preferredTemperature, this.lifetimeGene, this.lightGene, this.produceGene, this.temperatureGene, this.weatherGene, this.produce, this.parents);
+        }
 
-    public Species breedFrom(String bee1, String bee2) {
-        breeding.add(new Pair<>(bee1, bee2));
-        breeding.add(new Pair<>(bee2, bee1));
-        return this;
-    }
+        public Builder setColor(int color) {
+            this.color = color;
+            return this;
+        }
 
-    public Species breedStrictFrom(String drone, String princess) {
-        breeding.add(new Pair<>(drone, princess));
-        return this;
-    }
+        public Builder setDark() {
+            this.dark = true;
+            return this;
+        }
 
-    public Species setDark() {
-        this.dark = true;
-        return this;
-    }
+        public Builder setFoil() {
+            this.foil = true;
+            return this;
+        }
 
-    public Species setFoil() {
-        this.foil = true;
-        return this;
-    }
+        public Builder setNocturnal() {
+            this.nocturnal = true;
+            return this;
+        }
 
-    public boolean isDark() {
-        return this.dark;
-    }
+        public Builder setPreferredTemperature(BiomeTemperature temperature) {
+            this.preferredTemperature = temperature;
+            return this;
+        }
 
-    public boolean isHasRareProduce() {
-        return this.hasRareProduce;
-    }
+        public Builder setLifetimeGene(Gene.RandomFunction func) {
+            this.lifetimeGene = func;
+            return this;
+        }
 
-    public boolean hasBeehive() {
-        return this.beehive != null;
-    }
+        public Builder setLightGene(Gene.RandomFunction func) {
+            this.lightGene = func;
+            return this;
+        }
 
-    public static Species getByName(String name) {
-        return SpeciesRegistry.INSTANCE.get(name);
-    }
+        public Builder setProduceGene(Gene.RandomFunction func) {
+            this.produceGene = func;
+            return this;
+        }
 
-    public static Species getByIndex(int index) {
-        return SpeciesRegistry.INSTANCE.get(index);
+        public Builder setTemperatureGene(Gene.RandomFunction func) {
+            this.temperatureGene = func;
+            return this;
+        }
+
+        public Builder setWeatherGene(Gene.RandomFunction func) {
+            this.weatherGene = func;
+            return this;
+        }
+
+        public Builder setProduce(Produce produce) {
+            this.produce = produce;
+            return this;
+        }
+
+        public Builder setParents(String first, String second) {
+            this.parents = new Pair<>(first, second);
+            return this;
+        }
     }
 }

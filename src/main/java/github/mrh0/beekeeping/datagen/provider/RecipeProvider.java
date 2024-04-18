@@ -1,6 +1,5 @@
 package github.mrh0.beekeeping.datagen.provider;
 
-import com.mojang.datafixers.util.Pair;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.datagen.builder.BeeBreedingRecipeBuilder;
@@ -22,11 +21,11 @@ public class RecipeProvider extends FabricRecipeProvider {
     public void buildRecipes(Consumer<FinishedRecipe> rc) {
         for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
             if (species.produce != null) {
-                produce(rc, species.getName(), species.produce.common(), species.produce.commonCountUnsatisfied(), species.produce.commonCountSatisfied(), species.produce.rare(), species.produce.rareCountUnsatisfied(), species.produce.rareCountSatisfied(), species.produce.rareChanceUnsatisfied(), species.produce.rareChanceSatisfied());
+                produce(rc, species.name, species.produce.common(), species.produce.commonCountUnsatisfied(), species.produce.commonCountSatisfied(), species.produce.rare(), species.produce.rareCountUnsatisfied(), species.produce.rareCountSatisfied(), species.produce.rareChanceUnsatisfied(), species.produce.rareChanceSatisfied());
+            }
 
-                for (Pair<String, String> pair : species.breeding) {
-                    breed(rc, Species.getByName(pair.getFirst()), Species.getByName(pair.getSecond()), species);
-                }
+            if (species.parents != null) {
+                breed(rc, SpeciesRegistry.INSTANCE.get(species.parents.getFirst()), SpeciesRegistry.INSTANCE.get(species.parents.getSecond()), species);
             }
         }
 
@@ -41,9 +40,10 @@ public class RecipeProvider extends FabricRecipeProvider {
 
     private void breed(Consumer<FinishedRecipe> recipeConsumer, Species drone, Species princess, Species offspring) {
         new BeeBreedingRecipeBuilder(drone, princess, offspring).save(recipeConsumer);
+        new BeeBreedingRecipeBuilder(princess, drone, offspring).save(recipeConsumer);
     }
 
     private void produce(Consumer<FinishedRecipe> recipeConsumer, String species, Item common, int commonCountUnsatisfied, int commonCountSatisfied, Item rare, int rareCountUnsatisfied, int rareCountSatisfied, double rareChanceUnsatisfied, double rareChanceSatisfied) {
-        new BeeProduceRecipeBuilder(Species.getByName(species), new ItemStack(common, commonCountUnsatisfied), new ItemStack(rare, rareCountUnsatisfied), rareChanceUnsatisfied, new ItemStack(common, commonCountSatisfied), new ItemStack(rare, rareCountSatisfied), rareChanceSatisfied).save(recipeConsumer);
+        new BeeProduceRecipeBuilder(SpeciesRegistry.INSTANCE.get(species), new ItemStack(common, commonCountUnsatisfied), new ItemStack(rare, rareCountUnsatisfied), rareChanceUnsatisfied, new ItemStack(common, commonCountSatisfied), new ItemStack(rare, rareCountSatisfied), rareChanceSatisfied).save(recipeConsumer);
     }
 }

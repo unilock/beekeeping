@@ -1,5 +1,8 @@
 package github.mrh0.beekeeping.registry;
 
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
+import github.mrh0.beekeeping.bee.Produce;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.genes.Gene;
@@ -9,8 +12,6 @@ import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 
 public class ModSpecies {
     //
@@ -18,144 +19,349 @@ public class ModSpecies {
     //
     public static void init() {
         var r = SpeciesRegistry.INSTANCE;
+        var b = BeehiveRegistry.INSTANCE;
 
-        r.register(new Species("common", 0xFFfff2cc)
-                .setProduce(Items.HONEYCOMB, 3, 5)
-                .addBeehive(Tags.Biomes.IS_PLAINS, 2, 16));
+        var common = r.register(Species.builder("common")
+                .setColor(0xFFFFF2CC)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(3, 5)
+                        .build())
+                .build());
+        b.register(Beehive.builder(common)
+                .setBiomeTag(Tags.Biomes.IS_PLAINS)
+                .setRarity(16)
+                .setTries(2)
+                .build());
 
-        r.register(new Species("forest", 0xFF93c47d)
-                .setProduce(Items.HONEYCOMB, 3, 5)
-                .addBeehive(BiomeTags.IS_FOREST, 4, 10));
+        var forest = r.register(Species.builder("forest")
+                .setColor(0xFF93C47D)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(3, 5)
+                        .build())
+                .build());
+        b.register(Beehive.builder(forest)
+                .setBiomeTag(BiomeTags.IS_FOREST)
+                .setRarity(10)
+                .setTries(4)
+                .build());
 
-        r.register(new Species("tempered", 0xFFb6d7a8)
-                .setProduce(Items.HONEYCOMB, 7, 9)
+        var tempered = r.register(Species.builder("tempered")
+                .setColor(0xFFB6D7A8)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(7, 9)
+                        .build())
                 .setTemperatureGene(Gene::random5Narrow)
-                .breedFrom("common", "forest"));
+                .setParents("common", "forest")
+                .build());
 
-        r.register(new Species("tropical", 0xFF6aa84f)
-                .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(BiomeTags.IS_JUNGLE, 4, 10)
-                .setLifetimeGene(Gene::random5Narrow)
-                .setPreferredTemperature(BiomeTemperature.WARM));
-
-        r.register(new Species("coco", 0xFF783f04)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.COCOA_BEANS, 3, 7)
+        var tropical = r.register(Species.builder("tropical")
+                .setColor(0xFF6AA84F)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .build())
                 .setPreferredTemperature(BiomeTemperature.WARM)
-                .breedFrom("tropical", "dugout"));
+                .setLifetimeGene(Gene::random5Narrow)
+                .build());
+        b.register(Beehive.builder(tropical)
+                .setBiomeTag(BiomeTags.IS_JUNGLE)
+                .setRarity(10)
+                .setTries(4)
+                .build());
 
-        r.register(new Species("upland", 0xFFff9900)
-                .setProduce(Items.HONEYCOMB, 3, 7, Items.HONEY_BLOCK, 1, 2)
-                .addBeehive(BiomeTags.IS_SAVANNA, 4, 16)
+        var coco = r.register(Species.builder("coco")
+                .setColor(0xFF783F04)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.COCOA_BEANS)
+                        .setRareCount(3, 7)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARM)
+                .setParents("dugout", "tropical")
+                .build());
+
+        var upland = r.register(Species.builder("upland")
+                .setColor(0xFFFF9900)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(3, 7)
+                        .setRareItem(Items.HONEY_BLOCK)
+                        .setRareCount(1, 2)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
                 .setLifetimeGene(Gene::random5Narrow)
                 .setWeatherGene(Gene::strict)
-                .setPreferredTemperature(BiomeTemperature.WARMEST));
+                .build());
+        b.register(Beehive.builder(upland)
+                .setBiomeTag(BiomeTags.IS_SAVANNA)
+                .setRarity(16)
+                .setTries(4)
+                .build());
 
-        r.register(new Species("dune", 0xFFfbbc04)
-                .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(Tags.Biomes.IS_SANDY, 3, 12) // TODO: Fix biome tag sandy & hot
+        var dune = r.register(Species.builder("dune")
+                .setColor(0xFFFBBC04)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
                 .setLifetimeGene(Gene::random5Narrow)
                 .setWeatherGene(Gene::strict)
-                .setPreferredTemperature(BiomeTemperature.WARMEST));
+                .build());
+        b.register(Beehive.builder(dune)
+                .setBiomeTag(Tags.Biomes.IS_SANDY) // TODO: Fix biome tag sandy & hot
+                .setRarity(12)
+                .setTries(3)
+                .build());
 
-        r.register(new Species("snowy", 0xFFefefef)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.SNOWBALL, 8, 16)
-                .addBeehive(Tags.Biomes.IS_SNOWY, 4, 16)
-                .setTemperatureGene(Gene::random3Low)
-                .setPreferredTemperature(BiomeTemperature.COLD));
-
-        r.register(new Species("frozen", 0xFFd0e0e3)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.ICE, 3, 7)
+        var snowy = r.register(Species.builder("snowy")
+                .setColor(0xFFEFEFEF)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.SNOWBALL)
+                        .setRareCount(8 ,16)
+                        .build())
                 .setPreferredTemperature(BiomeTemperature.COLD)
-                .breedFrom("snowy", "dugout"));
+                .setTemperatureGene(Gene::random3Low)
+                .build());
+        b.register(Beehive.builder(snowy)
+                .setBiomeTag(Tags.Biomes.IS_SNOWY)
+                .setRarity(16)
+                .setTries(4)
+                .build());
 
-        r.register(new Species("glacial", 0xFFa2c4c9)
+        var frozen = r.register(Species.builder("frozen")
+                .setColor(0xFFD0E0E3)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.ICE)
+                        .setRareCount(3, 7)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.COLD)
+                .setParents("dugout", "snowy")
+                .build());
+
+        var glacial = r.register(Species.builder("glacial")
+                .setColor(0xFFA2C4C9)
                 .setFoil()
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.PACKED_ICE, 3, 7)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5 ,7)
+                        .setRareItem(Items.PACKED_ICE)
+                        .setRareCount(3, 7)
+                        .build())
                 .setPreferredTemperature(BiomeTemperature.COLDEST)
-                .breedFrom("frozen", "nocturnal"));
+                .setParents("frozen", "nocturnal")
+                .build());
 
-        r.register(new Species("fungal", 0xFF660000)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.RED_MUSHROOM, 0.5d, 0.8d)
-                .addBeehive(Tags.Biomes.IS_MUSHROOM, 3, 10) // TODO: fix biome tag mushroom & swamp
+        var fungal = r.register(Species.builder("fungal")
+                .setColor(0xFF660000)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.RED_MUSHROOM)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.5, 0.8)
+                        .build())
+                .setProduceGene(Gene::random5High)
                 .setTemperatureGene(Gene::random3High)
-                .setProduceGene(Gene::random5High));
+                .build());
+        b.register(Beehive.builder(fungal)
+                .setBiomeTag(Tags.Biomes.IS_MUSHROOM) // TODO: fix biome tag mushroom & swamp
+                .setRarity(10)
+                .setTries(3)
+                .build());
 
-        r.register(new Species("mossy", 0xFF38761d)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.MOSS_BLOCK, 0.5d, 0.8d)
-                .setTemperatureGene(Gene::random3Low)
+        var mossy = r.register(Species.builder("mossy")
+                .setColor(0xFF38761D)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.MOSS_BLOCK)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.5, 0.8)
+                        .build())
                 .setProduceGene(Gene::normal5)
-                .breedFrom("dugout", "fungal"));
+                .setTemperatureGene(Gene::random3Low)
+                .setParents("dugout", "fungal")
+                .build());
 
-        r.register(new Species("fair", 0xFF00ff00)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.SUGAR, 8, 16)
-                .breedFrom("coco", "snowy")
-                .setFoil());
-
-        r.register(new Species("dugout", 0xFF7f6000)
-                .setProduce(Items.HONEYCOMB, 5, 7)
-                .addBeehive(BiomeTags.IS_OVERWORLD, 3, 2, PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
-                .setTemperatureGene(Gene::random3High)
-                .setLightGene(Gene::any)
-                .setPreferredTemperature(BiomeTemperature.COLD));
-
-        r.register(new Species("nocturnal", 0xFF073763)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.GLOWSTONE_DUST, 0.5d, 0.8d)
-                .setNocturnal()
-                .breedFrom("ender", "dugout"));
-
-        r.register(new Species("malignant", 0xFF999999)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.BONE_MEAL, 3, 7)
-                .addBeehive(Tags.Biomes.IS_WASTELAND, 1, 8) // TODO: fix biome tag mesa & wasteland
-                .setPreferredTemperature(BiomeTemperature.WARM)
-                .setDark());
-
-        r.register(new Species("wicked", 0xFF666666)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.SPIDER_EYE, 1, 3)
-                .setPreferredTemperature(BiomeTemperature.WARM)
-                .setDark()
-                .breedFrom("malignant", "upland"));
-
-        r.register(new Species("withered", 0xFF434343)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.WITHER_SKELETON_SKULL, 0.02, 0.05)
-                .setPreferredTemperature(BiomeTemperature.WARM)
-                .setDark()
+        var fair = r.register(Species.builder("fair")
+                .setColor(0xFF00FF00)
                 .setFoil()
-                .breedFrom("wicked", "demonic"));
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5 ,7)
+                        .setRareItem(Items.SUGAR)
+                        .setRareCount(8, 16)
+                        .build())
+                .setParents("coco", "snowy")
+                .build());
 
-        r.register(new Species("scorched", 0xFFff9900)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.COAL, 2, 5)
-                .addBeehive(BiomeTags.IS_NETHER, 6, 6, PlacementUtils.FULL_RANGE, new RandomPatchFeature(RandomPatchConfiguration.CODEC), pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
-                .setPreferredTemperature(BiomeTemperature.WARMEST)
-                .setLightGene(Gene::any)
-                .setDark());
-
-        r.register(new Species("magmatic", 0xFFff6d01)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.MAGMA_CREAM, 0.5d, 0.8d)
-                .setPreferredTemperature(BiomeTemperature.WARMEST)
-                .setLightGene(Gene::any)
-                .setDark()
-                .breedFrom("scorched", "dune"));
-
-        r.register(new Species("infernal", 0xFFff0000)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.GUNPOWDER, 1, 3)
-                .setPreferredTemperature(BiomeTemperature.WARMEST)
-                .setLightGene(Gene::any)
-                .setDark()
-                .breedFrom("magmatic", "wicked"));
-
-        r.register(new Species("demonic", 0xFF990000)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.BLAZE_POWDER, 0.5d, 0.8d)
-                .setPreferredTemperature(BiomeTemperature.WARMEST)
-                .setLightGene(Gene::any)
-                .setFoil()
-                .setDark()
-                .breedFrom("infernal", "nocturnal"));
-
-        r.register(new Species("ender", 0xFF134f5c)
-                .setProduce(Items.HONEYCOMB, 5, 7, Items.ENDER_PEARL, 0.2d, 0.4d)
-                .addBeehive(BiomeTags.IS_END, 2, 16)
+        var dugout = r.register(Species.builder("dugout")
+                .setColor(0xFF7F6000)
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .build())
                 .setPreferredTemperature(BiomeTemperature.COLD)
                 .setLightGene(Gene::any)
-                .setDark());
+                .setTemperatureGene(Gene::random3High)
+                .build());
+        b.register(Beehive.builder(dugout)
+                .setBiomeTag(BiomeTags.IS_OVERWORLD)
+                .setRarity(2)
+                .setTries(3)
+                .setAllowPlacement(pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
+                .setPlacementModifier(PlacementUtils.FULL_RANGE)
+                .build());
+
+        var nocturnal = r.register(Species.builder("nocturnal")
+                .setColor(0xFF073763)
+                .setNocturnal()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.GLOWSTONE_DUST)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.5, 0.8)
+                        .build())
+                .setParents("dugout", "ender")
+                .build());
+
+        var malignant = r.register(Species.builder("malignant")
+                .setColor(0xFF999999)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.BONE_MEAL)
+                        .setRareCount(3, 7)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARM)
+                .build());
+        b.register(Beehive.builder(malignant)
+                .setBiomeTag(Tags.Biomes.IS_WASTELAND) // TODO: fix biome tag mesa & wasteland
+                .setRarity(8)
+                .setTries(1)
+                .build());
+
+        var wicked = r.register(Species.builder("wicked")
+                .setColor(0xFF666666)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.SPIDER_EYE)
+                        .setRareCount(1, 3)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARM)
+                .setParents("malignant", "upland")
+                .build());
+
+        var withered = r.register(Species.builder("withered")
+                .setColor(0xFF434343)
+                .setDark()
+                .setFoil()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.WITHER_SKELETON_SKULL)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.02, 0.05)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARM)
+                .setParents("demonic", "wicked")
+                .build());
+
+        var scorched = r.register(Species.builder("scorched")
+                .setColor(0xFFFF9900)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.COAL)
+                        .setRareCount(2, 5)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
+                .setLightGene(Gene::any)
+                .build());
+        b.register(Beehive.builder(scorched)
+                .setBiomeTag(BiomeTags.IS_NETHER)
+                .setRarity(6)
+                .setTries(6)
+                .setAllowPlacement(pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
+                .setPlacementModifier(PlacementUtils.FULL_RANGE)
+                .build());
+
+        var magmatic = r.register(Species.builder("magmatic")
+                .setColor(0xFFFF6D01)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.MAGMA_CREAM)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.5, 0.8)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
+                .setLightGene(Gene::any)
+                .setParents("dune", "scorched")
+                .build());
+
+        var infernal = r.register(Species.builder("infernal")
+                .setColor(0xFFFF0000)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.GUNPOWDER)
+                        .setRareCount(1, 3)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
+                .setLightGene(Gene::any)
+                .setParents("magmatic", "wicked")
+                .build());
+
+        var demonic = r.register(Species.builder("demonic")
+                .setColor(0xFF990000)
+                .setDark()
+                .setFoil()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.BLAZE_POWDER)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.5, 0.8)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.WARMEST)
+                .setLightGene(Gene::any)
+                .setParents("infernal", "nocturnal")
+                .build());
+
+        var ender = r.register(Species.builder("ender")
+                .setColor(0xFF134F5C)
+                .setDark()
+                .setProduce(Produce.builder()
+                        .setCommonItem(Items.HONEYCOMB)
+                        .setCommonCount(5, 7)
+                        .setRareItem(Items.ENDER_PEARL)
+                        .setRareCount(1, 1)
+                        .setRareChance(0.2, 0.4)
+                        .build())
+                .setPreferredTemperature(BiomeTemperature.COLD)
+                .setLightGene(Gene::any)
+                .build());
+        b.register(Beehive.builder(ender)
+                .setBiomeTag(BiomeTags.IS_END)
+                .setRarity(16)
+                .setTries(2)
+                .build());
     }
 }

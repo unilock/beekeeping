@@ -1,6 +1,6 @@
 package github.mrh0.beekeeping.blocks.beehive;
 
-import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.Beehive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
@@ -9,11 +9,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BeehiveBlock extends Block {
-    private final Species species;
+    private final Beehive beehive;
 
-    public BeehiveBlock(Species species) {
+    public BeehiveBlock(Beehive beehive) {
         super(Properties.copy(Blocks.BEE_NEST));
-        this.species = species;
+        this.beehive = beehive;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class BeehiveBlock extends Block {
             BlockPos pos = blockpos.relative(dir);
 
             if (level.getBlockState(pos).isFaceSturdy(level, pos, dir.getOpposite())) {
-                return species.beehive.blockPlaceAllow.apply(blockpos);
+                return this.beehive.allowPlacement.apply(blockpos);
             }
         }
 

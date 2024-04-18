@@ -1,7 +1,7 @@
 package github.mrh0.beekeeping.datagen.provider;
 
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import github.mrh0.beekeeping.registry.ModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
@@ -32,10 +32,8 @@ public class BlockLootTableProvider extends FabricBlockLootTableProvider {
         this.dropSelf(ModBlocks.ANALYZER);
         this.dropSelf(ModBlocks.APIARY);
 
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            if (species.hasBeehive()) {
-                this.add(species.beehive.block, block -> beehiveLootTable(species.beehive.block, species.queenItem, species.princessItem, species.droneItem));
-            }
+        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            this.add(beehive.block, block -> beehiveLootTable(beehive.block, beehive.species.queenItem, beehive.species.princessItem, beehive.species.droneItem));
         }
     }
 

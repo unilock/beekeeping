@@ -1,8 +1,8 @@
 package github.mrh0.beekeeping.datagen.provider;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.HolderLookup;
@@ -35,32 +35,30 @@ public class WorldGenProvider extends FabricDynamicRegistryProvider {
 
         entries.addAll(biomeRegistry);
 
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            if (species.hasBeehive()) {
-                var configuredFeature = new ConfiguredFeature<>(
-                        species.beehive.feature,
-                        new RandomPatchConfiguration(
-                                species.beehive.tries,
-                                16,
-                                2,
-                                PlacementUtils.onlyWhenEmpty(
-                                        Feature.SIMPLE_BLOCK,
-                                        new SimpleBlockConfiguration(
-                                                BlockStateProvider.simple(species.beehive.block)
-                                        )
-                                )
-                        )
-                );
+        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            var configuredFeature = new ConfiguredFeature<>(
+                    beehive.feature,
+                    new RandomPatchConfiguration(
+                            beehive.tries,
+                            16,
+                            2,
+                            PlacementUtils.onlyWhenEmpty(
+                                    Feature.SIMPLE_BLOCK,
+                                    new SimpleBlockConfiguration(
+                                            BlockStateProvider.simple(beehive.block)
+                                    )
+                            )
+                    )
+            );
 
-                var featureRef = entries.add(ResourceKey.create(Registries.CONFIGURED_FEATURE, Beekeeping.get(species.beehive.getName() + "_configured")), configuredFeature);
+            var featureRef = entries.add(ResourceKey.create(Registries.CONFIGURED_FEATURE, Beekeeping.get(beehive.getName() + "_configured")), configuredFeature);
 
-                var placedFeature = new PlacedFeature(
-                        featureRef,
-                        List.of(RarityFilter.onAverageOnceEvery(species.beehive.rarity), InSquarePlacement.spread(), species.beehive.modifier, BiomeFilter.biome())
-                );
+            var placedFeature = new PlacedFeature(
+                    featureRef,
+                    List.of(RarityFilter.onAverageOnceEvery(beehive.rarity), InSquarePlacement.spread(), beehive.placementModifier, BiomeFilter.biome())
+            );
 
-                entries.add(ResourceKey.create(Registries.PLACED_FEATURE, Beekeeping.get(species.beehive.getName() + "_placed")), placedFeature);
-            }
+            entries.add(ResourceKey.create(Registries.PLACED_FEATURE, Beekeeping.get(beehive.getName() + "_placed")), placedFeature);
         }
     }
 

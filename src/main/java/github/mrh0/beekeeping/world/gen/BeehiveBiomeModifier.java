@@ -1,8 +1,8 @@
 package github.mrh0.beekeeping.world.gen;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,18 +12,16 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 
 public class BeehiveBiomeModifier {
     public static void modify() {
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            if (species.hasBeehive()) {
-                var id = Beekeeping.get(species.beehive.getName() + "_placed");
+        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            var id = Beekeeping.get(beehive.getName() + "_placed");
 
-                Registry.register(BuiltInRegistries.FEATURE, id, species.beehive.feature);
+            Registry.register(BuiltInRegistries.FEATURE, id, beehive.feature);
 
-                BiomeModifications.addFeature(
-                        selectionCtx -> species.beehive.acceptsBiome(selectionCtx.getBiomeRegistryEntry()),
-                        GenerationStep.Decoration.VEGETAL_DECORATION,
-                        ResourceKey.create(Registries.PLACED_FEATURE, id)
-                );
-            }
+            BiomeModifications.addFeature(
+                    selectionCtx -> selectionCtx.hasTag(beehive.biomeTag),
+                    GenerationStep.Decoration.VEGETAL_DECORATION,
+                    ResourceKey.create(Registries.PLACED_FEATURE, id)
+            );
         }
     }
 }

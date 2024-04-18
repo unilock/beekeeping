@@ -59,7 +59,7 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         if(getAnalyzed() != null && getSpecies() != null) {
-            drawText(guiGraphics, Component.translatable("item.beekeeping.species." + getSpecies().getName()), 29, 14, 1.75f, getSpecies().getColor());
+            drawText(guiGraphics, Component.translatable("item.beekeeping.species." + getSpecies().name), 29, 14, 1.75f, getSpecies().color);
         }
         else
             drawText(guiGraphics, Component.translatable("title.beekeeping.analyzer.insert"), 29, 14, 1.75f);
@@ -72,7 +72,7 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
             return;
 
         LightToleranceGene lightTolerance = LightToleranceGene.of(LightToleranceGene.get(getAnalyzed().getTag()));
-        int lightToleranceImage = lightTolerance == LightToleranceGene.ANY ? 2 : (getSpecies().isNocturnal ? 1 : 0);
+        int lightToleranceImage = lightTolerance == LightToleranceGene.ANY ? 2 : (getSpecies().nocturnal ? 1 : 0);
 
         int temperatureImage = getSpecies().preferredTemperature.ordinal();
 
@@ -85,11 +85,11 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         drawListItem(guiGraphics, TemperatureToleranceGene.of(TemperatureToleranceGene.get(getAnalyzed().getTag())).getComponent()
                 .append(" ").append(getSpecies().preferredTemperature.getComponent()), line++, 6 + temperatureImage);
         drawListItem(guiGraphics,
-                getSpecies().isNocturnal ?
+                getSpecies().nocturnal ?
                 lightTolerance.getComponent().append(" ").append(Component.translatable("text.beekeeping.nocturnal").withStyle(ChatFormatting.DARK_BLUE)) : lightTolerance.getComponent(),
                 line++, lightToleranceImage);
         drawListItem(guiGraphics,
-                getSpecies().isHasRareProduce() ? rareProduceGene.getComponent().append(" ").append((rareProduceBonus >= 0 ? "+" : "") + rareProduceBonus + "%")
+                getSpecies().produce.isRare() ? rareProduceGene.getComponent().append(" ").append((rareProduceBonus >= 0 ? "+" : "") + rareProduceBonus + "%")
                  : Component.literal("").append(rareProduceGene.getComponent().withStyle(ChatFormatting.STRIKETHROUGH))
                                         .append(" ").append(Component.translatable("text.beekeeping.none").withStyle(ChatFormatting.RED)),
                 line++, 5);

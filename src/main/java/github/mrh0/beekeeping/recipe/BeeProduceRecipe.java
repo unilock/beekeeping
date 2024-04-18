@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -133,7 +134,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public BeeProduceRecipe fromJson(ResourceLocation id, JsonObject json) {
-            Species species = Species.getByName(GsonHelper.getAsString(json, "species"));
+            Species species = SpeciesRegistry.INSTANCE.get(GsonHelper.getAsString(json, "species"));
 
             JsonObject produce = GsonHelper.getAsJsonObject(json, "produce");
             JsonObject satisfied = GsonHelper.getAsJsonObject(produce, "satisfied");
@@ -145,9 +146,9 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
 
             Item rareProduceUnsatisfied = Items.AIR;
             int rareProduceUnsatisfiedCount = 1;
-            double rareChanceUnsatisfied = 0d;
+            double rareChanceUnsatisfied = 0;
             if(unsatisfied.has("rare")) {
-                rareChanceUnsatisfied = 1d;
+                rareChanceUnsatisfied = 1;
                 JsonObject rareUnsatisfied = GsonHelper.getAsJsonObject(unsatisfied, "rare");
 
                 rareProduceUnsatisfied = ShapedRecipe.itemFromJson(rareUnsatisfied);
@@ -162,9 +163,9 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
                 commonProduceSatisfied = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(satisfied, "common"));
             Item rareProduceSatisfied = Items.AIR;
             int rareProduceSatisfiedCount = 1;
-            double rareChanceSatisfied = 0d;
+            double rareChanceSatisfied = 0;
             if(satisfied.has("rare")) {
-                rareChanceSatisfied = 1d;
+                rareChanceSatisfied = 1;
                 JsonObject rareSatisfied = GsonHelper.getAsJsonObject(satisfied, "rare");
 
                 rareProduceSatisfied = ShapedRecipe.itemFromJson(rareSatisfied);
@@ -181,7 +182,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public BeeProduceRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            Species species = Species.getByName(buf.readUtf());
+            Species species = SpeciesRegistry.INSTANCE.get(buf.readUtf());
             ItemStack commonProduceUnsatisfied = buf.readItem();
             ItemStack rareProduceUnsatisfied = buf.readItem();
             double rareChanceUnsatisfied = buf.readDouble();
@@ -197,7 +198,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, BeeProduceRecipe recipe) {
-            buf.writeUtf(recipe.species.getName());
+            buf.writeUtf(recipe.species.name);
             buf.writeItem(recipe.commonProduceUnsatisfied);
             buf.writeItem(recipe.rareProduceUnsatisfied);
             buf.writeDouble(recipe.rareChanceUnsatisfied);

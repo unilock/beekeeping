@@ -1,11 +1,10 @@
 package github.mrh0.beekeeping.registry;
 
 import github.mrh0.beekeeping.Beekeeping;
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import github.mrh0.beekeeping.blocks.analyzer.AnalyzerBlock;
 import github.mrh0.beekeeping.blocks.apiary.ApiaryBlock;
-import github.mrh0.beekeeping.blocks.beehive.BeehiveBlock;
 import github.mrh0.beekeeping.group.ItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.Registry;
@@ -18,10 +17,8 @@ public class ModBlocks {
     public static final ApiaryBlock APIARY = register("apiary", new ApiaryBlock());
 
     public static void init() {
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            if (species.hasBeehive()) {
-                species.beehive.block = register(species.beehive.getName(), new BeehiveBlock(species));
-            }
+        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            register(beehive.getName(), beehive.block);
         }
     }
 

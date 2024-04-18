@@ -2,8 +2,8 @@ package github.mrh0.beekeeping.bee;
 
 import github.mrh0.beekeeping.blocks.beehive.BeehiveBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -18,36 +18,77 @@ public class Beehive {
     public final TagKey<Biome> biomeTag;
     public final int tries;
     public final int rarity;
-    public final PlacementModifier modifier;
+    public final PlacementModifier placementModifier;
     public final Feature<RandomPatchConfiguration> feature;
-    public final Function<BlockPos, Boolean> blockPlaceAllow;
-    public BeehiveBlock block;
+    public final Function<BlockPos, Boolean> allowPlacement;
 
-    public Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity) {
+    public final BeehiveBlock block;
+
+    private Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
         this.species = species;
         this.biomeTag = biomeTag;
         this.tries = tries;
         this.rarity = rarity;
-        this.modifier = PlacementUtils.HEIGHTMAP;
-        this.feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
-        this.blockPlaceAllow = pos -> true;
-    }
-
-    public Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
-        this.species = species;
-        this.biomeTag = biomeTag;
-        this.tries = tries;
-        this.rarity = rarity;
-        this.modifier = modifier;
+        this.placementModifier = modifier;
         this.feature = feature;
-        this.blockPlaceAllow = blockPlaceAllow;
+        this.allowPlacement = blockPlaceAllow;
+
+        this.block = new BeehiveBlock(this);
     }
 
     public String getName() {
-        return species.getName() + "_beehive";
+        return this.species.name + "_beehive";
     }
 
-    public boolean acceptsBiome(Holder<Biome> biome) {
-        return biome.is(biomeTag);
+    public static Builder builder(Species species) {
+        return new Builder(species);
+    }
+
+    public static class Builder {
+        final Species species;
+        TagKey<Biome> biomeTag = BiomeTags.IS_OVERWORLD;
+        int tries = 0;
+        int rarity = 0;
+        PlacementModifier placementModifier = PlacementUtils.HEIGHTMAP;
+        Feature<RandomPatchConfiguration> feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
+        Function<BlockPos, Boolean> allowPlacement = (pos) -> true;
+
+        public Builder(Species species) {
+            this.species = species;
+        }
+
+        public Beehive build() {
+            return new Beehive(this.species, this.biomeTag, this.tries, this.rarity, this.placementModifier, this.feature, this.allowPlacement);
+        }
+
+        public Builder setBiomeTag(TagKey<Biome> biomeTag) {
+            this.biomeTag = biomeTag;
+            return this;
+        }
+
+        public Builder setTries(int tries) {
+            this.tries = tries;
+            return this;
+        }
+
+        public Builder setRarity(int rarity) {
+            this.rarity = rarity;
+            return this;
+        }
+
+        public Builder setPlacementModifier(PlacementModifier placementModifier) {
+            this.placementModifier = placementModifier;
+            return this;
+        }
+
+        public Builder setFeature(Feature<RandomPatchConfiguration> feature) {
+            this.feature = feature;
+            return this;
+        }
+
+        public Builder setAllowPlacement(Function<BlockPos, Boolean> allowPlacement) {
+            this.allowPlacement = allowPlacement;
+            return this;
+        }
     }
 }

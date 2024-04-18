@@ -56,7 +56,7 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
         private final Species offspring;
 
         public Result(Species drone, Species princess, Species offspring) {
-            this.id = new ResourceLocation(Beekeeping.MODID, "bee_breeding/" + drone.getName() + "_drone_with_" + princess.getName() + "_princess");
+            this.id = new ResourceLocation(Beekeeping.MODID, "bee_breeding/" + drone.name + "_drone_with_" + princess.name + "_princess");
             this.drone = drone;
             this.princess = princess;
             this.offspring = offspring;
@@ -64,9 +64,9 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
 
         @Override
         public void serializeRecipeData(JsonObject json) {
-            json.addProperty("drone", drone.getName());
-            json.addProperty("princess", princess.getName());
-            json.addProperty("offspring", offspring.getName());
+            json.addProperty("drone", drone.name);
+            json.addProperty("princess", princess.name);
+            json.addProperty("offspring", offspring.name);
         }
 
         @NotNull

@@ -1,7 +1,7 @@
 package github.mrh0.beekeeping.datagen.provider;
 
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import github.mrh0.beekeeping.registry.ModBlocks;
 import github.mrh0.beekeeping.registry.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -19,10 +19,9 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        for(Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            if(!species.hasBeehive()) continue;
-            tag(ModTags.Blocks.BEEHIVES).add(BuiltInRegistries.BLOCK.getResourceKey(species.beehive.block).orElseThrow());
-            tag(BlockTags.MINEABLE_WITH_AXE).add(BuiltInRegistries.BLOCK.getResourceKey(species.beehive.block).orElseThrow());
+        for(Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            tag(ModTags.Blocks.BEEHIVES).add(BuiltInRegistries.BLOCK.getResourceKey(beehive.block).orElseThrow());
+            tag(BlockTags.MINEABLE_WITH_AXE).add(BuiltInRegistries.BLOCK.getResourceKey(beehive.block).orElseThrow());
         }
 
         tag(BlockTags.MINEABLE_WITH_AXE)

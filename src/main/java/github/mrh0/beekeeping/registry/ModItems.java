@@ -23,9 +23,9 @@ public class ModItems {
 
     public static void init() {
         for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            register(species.getName() + "_drone", species.buildDroneItem());
-            register(species.getName() + "_princess", species.buildPrincessItem());
-            register(species.getName() + "_queen", species.buildQueenItem());
+            register(species.name + "_drone", species.droneItem);
+            register(species.name + "_princess", species.princessItem);
+            register(species.name + "_queen", species.queenItem);
         }
     }
 

@@ -3,6 +3,7 @@ package github.mrh0.beekeeping.recipe;
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -101,26 +102,26 @@ public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public BeeBreedingRecipe fromJson(ResourceLocation id, JsonObject json) {
-            Species droneSpecies = Species.getByName(GsonHelper.getAsString(json, "drone"));
-            Species princessSpecies = Species.getByName(GsonHelper.getAsString(json, "princess"));
-            Species offspringSpecies = Species.getByName(GsonHelper.getAsString(json, "offspring"));
+            Species droneSpecies = SpeciesRegistry.INSTANCE.get(GsonHelper.getAsString(json, "drone"));
+            Species princessSpecies = SpeciesRegistry.INSTANCE.get(GsonHelper.getAsString(json, "princess"));
+            Species offspringSpecies = SpeciesRegistry.INSTANCE.get(GsonHelper.getAsString(json, "offspring"));
 
             return new BeeBreedingRecipe(id, droneSpecies, princessSpecies, offspringSpecies);
         }
 
         @Override
         public BeeBreedingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            Species droneSpecies = Species.getByName(buf.readUtf());
-            Species princessSpecies = Species.getByName(buf.readUtf());
-            Species offspringSpecies = Species.getByName(buf.readUtf());
+            Species droneSpecies = SpeciesRegistry.INSTANCE.get(buf.readUtf());
+            Species princessSpecies = SpeciesRegistry.INSTANCE.get(buf.readUtf());
+            Species offspringSpecies = SpeciesRegistry.INSTANCE.get(buf.readUtf());
             return new BeeBreedingRecipe(id, droneSpecies, princessSpecies, offspringSpecies);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, BeeBreedingRecipe recipe) {
-            buf.writeUtf(recipe.drone.getName());
-            buf.writeUtf(recipe.princess.getName());
-            buf.writeUtf(recipe.offspring.getName());
+            buf.writeUtf(recipe.drone.name);
+            buf.writeUtf(recipe.princess.name);
+            buf.writeUtf(recipe.offspring.name);
         }
     }
 }

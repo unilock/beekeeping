@@ -1,5 +1,7 @@
 package github.mrh0.beekeeping.datagen.generator;
 
+import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehiveRegistry;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.item.BeeItem;
@@ -30,22 +32,23 @@ public class BeeIconGenerator {
 
 
 
-        for(Species species : SpeciesRegistry.INSTANCE.getAll()) {
+        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
             File princessCrown = princess;
             File queenCrown = queen;
-            if(species.isDark()) {
+            if(species.dark) {
                 princessCrown = princessDark;
                 queenCrown = queenDark;
             }
 
-            makeIcon(bee, princessCrown, queenCrown, path, species.getName(), BeeItem.BeeType.DRONE, species.getColor());
-            makeIcon(bee, princessCrown, queenCrown, path, species.getName(), BeeItem.BeeType.PRINCESS, species.getColor());
-            makeIcon(bee, princessCrown, queenCrown, path, species.getName(), BeeItem.BeeType.QUEEN, species.getColor());
-            if(species.hasBeehive()) {
-                makeBeehive(beehiveSide, species.getName() + "_side.png", species.getColor(), pathHive);
-                makeBeehive(beehiveBottom, species.getName() + "_bottom.png", species.getColor(), pathHive);
-                makeBeehive(beehiveTop, species.getName() + "_top.png", species.getColor(), pathHive);
-            }
+            makeIcon(bee, princessCrown, queenCrown, path, species.name, BeeItem.BeeType.DRONE, species.color);
+            makeIcon(bee, princessCrown, queenCrown, path, species.name, BeeItem.BeeType.PRINCESS, species.color);
+            makeIcon(bee, princessCrown, queenCrown, path, species.name, BeeItem.BeeType.QUEEN, species.color);
+        }
+
+        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+            makeBeehive(beehiveSide, beehive.species.name + "_side.png", beehive.species.color, pathHive);
+            makeBeehive(beehiveBottom, beehive.species.name + "_bottom.png", beehive.species.color, pathHive);
+            makeBeehive(beehiveTop, beehive.species.name + "_top.png", beehive.species.color, pathHive);
         }
     }
 

@@ -10,7 +10,6 @@ import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -51,8 +50,6 @@ public abstract class BeeItem extends Item {
     }
 
     public abstract BeeType getType();
-
-    public abstract ResourceLocation getResourceLocation();
 
     public static void setAnalyzed(CompoundTag tag, boolean analyzed) {
         tag.putBoolean("analyzed", analyzed);
