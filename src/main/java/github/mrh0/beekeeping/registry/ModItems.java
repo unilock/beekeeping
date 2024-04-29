@@ -23,9 +23,9 @@ public class ModItems {
     public static final FrameItem MUTATION_FRAME = register("mutation_frame", new FrameItem("mutation").addProduceEvent((level, pos, type, stack) -> type == ProduceEvent.ProduceType.DRONE || type == ProduceEvent.ProduceType.PRINCESS ? BeeLifecycle.mutateRandom(stack) : stack));
     public static final FrameItem WATERPROOF_FRAME = register("waterproof_frame", new FrameItem("waterproof").addSatisfactionEvent((level, pos, type, queen, satisfaction) -> type == SatisfactionEvent.SatisfactionType.WEATHER ? satisfaction.up() : satisfaction));
 
-    public static final DroneBee DRONE = new DroneBee(new FabricItemSettings().stacksTo(1));
-    public static final PrincessBee PRINCESS = new PrincessBee(new FabricItemSettings().stacksTo(1));
-    public static final QueenBee QUEEN = new QueenBee(new FabricItemSettings().stacksTo(1));
+    public static final DroneBee DRONE = register("drone", new DroneBee(new FabricItemSettings().stacksTo(1)));
+    public static final PrincessBee PRINCESS = register("princess", new PrincessBee(new FabricItemSettings().stacksTo(1)));
+    public static final QueenBee QUEEN = register("queen", new QueenBee(new FabricItemSettings().stacksTo(1)));
 
     public static void init() {
 
