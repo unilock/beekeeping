@@ -101,11 +101,11 @@ public abstract class BeeItem extends Item {
 
         init(
                 stack,
-                Gene.eval(species.lifetimeGene),
-                Gene.eval(species.weatherGene),
-                Gene.eval(species.temperatureGene),
-                Gene.eval(species.lightGene),
-                Gene.eval(species.produceGene)
+                Gene.eval(species.lifetimeGene.func),
+                Gene.eval(species.weatherGene.func),
+                Gene.eval(species.temperatureGene.func),
+                Gene.eval(species.lightGene.func),
+                Gene.eval(species.produceGene.func)
         );
 
     }

@@ -91,4 +91,25 @@ public interface Gene {
     default MutableComponent getComponent() {
         return Component.translatable("text.beekeeping.gene.type." + getName()).withStyle(formatting[getIndex()]);
     }
+
+    enum RandomFunctions {
+        RANDOM_5_WIDE("random5wide", Gene::random5Wide),
+        RANDOM_5_NARROW("random5narrow", Gene::random5Narrow),
+        RANDOM_5_LOW("random5low", Gene::random5Low),
+        RANDOM_5_HIGH("random5high", Gene::random5High),
+        NORMAL_5("normal5", Gene::normal5),
+        STRICT("strict", Gene::strict),
+        PICKY("picky", Gene::picky),
+        ANY("any", Gene::any),
+        RANDOM_3_LOW("random3low", Gene::random3Low),
+        RANDOM_3_HIGH("random3high", Gene::random3High);
+
+        public final String name;
+        public final RandomFunction func;
+
+        RandomFunctions(String name, RandomFunction func) {
+            this.name = name;
+            this.func = func;
+        }
+    }
 }

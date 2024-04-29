@@ -25,9 +25,9 @@ public class BeeIconGenerator {
         File beehiveBottom = Path.of(rp, "beehive_bottom.png").toFile();
         File beehiveTop = Path.of(rp, "beehive_top.png").toFile();
 
-        String path = Path.of("../../src/main/resources/assets/beekeeping/textures/item/").toAbsolutePath().toString();
+        String path = Path.of("../../src/main/resources/assets/beekeeping/textures/item/").toFile().getCanonicalPath();
         System.out.println(path);
-        String pathHive = Path.of("../../src/main/resources/assets/beekeeping/textures/block/beehives/").toAbsolutePath().toString();
+        String pathHive = Path.of("../../src/main/resources/assets/beekeeping/textures/block/beehives/").toFile().getCanonicalPath();
         System.out.println(pathHive);
 
 
@@ -72,7 +72,7 @@ public class BeeIconGenerator {
             }
         }
 
-        File output = Path.of(outpath,  name).toFile();
+        File output = Path.of(outpath, name).toFile();
         if(!output.exists())
             output.createNewFile();
         ImageIO.write(beehive, "png", output);

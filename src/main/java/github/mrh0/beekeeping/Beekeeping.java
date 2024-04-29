@@ -9,7 +9,6 @@ import github.mrh0.beekeeping.registry.ModBlocks;
 import github.mrh0.beekeeping.registry.ModItems;
 import github.mrh0.beekeeping.registry.ModMenus;
 import github.mrh0.beekeeping.registry.ModRecipes;
-import github.mrh0.beekeeping.registry.ModSpecies;
 import github.mrh0.beekeeping.registry.ModTags;
 import github.mrh0.beekeeping.world.gen.BeehiveBiomeModifier;
 import net.fabricmc.api.ModInitializer;
@@ -28,7 +27,6 @@ public class Beekeeping implements ModInitializer {
         BeekeepingChannel.registerServer();
 
         ForgeConfigRegistry.INSTANCE.register(MODID, ModConfig.Type.COMMON, Config.COMMON_CONFIG);
-        ModSpecies.init();
         ModBlocks.init();
         ModBlockEntities.init();
         ModItems.init();

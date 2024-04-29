@@ -11,7 +11,7 @@ public enum BiomeTemperature {
     WARM("warm"),
     WARMEST("warmest");
 
-    private String name;
+    public final String name;
 
     BiomeTemperature(String name) {
         this.name = name;
@@ -31,12 +31,8 @@ public enum BiomeTemperature {
         return r;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public MutableComponent getComponent() {
-        return Component.translatable("text.beekeeping.temperature." + getName()).withStyle(Gene.formatting[ordinal()]);
+        return Component.translatable("text.beekeeping.temperature." + name).withStyle(Gene.formatting[ordinal()]);
     }
 
     public boolean isAdjacent(BiomeTemperature temp) {

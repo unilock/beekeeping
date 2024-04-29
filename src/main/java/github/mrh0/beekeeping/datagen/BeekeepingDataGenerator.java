@@ -2,6 +2,7 @@ package github.mrh0.beekeeping.datagen;
 
 import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.datagen.generator.BeeIconGenerator;
+import github.mrh0.beekeeping.datagen.generator.BeeSpeciesGenerator;
 import github.mrh0.beekeeping.datagen.generator.BlockStateGenerator;
 import github.mrh0.beekeeping.datagen.generator.ItemModelGenerator;
 import github.mrh0.beekeeping.datagen.provider.BlockLootTableProvider;
@@ -20,6 +21,7 @@ public class BeekeepingDataGenerator implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         try {
             BeeIconGenerator.makeAll();
+            BeeSpeciesGenerator.makeAll();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

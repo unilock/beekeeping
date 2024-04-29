@@ -13,6 +13,7 @@ import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class Species {
     public final String name;
@@ -21,15 +22,16 @@ public class Species {
     public final boolean foil;
     public final boolean nocturnal;
     public final BiomeTemperature preferredTemperature;
-    public final Gene.RandomFunction lifetimeGene;
-    public final Gene.RandomFunction lightGene;
-    public final Gene.RandomFunction produceGene;
-    public final Gene.RandomFunction temperatureGene;
-    public final Gene.RandomFunction weatherGene;
+    public final Gene.RandomFunctions lifetimeGene;
+    public final Gene.RandomFunctions lightGene;
+    public final Gene.RandomFunctions produceGene;
+    public final Gene.RandomFunctions temperatureGene;
+    public final Gene.RandomFunctions weatherGene;
     public final Produce produce;
+    @Nullable
     public final Pair<String, String> parents;
 
-    private Species(String name, int color, boolean dark, boolean foil, boolean nocturnal, BiomeTemperature preferredTemperature, Gene.RandomFunction lifetimeGene, Gene.RandomFunction lightGene, Gene.RandomFunction produceGene, Gene.RandomFunction temperatureGene, Gene.RandomFunction weatherGene, Produce produce, Pair<String, String> parents) {
+    private Species(String name, int color, boolean dark, boolean foil, boolean nocturnal, BiomeTemperature preferredTemperature, Gene.RandomFunctions lifetimeGene, Gene.RandomFunctions lightGene, Gene.RandomFunctions produceGene, Gene.RandomFunctions temperatureGene, Gene.RandomFunctions weatherGene, Produce produce, Pair<String, String> parents) {
         this.name = name;
         this.color = color;
         this.dark = dark;
@@ -132,11 +134,11 @@ public class Species {
         boolean foil = false;
         boolean nocturnal = false;
         BiomeTemperature preferredTemperature = BiomeTemperature.TEMPERED;
-        Gene.RandomFunction lifetimeGene = Gene::random5Narrow;
-        Gene.RandomFunction lightGene = Gene::strict;
-        Gene.RandomFunction produceGene = Gene::random5Narrow;
-        Gene.RandomFunction temperatureGene = Gene::picky;
-        Gene.RandomFunction weatherGene = Gene::strict;
+        Gene.RandomFunctions lifetimeGene = Gene.RandomFunctions.RANDOM_5_NARROW;
+        Gene.RandomFunctions lightGene = Gene.RandomFunctions.STRICT;
+        Gene.RandomFunctions produceGene = Gene.RandomFunctions.RANDOM_5_NARROW;
+        Gene.RandomFunctions temperatureGene = Gene.RandomFunctions.PICKY;
+        Gene.RandomFunctions weatherGene = Gene.RandomFunctions.STRICT;
         Produce produce;
         Pair<String, String> parents;
 
@@ -177,27 +179,27 @@ public class Species {
             return this;
         }
 
-        public Builder setLifetimeGene(Gene.RandomFunction func) {
+        public Builder setLifetimeGene(Gene.RandomFunctions func) {
             this.lifetimeGene = func;
             return this;
         }
 
-        public Builder setLightGene(Gene.RandomFunction func) {
+        public Builder setLightGene(Gene.RandomFunctions func) {
             this.lightGene = func;
             return this;
         }
 
-        public Builder setProduceGene(Gene.RandomFunction func) {
+        public Builder setProduceGene(Gene.RandomFunctions func) {
             this.produceGene = func;
             return this;
         }
 
-        public Builder setTemperatureGene(Gene.RandomFunction func) {
+        public Builder setTemperatureGene(Gene.RandomFunctions func) {
             this.temperatureGene = func;
             return this;
         }
 
-        public Builder setWeatherGene(Gene.RandomFunction func) {
+        public Builder setWeatherGene(Gene.RandomFunctions func) {
             this.weatherGene = func;
             return this;
         }
