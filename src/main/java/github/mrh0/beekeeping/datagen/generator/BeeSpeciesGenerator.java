@@ -398,11 +398,13 @@ public class BeeSpeciesGenerator {
         produce.addProperty("common", BuiltInRegistries.ITEM.getKey(species.produce.common()).toString());
         produce.addProperty("common_count_unsatisfied", species.produce.commonCountUnsatisfied());
         produce.addProperty("common_count_satisfied", species.produce.commonCountSatisfied());
-        produce.addProperty("rare", BuiltInRegistries.ITEM.getKey(species.produce.rare()).toString());
-        produce.addProperty("rare_count_unsatisfied", species.produce.rareCountUnsatisfied());
-        produce.addProperty("rare_count_satisfied", species.produce.rareCountSatisfied());
-        produce.addProperty("rare_chance_unsatisfied", species.produce.rareChanceUnsatisfied());
-        produce.addProperty("rare_chance_satisfied", species.produce.rareChanceSatisfied());
+        if (species.produce.rare() != Items.AIR) {
+            produce.addProperty("rare", BuiltInRegistries.ITEM.getKey(species.produce.rare()).toString());
+            produce.addProperty("rare_count_unsatisfied", species.produce.rareCountUnsatisfied());
+            produce.addProperty("rare_count_satisfied", species.produce.rareCountSatisfied());
+            produce.addProperty("rare_chance_unsatisfied", species.produce.rareChanceUnsatisfied());
+            produce.addProperty("rare_chance_satisfied", species.produce.rareChanceSatisfied());
+        }
 
         json.add("produce", produce);
 
