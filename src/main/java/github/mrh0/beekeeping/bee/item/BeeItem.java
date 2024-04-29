@@ -9,7 +9,6 @@ import github.mrh0.beekeeping.bee.genes.RareProduceGene;
 import github.mrh0.beekeeping.bee.genes.TemperatureToleranceGene;
 import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +21,7 @@ import java.util.List;
 
 public abstract class BeeItem extends Item {
     public static final String ANALYZED_KEY = "beekeeping:analyzed";
+    public static final String GENES_KEY = "beekeeping:genes";
     public static final String HEALTH_KEY = "beekeeping:health";
     public static final String SPECIES_KEY = "beekeeping:species";
 
@@ -64,8 +64,12 @@ public abstract class BeeItem extends Item {
         stack.getTag().putInt(HEALTH_KEY, health);
     }
 
-    public static int getHealth(CompoundTag tag) {
-        return tag.getInt(HEALTH_KEY);
+    public static int getHealth(ItemStack stack) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            return 0;
+        }
+
+        return stack.getTag().getInt(HEALTH_KEY);
     }
 
     public static void setSpecies(ItemStack stack, Species species) {
@@ -140,7 +144,7 @@ public abstract class BeeItem extends Item {
             return 1.0;
         }
 
-        double health = getHealth(stack.getTag());
+        double health = getHealth(stack);
         double max = LifetimeGene.of(LifetimeGene.get(stack)).getTime();
         return health/max;
     }

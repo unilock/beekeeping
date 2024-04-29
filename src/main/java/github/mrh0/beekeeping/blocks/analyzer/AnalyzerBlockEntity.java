@@ -46,7 +46,7 @@ public class AnalyzerBlockEntity extends BlockEntity implements ExtendedScreenHa
             ItemStack stack = getAnalyzed();
 
             if (!stack.isEmpty() && stack.getItem() instanceof BeeItem && !BeeItem.getAnalyzed(stack)) {
-                if (stack.getTag() == null) {
+                if (stack.getTag() == null || !stack.getTag().contains(BeeItem.HEALTH_KEY)) {
                     BeeItem.init(stack);
                 }
 

@@ -11,7 +11,6 @@ import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
-import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -25,20 +24,20 @@ public class BeeLifecycle {
         inv.setItem(0, drone);
         inv.setItem(1, princess);
 
-        Optional<BeeBreedingRecipe> match = level.getRecipeManager()
-                .getRecipeFor(BeeBreedingRecipe.Type.INSTANCE, inv, level);
-        if(match.isEmpty())
+        Optional<BeeBreedingRecipe> match = level.getRecipeManager().getRecipeFor(BeeBreedingRecipe.Type.INSTANCE, inv, level);
+        if (match.isEmpty()) {
             return Util.selectRandom(BeeItem.getSpecies(drone), BeeItem.getSpecies(princess));
+        }
         return match.get().getOffspring();
     }
 
     public static CompoundTag getOffspringTag(ItemStack drone, ItemStack princess, Species offspring, SelectFunction fn) {
         CompoundTag tag = new CompoundTag();
 
-        ItemStack queen = new ItemStack(ModItems.QUEEN);
-        BeeItem.setSpecies(queen, offspring);
+        ItemStack queen = offspring.getQueen();
 
-        BeeItem.init(queen,
+        BeeItem.init(
+                queen,
                 fn.select(LifetimeGene.get(drone), LifetimeGene.get(princess)),
                 fn.select(WeatherToleranceGene.get(drone), WeatherToleranceGene.get(princess)),
                 fn.select(TemperatureToleranceGene.get(drone), TemperatureToleranceGene.get(princess)),
@@ -58,13 +57,18 @@ public class BeeLifecycle {
 
     public static ItemStack clone(ItemStack bee, ItemStack type) {
         CompoundTag tag = new CompoundTag();
-        BeeItem.init(bee,
+
+        BeeItem.init(
+                bee,
                 LifetimeGene.get(bee),
                 WeatherToleranceGene.get(bee),
                 TemperatureToleranceGene.get(bee),
                 LightToleranceGene.get(bee),
-                RareProduceGene.get(bee));
+                RareProduceGene.get(bee)
+        );
+
         type.setTag(tag);
+
         return type;
     }
 

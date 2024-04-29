@@ -48,7 +48,7 @@ public class ApiaryScreen extends BeeScreen<ApiaryMenu, ApiaryBlockEntity> {
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         drawToggle(guiGraphics, (toggle.in(mouseX, mouseY) ? 2 : 0) + (getToggleState() ? 1 : 0));
 
-        if(getQueen() != null && !getQueen().isEmpty() && getQueen().getTag() != null) {
+        if (getQueen() != null && !getQueen().isEmpty() && getQueen().getTag() != null) {
             drawImagePartBottomUp(guiGraphics, TEXTURE, health, imageWidth, 87, BeeItem.getHealthOf(getQueen()));
 
             drawSatisfaction(guiGraphics);

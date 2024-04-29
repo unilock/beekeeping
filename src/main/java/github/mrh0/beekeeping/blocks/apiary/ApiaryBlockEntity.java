@@ -171,9 +171,9 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
         if(!queen.isEmpty())
             return;
 
-        if(drone.getTag() == null)
+        if(drone.getTag() == null || !drone.getTag().contains(BeeItem.HEALTH_KEY))
             BeeItem.init(drone);
-        if(princess.getTag() == null)
+        if(princess.getTag() == null || !princess.getTag().contains(BeeItem.HEALTH_KEY))
             BeeItem.init(princess);
 
         offspringCache = BeeLifecycle.getOffspringSpecies(getLevel(), drone, princess);
@@ -253,6 +253,7 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
     public Satisfaction weatherSatisfactionCache;
     public Satisfaction temperatureSatisfactionCache;
     public Satisfaction lightSatisfactionCache;
+
     public static void tick(Level level, BlockPos pos, BlockState state, ApiaryBlockEntity abe) {
         abe.localTick();
     }
@@ -276,34 +277,39 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
         slowTick = 0;
         ItemStack queen = getQueen();
         Species species = BeeItem.getSpecies(queen);
-        if(species == null)
+        if (species == null) {
             return;
-        if(queen.getTag() == null)
+        }
+        if (queen.getTag() == null || !queen.getTag().contains(BeeItem.HEALTH_KEY)) {
             BeeItem.init(queen);
+        }
 
         updateSatisfaction();
 
-        int hp = BeeItem.getHealth(queen.getTag());
-        if(hp <= 0) {
-            if(checkLock)
+        int hp = BeeItem.getHealth(queen);
+
+        if (hp <= 0) {
+            if (checkLock) {
                 return;
-            if(attemptInsert(queen, inputInventoryWrapper, outputInventoryWrapper, satisfactionCache == Satisfaction.SATISFIED, continuous)) {
+            }
+            if (attemptInsert(queen, inputInventoryWrapper, outputInventoryWrapper, satisfactionCache == Satisfaction.SATISFIED, continuous)) {
                 inputContainer.setItem(2, ItemStack.EMPTY);
                 return;
             }
             checkLock = true;
             return;
         }
-        if(satisfactionCache != Satisfaction.NOT_WORKING)
-            BeeItem.setHealth(queen, hp-LIFETIME_STEP);
+
+        if (satisfactionCache != Satisfaction.NOT_WORKING) {
+            BeeItem.setHealth(queen, hp - LIFETIME_STEP);
+        }
     }
 
     public boolean attemptInsert(ItemStack queen, InventoryStorage input, InventoryStorage output, boolean satisfied, boolean continuous) {
         var optional = BeeLifecycle.getProduceRecipe(getLevel(), queen);
-        if(optional.isEmpty())
+        if (optional.isEmpty() || queen == null || queen.isEmpty()) {
             return true;
-        if(queen == null || queen.isEmpty())
-            return true;
+        }
 
         BeeProduceRecipe bpr = optional.get();
         ItemStack commonProduce = bpr.getCommonProduce(satisfied);
@@ -373,15 +379,16 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
 
     @Override
     public void onToggle(ServerPlayer player, int index, boolean value) {
-        switch(index) {
+        switch (index) {
             case 0:
                 continuous = value;
                 checkLock = false;
                 setChanged();
                 break;
         }
-        if(player != null)
+        if (player != null) {
             ToggleServerPacket.send(getBlockPos(), getLevel(), index, value);
+        }
     }
 
     @Override
