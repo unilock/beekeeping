@@ -71,18 +71,18 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         if(getSpecies() == null)
             return;
 
-        LightToleranceGene lightTolerance = LightToleranceGene.of(LightToleranceGene.get(getAnalyzed().getTag()));
+        LightToleranceGene lightTolerance = LightToleranceGene.of(LightToleranceGene.get(getAnalyzed()));
         int lightToleranceImage = lightTolerance == LightToleranceGene.ANY ? 2 : (getSpecies().nocturnal ? 1 : 0);
 
         int temperatureImage = getSpecies().preferredTemperature.ordinal();
 
-        RareProduceGene rareProduceGene = RareProduceGene.of(RareProduceGene.get(getAnalyzed().getTag()));
+        RareProduceGene rareProduceGene = RareProduceGene.of(RareProduceGene.get(getAnalyzed()));
         int rareProduceBonus = (int)((rareProduceGene.getChance()-1d)*100d);
 
         int line = 0;
-        drawListItem(guiGraphics, LifetimeGene.of(LifetimeGene.get(getAnalyzed().getTag())).getComponent(), line++, 4);
-        drawListItem(guiGraphics, WeatherToleranceGene.of(WeatherToleranceGene.get(getAnalyzed().getTag())).getComponent(), line++, 3);
-        drawListItem(guiGraphics, TemperatureToleranceGene.of(TemperatureToleranceGene.get(getAnalyzed().getTag())).getComponent()
+        drawListItem(guiGraphics, LifetimeGene.of(LifetimeGene.get(getAnalyzed())).getComponent(), line++, 4);
+        drawListItem(guiGraphics, WeatherToleranceGene.of(WeatherToleranceGene.get(getAnalyzed())).getComponent(), line++, 3);
+        drawListItem(guiGraphics, TemperatureToleranceGene.of(TemperatureToleranceGene.get(getAnalyzed())).getComponent()
                 .append(" ").append(getSpecies().preferredTemperature.getComponent()), line++, 6 + temperatureImage);
         drawListItem(guiGraphics,
                 getSpecies().nocturnal ?
@@ -129,6 +129,6 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
     }
 
     public Species getSpecies() {
-        return BeeItem.speciesOf(getAnalyzed());
+        return BeeItem.getSpecies(getAnalyzed());
     }
 }

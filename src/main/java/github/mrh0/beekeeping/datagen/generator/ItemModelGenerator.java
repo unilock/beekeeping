@@ -4,8 +4,6 @@ import github.mrh0.beekeeping.Beekeeping;
 import github.mrh0.beekeeping.Util;
 import github.mrh0.beekeeping.bee.Beehive;
 import github.mrh0.beekeeping.bee.BeehiveRegistry;
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.item.frame.FrameItem;
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelBuilder;
@@ -23,18 +21,19 @@ public class ItemModelGenerator extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            simpleItem(species.droneItem);
-            simpleItem(species.princessItem);
-            simpleItem(species.queenItem);
-
-            System.out.println("\"item.beekeeping." + species.name + "_drone\": \"" + Util.capitalize(species.name) + " Drone\",");
-            System.out.println("\"item.beekeeping." + species.name + "_princess\": \"" + Util.capitalize(species.name) + " Princess\",");
-            System.out.println("\"item.beekeeping." + species.name + "_queen\": \"" + Util.capitalize(species.name) + " Queen\",");
-            System.out.println("\"item.beekeeping.species." + species.name + "\": \"" + Util.capitalize(species.name) + "\",");
-        }
-
-        System.out.println();
+        // TODO
+//        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
+//            simpleItem(species.droneItem);
+//            simpleItem(species.princessItem);
+//            simpleItem(species.queenItem);
+//
+//            System.out.println("\"item.beekeeping." + species.name + "_drone\": \"" + Util.capitalize(species.name) + " Drone\",");
+//            System.out.println("\"item.beekeeping." + species.name + "_princess\": \"" + Util.capitalize(species.name) + " Princess\",");
+//            System.out.println("\"item.beekeeping." + species.name + "_queen\": \"" + Util.capitalize(species.name) + " Queen\",");
+//            System.out.println("\"item.beekeeping.species." + species.name + "\": \"" + Util.capitalize(species.name) + "\",");
+//        }
+//
+//        System.out.println();
 
         for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
             blockItem(beehive.block);

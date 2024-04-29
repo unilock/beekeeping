@@ -1,6 +1,7 @@
 package github.mrh0.beekeeping.bee.item;
 
 import github.mrh0.beekeeping.bee.Species;
+import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.bee.genes.Gene;
 import github.mrh0.beekeeping.bee.genes.LifetimeGene;
 import github.mrh0.beekeeping.bee.genes.LightToleranceGene;
@@ -14,104 +15,110 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public abstract class BeeItem extends Item {
-    private final Species species;
-    private final boolean foil;
+    public static final String ANALYZED_KEY = "beekeeping:analyzed";
+    public static final String HEALTH_KEY = "beekeeping:health";
+    public static final String SPECIES_KEY = "beekeeping:species";
 
-    public BeeItem(Species species, Properties props, boolean foil) {
+    public BeeItem(Properties props) {
         super(props);
-        this.species = species;
-        this.foil = foil;
-    }
-
-    public enum BeeType {
-        DRONE("drone"),
-        PRINCESS("princess"),
-        QUEEN("queen");
-        public final String name;
-
-        BeeType(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
     }
 
     @Override
-    public boolean isFoil(ItemStack item) {
-        return foil;
+    public boolean isFoil(ItemStack stack) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            return false;
+        }
+
+        return getSpecies(stack) != null && getSpecies(stack).foil;
     }
 
     public abstract BeeType getType();
 
-    public static void setAnalyzed(CompoundTag tag, boolean analyzed) {
-        tag.putBoolean("analyzed", analyzed);
+    public static void setAnalyzed(ItemStack stack, boolean analyzed) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            throw new IllegalArgumentException("[Beekeeping] setAnalyzed called on invalid stack");
+        }
+
+        stack.getTag().putBoolean(ANALYZED_KEY, analyzed);
     }
 
-    public static boolean getAnalyzed(CompoundTag tag) {
-        return tag.getBoolean("analyzed");
+    public static boolean getAnalyzed(ItemStack stack) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            return false;
+        }
+
+        return stack.getTag().getBoolean(ANALYZED_KEY);
     }
 
-    public static boolean isAnalyzed(ItemStack stack) {
-        if(stack.isEmpty())
-            return false;
-        if(!(stack.getItem() instanceof BeeItem))
-            return false;
-        if(stack.getTag() == null)
-            return false;
-        return getAnalyzed(stack.getTag());
-    }
+    public static void setHealth(ItemStack stack, int health) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            throw new IllegalArgumentException("[Beekeeping] setHealth called on invalid stack");
+        }
 
-    public static void setHealth(CompoundTag tag, int health) {
-        tag.putInt("health", health);
+        stack.getTag().putInt(HEALTH_KEY, health);
     }
 
     public static int getHealth(CompoundTag tag) {
-        return tag.getInt("health");
+        return tag.getInt(HEALTH_KEY);
+    }
+
+    public static void setSpecies(ItemStack stack, Species species) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            throw new IllegalArgumentException("[Beekeeping] setSpecies called on invalid stack");
+        }
+
+        stack.getTag().putString(SPECIES_KEY, species.name);
+    }
+
+    public static Species getSpecies(ItemStack stack) {
+        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+            return null;
+        }
+
+        return SpeciesRegistry.INSTANCE.get(stack.getTag().getString(SPECIES_KEY));
     }
 
     public static void init(ItemStack stack) {
-        if(stack.isEmpty())
+        if (!(stack.getItem() instanceof BeeItem)) {
             return;
-        if(!(stack.getItem() instanceof BeeItem))
-            return;
-        if(stack.getTag() == null)
-            stack.setTag(new CompoundTag());
-        CompoundTag tag = stack.getTag();
-        if(!(stack.getItem() instanceof BeeItem))
-            return;
-        BeeItem beeItem = (BeeItem) stack.getItem();
+        }
 
-        init(tag, beeItem,
-                Gene.eval(beeItem.species.lifetimeGene),
-                Gene.eval(beeItem.species.weatherGene),
-                Gene.eval(beeItem.species.temperatureGene),
-                Gene.eval(beeItem.species.lightGene),
-                Gene.eval(beeItem.species.produceGene)
+        Species species = getSpecies(stack);
+
+        if (species == null) {
+            throw new IllegalArgumentException("[Beekeeping] init called on invalid stack");
+        }
+
+        init(
+                stack,
+                Gene.eval(species.lifetimeGene),
+                Gene.eval(species.weatherGene),
+                Gene.eval(species.temperatureGene),
+                Gene.eval(species.lightGene),
+                Gene.eval(species.produceGene)
         );
 
     }
 
-    public static void init(CompoundTag tag, BeeItem beeItem, int lifetimeGene, int weatherGene, int temperatureGene, int lightGene, int produceGene) {
-        setAnalyzed(tag, false);
+    public static void init(ItemStack stack, int lifetimeGene, int weatherGene, int temperatureGene, int lightGene, int produceGene) {
+        setAnalyzed(stack, false);
 
         //System.out.println(lifetimeGene + ":" + weatherGene + ":" + temperatureGene + ":" + lightGene + ":" + produceGene);
         //System.out.println(LifetimeGene.of(lifetimeGene).getName() + ":" + WeatherToleranceGene.of(biomeGene).getName() + ":" + LightToleranceGene.of(lightGene).getName() + ":" + RareProduceGene.of(produceGene).getName());
 
-        LifetimeGene.set(tag, lifetimeGene);
-        WeatherToleranceGene.set(tag, weatherGene);
-        TemperatureToleranceGene.set(tag, temperatureGene);
-        LightToleranceGene.set(tag, lightGene);
-        RareProduceGene.set(tag, produceGene);
+        LifetimeGene.set(stack, lifetimeGene);
+        LightToleranceGene.set(stack, lightGene);
+        RareProduceGene.set(stack, produceGene);
+        TemperatureToleranceGene.set(stack, temperatureGene);
+        WeatherToleranceGene.set(stack, weatherGene);
 
-        setHealth(tag, LifetimeGene.of(LifetimeGene.get(tag)).getTime());
+        setHealth(stack, LifetimeGene.of(LifetimeGene.get(stack)).getTime());
     }
 
     /*
@@ -125,55 +132,60 @@ public abstract class BeeItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return (int) (getHealthOf(stack) * 13d);
+        return (int) (getHealthOf(stack) * 13.0);
     }
 
     public static double getHealthOf(ItemStack stack) {
-        if(stack.getTag() == null)
-            return 1d;
+        if (stack.getTag() == null) {
+            return 1.0;
+        }
+
         double health = getHealth(stack.getTag());
-        double max = LifetimeGene.of(LifetimeGene.get(stack.getTag())).getTime();
+        double max = LifetimeGene.of(LifetimeGene.get(stack)).getTime();
         return health/max;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, level, list, flag);
-        if(stack.isEmpty())
-            return;
-        if(!(stack.getItem() instanceof BeeItem))
-            return;
-        if(stack.getTag() == null || !isAnalyzed(stack)) {
+
+        if (!getAnalyzed(stack)) {
             list.add(Component.translatable("tooltip.beekeeping.gene.not_analyzed").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
             return;
         }
 
-        CompoundTag tag = stack.getTag();
         list.add(Component.translatable("tooltip.beekeeping.gene.lifetime")
-                .append(": ").append(LifetimeGene.of(LifetimeGene.get(tag)).getComponent()));
+                .append(": ").append(LifetimeGene.of(LifetimeGene.get(stack)).getComponent()));
         list.add(Component.translatable("tooltip.beekeeping.gene.weather")
-                .append(": ").append(WeatherToleranceGene.of(WeatherToleranceGene.get(tag)).getComponent()));
+                .append(": ").append(WeatherToleranceGene.of(WeatherToleranceGene.get(stack)).getComponent()));
         list.add(Component.translatable("tooltip.beekeeping.gene.temperature")
-                .append(": ").append(TemperatureToleranceGene.of(TemperatureToleranceGene.get(tag)).getComponent()));
+                .append(": ").append(TemperatureToleranceGene.of(TemperatureToleranceGene.get(stack)).getComponent()));
         list.add(Component.translatable("tooltip.beekeeping.gene.light")
-                .append(": ").append(LightToleranceGene.of(LightToleranceGene.get(tag)).getComponent()));
+                .append(": ").append(LightToleranceGene.of(LightToleranceGene.get(stack)).getComponent()));
         list.add(Component.translatable("tooltip.beekeeping.gene.produce")
-                .append(": ").append(RareProduceGene.of(RareProduceGene.get(tag)).getComponent()));
+                .append(": ").append(RareProduceGene.of(RareProduceGene.get(stack)).getComponent()));
 
         //list.add(Component.literal("health: " + getHealth(stack.getTag())));
     }
 
-    public static Species speciesOf(ItemStack stack) {
-        if(stack == null)
-            return null;
-        if(stack.isEmpty())
-            return null;
-        if(!(stack.getItem() instanceof BeeItem))
-            return null;
-        return ((BeeItem) stack.getItem()).species;
+    public static boolean is(ItemStack stack, Species species) {
+        return getSpecies(stack) == species;
     }
 
-    public static boolean is(ItemStack stack, Species species) {
-        return speciesOf(stack) == species;
+    public enum BeeType {
+        DRONE("drone"),
+        PRINCESS("princess"),
+        QUEEN("queen");
+
+        public final String name;
+
+        BeeType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

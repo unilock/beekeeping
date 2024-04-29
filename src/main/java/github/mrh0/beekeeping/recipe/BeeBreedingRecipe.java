@@ -30,10 +30,10 @@ public class BeeBreedingRecipe implements Recipe<SimpleContainer> {
         this.princess = princess;
         this.offspring = offspring;
         this.recipeItems = NonNullList.create();//NonNullList.of(Ingredient.of(drone.droneItem), Ingredient.of(princess.princessItem));
-        recipeItems.add(Ingredient.of(drone.droneItem));
-        recipeItems.add(Ingredient.of(princess.princessItem));
+        recipeItems.add(Ingredient.of(drone.getDrone()));
+        recipeItems.add(Ingredient.of(princess.getPrincess()));
 
-        this.output = new ItemStack(offspring.queenItem);
+        this.output = offspring.getQueen();
     }
 
     public Species getOffspring() {

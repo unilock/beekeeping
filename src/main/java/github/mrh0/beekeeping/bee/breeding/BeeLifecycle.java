@@ -11,6 +11,7 @@ import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
 import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.recipe.BeeBreedingRecipe;
 import github.mrh0.beekeeping.recipe.BeeProduceRecipe;
+import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -27,19 +28,24 @@ public class BeeLifecycle {
         Optional<BeeBreedingRecipe> match = level.getRecipeManager()
                 .getRecipeFor(BeeBreedingRecipe.Type.INSTANCE, inv, level);
         if(match.isEmpty())
-            return Util.selectRandom(BeeItem.speciesOf(drone), BeeItem.speciesOf(princess));
+            return Util.selectRandom(BeeItem.getSpecies(drone), BeeItem.getSpecies(princess));
         return match.get().getOffspring();
     }
 
     public static CompoundTag getOffspringTag(ItemStack drone, ItemStack princess, Species offspring, SelectFunction fn) {
         CompoundTag tag = new CompoundTag();
-        BeeItem.init(tag, offspring.queenItem,
-                fn.select(LifetimeGene.get(drone.getTag()), LifetimeGene.get(princess.getTag())),
-                fn.select(WeatherToleranceGene.get(drone.getTag()), WeatherToleranceGene.get(princess.getTag())),
-                fn.select(TemperatureToleranceGene.get(drone.getTag()), TemperatureToleranceGene.get(princess.getTag())),
-                fn.select(LightToleranceGene.get(drone.getTag()), LightToleranceGene.get(princess.getTag())),
-                fn.select(RareProduceGene.get(drone.getTag()), RareProduceGene.get(princess.getTag()))
+
+        ItemStack queen = new ItemStack(ModItems.QUEEN);
+        BeeItem.setSpecies(queen, offspring);
+
+        BeeItem.init(queen,
+                fn.select(LifetimeGene.get(drone), LifetimeGene.get(princess)),
+                fn.select(WeatherToleranceGene.get(drone), WeatherToleranceGene.get(princess)),
+                fn.select(TemperatureToleranceGene.get(drone), TemperatureToleranceGene.get(princess)),
+                fn.select(LightToleranceGene.get(drone), LightToleranceGene.get(princess)),
+                fn.select(RareProduceGene.get(drone), RareProduceGene.get(princess))
         );
+
         return tag;
     }
 
@@ -47,48 +53,19 @@ public class BeeLifecycle {
         SimpleContainer inv = new SimpleContainer(1);
         inv.setItem(0, queen);
 
-        return level.getRecipeManager()
-                .getRecipeFor(BeeProduceRecipe.Type.INSTANCE, inv, level);
+        return level.getRecipeManager().getRecipeFor(BeeProduceRecipe.Type.INSTANCE, inv, level);
     }
 
-    public static ItemStack clone(ItemStack bee, BeeItem type) {
-        CompoundTag beeTag = bee.getTag();
+    public static ItemStack clone(ItemStack bee, ItemStack type) {
         CompoundTag tag = new CompoundTag();
-        BeeItem.init(tag, type,
-                LifetimeGene.get(beeTag),
-                WeatherToleranceGene.get(beeTag),
-                TemperatureToleranceGene.get(beeTag),
-                LightToleranceGene.get(beeTag),
-                RareProduceGene.get(beeTag));
-        ItemStack r = new ItemStack(type);
-        r.setTag(tag);
-        return r;
-    }
-
-    public static int getByIndex(CompoundTag tag, int index) {
-        return switch(index) {
-            case 0 -> LifetimeGene.get(tag);
-            case 1 -> WeatherToleranceGene.get(tag);
-            case 2 -> TemperatureToleranceGene.get(tag);
-            case 3 -> LightToleranceGene.get(tag);
-            case 4 -> RareProduceGene.get(tag);
-            default -> 0;
-        };
-    }
-
-    public static void setByIndex(CompoundTag tag, int index, int value) {
-        switch(index) {
-            case 0:
-                LifetimeGene.set(tag, value);
-            case 1:
-                WeatherToleranceGene.set(tag, value);
-            case 2:
-                TemperatureToleranceGene.set(tag, value);
-            case 3:
-                LightToleranceGene.set(tag, value);
-            case 4:
-                RareProduceGene.set(tag, value);
-        }
+        BeeItem.init(bee,
+                LifetimeGene.get(bee),
+                WeatherToleranceGene.get(bee),
+                TemperatureToleranceGene.get(bee),
+                LightToleranceGene.get(bee),
+                RareProduceGene.get(bee));
+        type.setTag(tag);
+        return type;
     }
 
     public static ItemStack mutateRandom(ItemStack bee) {

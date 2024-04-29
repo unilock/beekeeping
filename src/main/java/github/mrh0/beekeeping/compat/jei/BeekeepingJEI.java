@@ -23,8 +23,8 @@ public class BeekeepingJEI implements IModPlugin {
         return new ResourceLocation(Beekeeping.MODID, "jei_plugin");
     }
 
-    private RecipeType<BeeBreedingRecipe> beeBreedingType = new RecipeType<>(BeeBreedingRecipeCategory.UID, BeeBreedingRecipe.class);
-    private RecipeType<BeeProduceRecipe> beeProduceType = new RecipeType<>(BeeProduceRecipeCategory.UID, BeeProduceRecipe.class);
+    private final RecipeType<BeeBreedingRecipe> beeBreedingType = new RecipeType<>(BeeBreedingRecipeCategory.UID, BeeBreedingRecipe.class);
+    private final RecipeType<BeeProduceRecipe> beeProduceType = new RecipeType<>(BeeProduceRecipeCategory.UID, BeeProduceRecipe.class);
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {

@@ -51,7 +51,7 @@ public class BeeProduceRecipe implements Recipe<SimpleContainer> {
         this.rareChanceSatisfied = rareChanceSatisfied;
 
         this.recipeItems = NonNullList.create();
-        this.recipeItems.add(Ingredient.of(species.queenItem));
+        this.recipeItems.add(Ingredient.of(species.getQueen()));
     }
 
     public Species getSpecies() {

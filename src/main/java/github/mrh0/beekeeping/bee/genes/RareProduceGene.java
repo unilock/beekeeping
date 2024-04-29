@@ -1,6 +1,5 @@
 package github.mrh0.beekeeping.bee.genes;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 public enum RareProduceGene implements Gene {
@@ -26,12 +25,12 @@ public enum RareProduceGene implements Gene {
         return ordinal();
     }
 
-    public static void set(CompoundTag tag, int value) {
-        Gene.set(tag, "prod", value);
+    public static void set(ItemStack stack, int value) {
+        Gene.set(stack, "prod", value);
     }
 
-    public static int get(CompoundTag tag) {
-        return Gene.get(tag, "prod");
+    public static int get(ItemStack stack) {
+        return Gene.get(stack, "prod");
     }
 
     public static RareProduceGene of(int value) {
@@ -55,14 +54,14 @@ public enum RareProduceGene implements Gene {
     }
 
     public static ItemStack up(ItemStack bee) {
-        int now = get(bee.getTag());
-        set(bee.getTag(), Math.min(now+1, 4));
+        int now = get(bee);
+        set(bee, Math.min(now+1, 4));
         return bee;
     }
 
     public static ItemStack down(ItemStack bee) {
-        int now = get(bee.getTag());
-        set(bee.getTag(), Math.max(now+1, 0));
+        int now = get(bee);
+        set(bee, Math.max(now+1, 0));
         return bee;
     }
 }

@@ -1,7 +1,6 @@
 package github.mrh0.beekeeping.bee.genes;
 
 import github.mrh0.beekeeping.config.Config;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 public enum LifetimeGene implements Gene {
@@ -33,12 +32,12 @@ public enum LifetimeGene implements Gene {
         return time;
     }
 
-    public static void set(CompoundTag tag, int value) {
-        Gene.set(tag, "lifetime", value);
+    public static void set(ItemStack stack, int value) {
+        Gene.set(stack, "lifetime", value);
     }
 
-    public static int get(CompoundTag tag) {
-        return Gene.get(tag, "lifetime");
+    public static int get(ItemStack stack) {
+        return Gene.get(stack, "lifetime");
     }
 
     public static LifetimeGene of(int value) {
@@ -52,14 +51,14 @@ public enum LifetimeGene implements Gene {
     }
 
     public static ItemStack up(ItemStack bee) {
-        int now = get(bee.getTag());
-        set(bee.getTag(), Math.min(now+1, 4));
+        int now = get(bee);
+        set(bee, Math.min(now+1, 4));
         return bee;
     }
 
     public static ItemStack down(ItemStack bee) {
-        int now = get(bee.getTag());
-        set(bee.getTag(), Math.max(now+1, 0));
+        int now = get(bee);
+        set(bee, Math.max(now+1, 0));
         return bee;
     }
 }

@@ -41,7 +41,7 @@ public class BeeBreedingRecipeBuilder implements RecipeBuilder {
     @NotNull
     @Override
     public Item getResult() {
-        return offspring.queenItem;
+        return offspring.getQueen().getItem();
     }
 
     @Override

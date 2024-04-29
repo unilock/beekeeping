@@ -183,7 +183,7 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
         if(offspringCache == null)
             return;
 
-        ItemStack offspringQueen = new ItemStack(offspringCache.queenItem);
+        ItemStack offspringQueen = offspringCache.getQueen();
         offspringQueen.setTag(BeeLifecycle.getOffspringTag(getDrone(), getPrincess(), offspringCache, Gene::select));
         offspringQueen = FrameItem.onBreed(getFrame(), getLevel(), getBlockPos(), getDrone(), getPrincess(), offspringQueen);
 
@@ -198,7 +198,7 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
             return;
         }
 
-        Species species = BeeItem.speciesOf(getQueen());
+        Species species = BeeItem.getSpecies(getQueen());
         if(species == null) {
             satisfactionCache = Satisfaction.NOT_WORKING;
             return;
@@ -275,7 +275,7 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
             return;
         slowTick = 0;
         ItemStack queen = getQueen();
-        Species species = BeeItem.speciesOf(queen);
+        Species species = BeeItem.getSpecies(queen);
         if(species == null)
             return;
         if(queen.getTag() == null)
@@ -295,7 +295,7 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
             return;
         }
         if(satisfactionCache != Satisfaction.NOT_WORKING)
-            BeeItem.setHealth(queen.getTag(), hp-LIFETIME_STEP);
+            BeeItem.setHealth(queen, hp-LIFETIME_STEP);
     }
 
     public boolean attemptInsert(ItemStack queen, InventoryStorage input, InventoryStorage output, boolean satisfied, boolean continuous) {
@@ -309,14 +309,14 @@ public class ApiaryBlockEntity extends BlockEntity implements ExtendedScreenHand
         ItemStack commonProduce = bpr.getCommonProduce(satisfied);
         commonProduce = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.COMMON, commonProduce);
 
-        double chance = RareProduceGene.of(RareProduceGene.get(queen.getTag())).getChance();
+        double chance = RareProduceGene.of(RareProduceGene.get(queen)).getChance();
         ItemStack rareProduce = bpr.getRolledRareProduce(satisfied, chance);
         rareProduce = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.RARE, rareProduce);
 
-        ItemStack princess = BeeLifecycle.clone(queen, bpr.getSpecies().princessItem);
+        ItemStack princess = BeeLifecycle.clone(queen, bpr.getSpecies().getPrincess());
         princess = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.PRINCESS, princess);
 
-        ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecies().droneItem);
+        ItemStack drone = BeeLifecycle.clone(queen, bpr.getSpecies().getDrone());
         drone = FrameItem.onProduce(getFrame(), getLevel(), getBlockPos(), ProduceEvent.ProduceType.DRONE, drone);
 
         try (Transaction transaction = Transaction.openOuter()) {

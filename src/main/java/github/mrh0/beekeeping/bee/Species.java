@@ -6,12 +6,10 @@ import github.mrh0.beekeeping.bee.genes.Gene;
 import github.mrh0.beekeeping.bee.genes.LightToleranceGene;
 import github.mrh0.beekeeping.bee.genes.TemperatureToleranceGene;
 import github.mrh0.beekeeping.bee.genes.WeatherToleranceGene;
-import github.mrh0.beekeeping.bee.item.DroneBee;
-import github.mrh0.beekeeping.bee.item.PrincessBee;
-import github.mrh0.beekeeping.bee.item.QueenBee;
+import github.mrh0.beekeeping.bee.item.BeeItem;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
 import github.mrh0.beekeeping.config.Config;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,10 +29,6 @@ public class Species {
     public final Produce produce;
     public final Pair<String, String> parents;
 
-    public final DroneBee droneItem;
-    public final PrincessBee princessItem;
-    public final QueenBee queenItem;
-
     private Species(String name, int color, boolean dark, boolean foil, boolean nocturnal, BiomeTemperature preferredTemperature, Gene.RandomFunction lifetimeGene, Gene.RandomFunction lightGene, Gene.RandomFunction produceGene, Gene.RandomFunction temperatureGene, Gene.RandomFunction weatherGene, Produce produce, Pair<String, String> parents) {
         this.name = name;
         this.color = color;
@@ -49,10 +43,24 @@ public class Species {
         this.weatherGene = weatherGene;
         this.produce = produce;
         this.parents = parents;
+    }
 
-        this.droneItem = new DroneBee(this, new FabricItemSettings().stacksTo(1), foil);
-        this.princessItem = new PrincessBee(this, new FabricItemSettings().stacksTo(1), foil);
-        this.queenItem = new QueenBee(this, new FabricItemSettings().stacksTo(1), foil);
+    public ItemStack getDrone() {
+        ItemStack drone = new ItemStack(ModItems.DRONE);
+        BeeItem.setSpecies(drone, this);
+        return drone;
+    }
+
+    public ItemStack getPrincess() {
+        ItemStack princess = new ItemStack(ModItems.PRINCESS);
+        BeeItem.setSpecies(princess, this);
+        return princess;
+    }
+
+    public ItemStack getQueen() {
+        ItemStack queen = new ItemStack(ModItems.QUEEN);
+        BeeItem.setSpecies(queen, this);
+        return queen;
     }
 
     public boolean hasSatisfactoryLightLevel(int sunlight, boolean isDay) {
@@ -71,7 +79,7 @@ public class Species {
         }
 
         int sunlight = Util.getSunlight(level, pos);
-        LightToleranceGene tolerance = LightToleranceGene.of(LightToleranceGene.get(stack.getTag()));
+        LightToleranceGene tolerance = LightToleranceGene.of(LightToleranceGene.get(stack));
 
         return switch (tolerance) {
             case PICKY -> hasSatisfactoryLightLevel(sunlight, level.isDay()) ? Satisfaction.SATISFIED : Satisfaction.UNSATISFIED;
@@ -86,7 +94,7 @@ public class Species {
         }
 
         BiomeTemperature temp = BiomeTemperature.of(level.getBiomeManager().getBiome(pos).value().getBaseTemperature());
-        TemperatureToleranceGene tolerance = TemperatureToleranceGene.of(TemperatureToleranceGene.get(stack.getTag()));
+        TemperatureToleranceGene tolerance = TemperatureToleranceGene.of(TemperatureToleranceGene.get(stack));
 
         return switch (tolerance) {
             case PICKY -> preferredTemperature == temp ? Satisfaction.SATISFIED : (preferredTemperature.isAdjacent(temp) ? Satisfaction.UNSATISFIED : Satisfaction.NOT_WORKING);
@@ -104,7 +112,7 @@ public class Species {
             return Satisfaction.NOT_WORKING;
         }
 
-        WeatherToleranceGene tolerance = WeatherToleranceGene.of(WeatherToleranceGene.get(stack.getTag()));
+        WeatherToleranceGene tolerance = WeatherToleranceGene.of(WeatherToleranceGene.get(stack));
 
         return switch (tolerance) {
             case PICKY -> level.isRaining() ? Satisfaction.UNSATISFIED : Satisfaction.SATISFIED;

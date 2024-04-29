@@ -1,7 +1,5 @@
 package github.mrh0.beekeeping.datagen.provider;
 
-import github.mrh0.beekeeping.bee.Species;
-import github.mrh0.beekeeping.bee.SpeciesRegistry;
 import github.mrh0.beekeeping.item.frame.FrameItem;
 import github.mrh0.beekeeping.registry.ModTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -19,15 +17,16 @@ public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
-            tag(ModTags.Items.BEES)
-                .add(BuiltInRegistries.ITEM.getResourceKey(species.droneItem).orElseThrow())
-                .add(BuiltInRegistries.ITEM.getResourceKey(species.princessItem).orElseThrow())
-                .add(BuiltInRegistries.ITEM.getResourceKey(species.queenItem).orElseThrow());
-            tag(ModTags.Items.DRONES).add(BuiltInRegistries.ITEM.getResourceKey(species.droneItem).orElseThrow());
-            tag(ModTags.Items.PRINCESSES).add(BuiltInRegistries.ITEM.getResourceKey(species.princessItem).orElseThrow());
-            tag(ModTags.Items.QUEENS).add(BuiltInRegistries.ITEM.getResourceKey(species.queenItem).orElseThrow());
-        }
+        // TODO
+//        for (Species species : SpeciesRegistry.INSTANCE.getAll()) {
+//            tag(ModTags.Items.BEES)
+//                .add(BuiltInRegistries.ITEM.getResourceKey(species.droneItem).orElseThrow())
+//                .add(BuiltInRegistries.ITEM.getResourceKey(species.princessItem).orElseThrow())
+//                .add(BuiltInRegistries.ITEM.getResourceKey(species.queenItem).orElseThrow());
+//            tag(ModTags.Items.DRONES).add(BuiltInRegistries.ITEM.getResourceKey(species.droneItem).orElseThrow());
+//            tag(ModTags.Items.PRINCESSES).add(BuiltInRegistries.ITEM.getResourceKey(species.princessItem).orElseThrow());
+//            tag(ModTags.Items.QUEENS).add(BuiltInRegistries.ITEM.getResourceKey(species.queenItem).orElseThrow());
+//        }
 
         for (FrameItem frame : FrameItem.frames) {
             tag(ModTags.Items.FRAMES).add(BuiltInRegistries.ITEM.getResourceKey(frame).orElseThrow());

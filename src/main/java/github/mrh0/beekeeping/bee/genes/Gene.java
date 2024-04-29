@@ -1,23 +1,29 @@
 package github.mrh0.beekeeping.bee.genes;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Random;
 
 public interface Gene {
     Random random = new Random();
 
-    static int get(CompoundTag tag, String key) {
-        if(tag == null)
+    static int get(ItemStack stack, String key) {
+        if (stack.getTag() == null) {
             return 0;
-        return tag.getInt(key);
+        }
+
+        return stack.getTag().getInt(key);
     }
 
-    static void set(CompoundTag tag, String key, int value) {
-        tag.putInt(key, value);
+    static void set(ItemStack stack, String key, int value) {
+        if (stack.getTag() == null) {
+            throw new IllegalArgumentException("[Beekeeping] Gene#set called on invalid stack");
+        }
+
+        stack.getTag().putInt(key, value);
     }
 
     String getName();

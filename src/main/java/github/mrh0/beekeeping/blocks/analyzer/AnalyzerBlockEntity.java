@@ -45,12 +45,12 @@ public class AnalyzerBlockEntity extends BlockEntity implements ExtendedScreenHa
         public void setChanged() {
             ItemStack stack = getAnalyzed();
 
-            if (!stack.isEmpty() && stack.getItem() instanceof BeeItem && !BeeItem.isAnalyzed(stack)) {
+            if (!stack.isEmpty() && stack.getItem() instanceof BeeItem && !BeeItem.getAnalyzed(stack)) {
                 if (stack.getTag() == null) {
                     BeeItem.init(stack);
                 }
 
-                BeeItem.setAnalyzed(stack.getTag(), true);
+                BeeItem.setAnalyzed(stack, true);
             }
 
             super.setChanged();
