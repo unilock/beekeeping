@@ -410,8 +410,10 @@ public class BeeSpeciesGenerator {
 
         File file = OUTPUT.resolve(species.name + ".json").toFile();
 
-        System.out.println(file.getCanonicalPath());
-        GSON.toJson(json, new FileWriter(file));
+        try (FileWriter writer = new FileWriter(file)) {
+            System.out.println(file.getCanonicalPath());
+            GSON.toJson(json, writer);
+        }
 
         return species;
     }
