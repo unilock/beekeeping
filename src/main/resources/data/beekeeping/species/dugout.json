@@ -1,0 +1,18 @@
+{
+  "name": "dugout",
+  "color": -8429568,
+  "dark": false,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "cold",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "any",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "random3high",
+  "weather_gene": "strict",
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 5,
+    "common_count_satisfied": 7
+  }
+}

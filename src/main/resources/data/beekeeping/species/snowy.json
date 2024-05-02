@@ -1,0 +1,23 @@
+{
+  "name": "snowy",
+  "color": -1052689,
+  "dark": false,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "cold",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "random3low",
+  "weather_gene": "strict",
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 5,
+    "common_count_satisfied": 7,
+    "rare": "minecraft:snowball",
+    "rare_count_unsatisfied": 8,
+    "rare_count_satisfied": 16,
+    "rare_chance_unsatisfied": 1.0,
+    "rare_chance_satisfied": 1.0
+  }
+}

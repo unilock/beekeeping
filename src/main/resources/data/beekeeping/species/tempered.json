@@ -1,0 +1,22 @@
+{
+  "name": "tempered",
+  "color": -4794456,
+  "dark": false,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "tempered",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "random5narrow",
+  "weather_gene": "strict",
+  "parents": [
+    "common",
+    "forest"
+  ],
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 7,
+    "common_count_satisfied": 9
+  }
+}

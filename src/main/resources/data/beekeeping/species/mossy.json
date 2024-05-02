@@ -1,0 +1,27 @@
+{
+  "name": "mossy",
+  "color": -13076963,
+  "dark": false,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "tempered",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "normal5",
+  "temperature_gene": "random3low",
+  "weather_gene": "strict",
+  "parents": [
+    "dugout",
+    "fungal"
+  ],
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 5,
+    "common_count_satisfied": 7,
+    "rare": "minecraft:moss_block",
+    "rare_count_unsatisfied": 1,
+    "rare_count_satisfied": 1,
+    "rare_chance_unsatisfied": 0.5,
+    "rare_chance_satisfied": 0.8
+  }
+}

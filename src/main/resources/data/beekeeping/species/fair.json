@@ -1,0 +1,27 @@
+{
+  "name": "fair",
+  "color": -16711936,
+  "dark": false,
+  "foil": true,
+  "nocturnal": false,
+  "preferred_temperature": "tempered",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "picky",
+  "weather_gene": "strict",
+  "parents": [
+    "coco",
+    "snowy"
+  ],
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 5,
+    "common_count_satisfied": 7,
+    "rare": "minecraft:sugar",
+    "rare_count_unsatisfied": 8,
+    "rare_count_satisfied": 16,
+    "rare_chance_unsatisfied": 1.0,
+    "rare_chance_satisfied": 1.0
+  }
+}

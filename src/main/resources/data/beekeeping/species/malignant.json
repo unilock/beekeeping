@@ -1,0 +1,23 @@
+{
+  "name": "malignant",
+  "color": -6710887,
+  "dark": true,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "warm",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "picky",
+  "weather_gene": "strict",
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 5,
+    "common_count_satisfied": 7,
+    "rare": "minecraft:bone_meal",
+    "rare_count_unsatisfied": 3,
+    "rare_count_satisfied": 7,
+    "rare_chance_unsatisfied": 1.0,
+    "rare_chance_satisfied": 1.0
+  }
+}

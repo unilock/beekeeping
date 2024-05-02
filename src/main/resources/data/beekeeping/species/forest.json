@@ -1,0 +1,18 @@
+{
+  "name": "forest",
+  "color": -7093123,
+  "dark": false,
+  "foil": false,
+  "nocturnal": false,
+  "preferred_temperature": "tempered",
+  "lifetime_gene": "random5narrow",
+  "light_gene": "strict",
+  "produce_gene": "random5narrow",
+  "temperature_gene": "picky",
+  "weather_gene": "strict",
+  "produce": {
+    "common": "minecraft:honeycomb",
+    "common_count_unsatisfied": 3,
+    "common_count_satisfied": 5
+  }
+}
