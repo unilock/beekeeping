@@ -27,9 +27,9 @@ public class Species {
     public final Gene.RandomFunctions produceGene;
     public final Gene.RandomFunctions temperatureGene;
     public final Gene.RandomFunctions weatherGene;
-    public final Produce produce;
     @Nullable
     public final Pair<String, String> parents;
+    public final Produce produce;
 
     private Species(String name, int color, boolean dark, boolean foil, boolean nocturnal, BiomeTemperature preferredTemperature, Gene.RandomFunctions lifetimeGene, Gene.RandomFunctions lightGene, Gene.RandomFunctions produceGene, Gene.RandomFunctions temperatureGene, Gene.RandomFunctions weatherGene, Produce produce, Pair<String, String> parents) {
         this.name = name;
@@ -139,8 +139,8 @@ public class Species {
         Gene.RandomFunctions produceGene = Gene.RandomFunctions.RANDOM_5_NARROW;
         Gene.RandomFunctions temperatureGene = Gene.RandomFunctions.PICKY;
         Gene.RandomFunctions weatherGene = Gene.RandomFunctions.STRICT;
-        Produce produce;
         Pair<String, String> parents;
+        Produce produce;
 
         public Builder(String name) {
             this.name = name;
@@ -204,13 +204,13 @@ public class Species {
             return this;
         }
 
-        public Builder setProduce(Produce produce) {
-            this.produce = produce;
+        public Builder setParents(String first, String second) {
+            this.parents = new Pair<>(first, second);
             return this;
         }
 
-        public Builder setParents(String first, String second) {
-            this.parents = new Pair<>(first, second);
+        public Builder setProduce(Produce produce) {
+            this.produce = produce;
             return this;
         }
     }

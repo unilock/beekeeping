@@ -2,6 +2,7 @@ package github.mrh0.beekeeping.datagen.generator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.bee.Beehive;
 import github.mrh0.beekeeping.bee.Produce;
@@ -392,6 +393,15 @@ public class BeeSpeciesGenerator {
         json.addProperty("produce_gene", species.produceGene.name);
         json.addProperty("temperature_gene", species.temperatureGene.name);
         json.addProperty("weather_gene", species.weatherGene.name);
+
+        if (species.parents != null) {
+            JsonArray parents = new JsonArray();
+
+            parents.add(species.parents.getFirst());
+            parents.add(species.parents.getSecond());
+
+            json.add("parents", parents);
+        }
 
         JsonObject produce = new JsonObject();
 
