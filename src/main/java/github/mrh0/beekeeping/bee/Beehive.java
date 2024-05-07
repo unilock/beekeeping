@@ -1,6 +1,5 @@
 package github.mrh0.beekeeping.bee;
 
-import github.mrh0.beekeeping.blocks.beehive.BeehiveBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
@@ -22,8 +21,6 @@ public class Beehive {
     public final Feature<RandomPatchConfiguration> feature;
     public final Function<BlockPos, Boolean> allowPlacement;
 
-    public final BeehiveBlock block;
-
     private Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
         this.species = species;
         this.biomeTag = biomeTag;
@@ -32,8 +29,6 @@ public class Beehive {
         this.placementModifier = modifier;
         this.feature = feature;
         this.allowPlacement = blockPlaceAllow;
-
-        this.block = new BeehiveBlock(this);
     }
 
     public String getName() {

@@ -13,9 +13,10 @@ import github.mrh0.beekeeping.registry.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Species {
+public class Species implements Comparable<Species> {
     public final String name;
     public final int color;
     public final boolean dark;
@@ -213,5 +214,10 @@ public class Species {
             this.produce = produce;
             return this;
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Species o) {
+        return this.name.compareTo(o.name);
     }
 }
