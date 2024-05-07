@@ -20,7 +20,8 @@ public class BeekeepingDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         try {
-            BeeIconGenerator.makeAll();
+            // TODO
+            //BeeIconGenerator.makeAll();
             BeeSpeciesGenerator.makeAll();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -30,7 +31,8 @@ public class BeekeepingDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = generator.createPack();
 
         var blockTags = pack.addProvider(BlockTagProvider::new);
-        pack.addProvider(RecipeProvider::new);
+        // TODO
+        //pack.addProvider(RecipeProvider::new);
         pack.addProvider(BlockLootTableProvider::new);
         pack.addProvider((output, registriesFuture) -> new BlockStateGenerator(output, Beekeeping.MODID, existingFileHelper));
         pack.addProvider((output, registriesFuture) -> new ItemModelGenerator(output, Beekeeping.MODID, existingFileHelper));

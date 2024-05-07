@@ -34,10 +34,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 //        }
 //
 //        System.out.println();
-
-        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
-            blockItem(beehive.block);
-        }
+//
+//        for (Beehive beehive : BeehiveRegistry.INSTANCE.getAll()) {
+//            blockItem(beehive.block);
+//        }
 
         System.out.println();
 
