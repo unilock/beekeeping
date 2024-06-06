@@ -382,18 +382,26 @@ public class BeeSpeciesGenerator {
     private static Species makeSpecies(Species species) throws IOException {
         JsonObject json = new JsonObject();
 
+        // Add the species' usual properties.
         json.addProperty("name", species.name);
         json.addProperty("color", species.color);
         json.addProperty("dark", species.dark);
         json.addProperty("foil", species.foil);
         json.addProperty("nocturnal", species.nocturnal);
         json.addProperty("preferred_temperature", species.preferredTemperature.name);
-        json.addProperty("lifetime_gene", species.lifetimeGene.name);
-        json.addProperty("light_gene", species.lightGene.name);
-        json.addProperty("produce_gene", species.produceGene.name);
-        json.addProperty("temperature_gene", species.temperatureGene.name);
-        json.addProperty("weather_gene", species.weatherGene.name);
 
+        // Add the species' gene selectors.
+        JsonObject geneSelectors = new JsonObject();
+
+        geneSelectors.addProperty("lifetime", species.lifetimeGene.name);
+        geneSelectors.addProperty("light_tolerance", species.lightGene.name);
+        geneSelectors.addProperty("rare_produce", species.produceGene.name);
+        geneSelectors.addProperty("temperature_tolerance", species.temperatureGene.name);
+        geneSelectors.addProperty("weather_tolerance", species.weatherGene.name);
+
+        json.add("gene_selectors", geneSelectors);
+
+        // Add the species' parents, if it has any.
         if (species.parents != null) {
             JsonArray parents = new JsonArray();
 
@@ -403,21 +411,41 @@ public class BeeSpeciesGenerator {
             json.add("parents", parents);
         }
 
+        // Add the species' produce.
         JsonObject produce = new JsonObject();
 
-        produce.addProperty("common", BuiltInRegistries.ITEM.getKey(species.produce.common()).toString());
-        produce.addProperty("common_count_unsatisfied", species.produce.commonCountUnsatisfied());
-        produce.addProperty("common_count_satisfied", species.produce.commonCountSatisfied());
+        // Common produce...
+        JsonObject commonProduce = new JsonObject();
+        commonProduce.addProperty("item", BuiltInRegistries.ITEM.getKey(species.produce.common()).toString());
+
+        JsonObject commonProduceCount = new JsonObject();
+        commonProduceCount.addProperty("unsatisfied", species.produce.commonCountUnsatisfied());
+        commonProduceCount.addProperty("satisfied", species.produce.commonCountSatisfied());
+
+        commonProduce.add("count", commonProduceCount);
+        produce.add("common", commonProduce);
+
+        // Rare produce, if it exists...
         if (species.produce.rare() != Items.AIR) {
-            produce.addProperty("rare", BuiltInRegistries.ITEM.getKey(species.produce.rare()).toString());
-            produce.addProperty("rare_count_unsatisfied", species.produce.rareCountUnsatisfied());
-            produce.addProperty("rare_count_satisfied", species.produce.rareCountSatisfied());
-            produce.addProperty("rare_chance_unsatisfied", species.produce.rareChanceUnsatisfied());
-            produce.addProperty("rare_chance_satisfied", species.produce.rareChanceSatisfied());
+            JsonObject rareProduce = new JsonObject();
+            rareProduce.addProperty("item", BuiltInRegistries.ITEM.getKey(species.produce.rare()).toString());
+
+            JsonObject rareProduceCount = new JsonObject();
+            rareProduceCount.addProperty("unsatisfied", species.produce.rareCountUnsatisfied());
+            rareProduceCount.addProperty("satisfied", species.produce.rareCountSatisfied());
+
+            JsonObject rareProduceChance = new JsonObject();
+            rareProduceChance.addProperty("unsatisfied", species.produce.rareChanceUnsatisfied());
+            rareProduceChance.addProperty("satisfied", species.produce.rareChanceSatisfied());
+
+            rareProduce.add("count", rareProduceCount);
+            rareProduce.add("chance", rareProduceChance);
+            produce.add("rare", rareProduce);
         }
 
         json.add("produce", produce);
 
+        // Write to the species file.
         File file = OUTPUT.resolve(species.name + ".json").toFile();
 
         try (FileWriter writer = new FileWriter(file)) {

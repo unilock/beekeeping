@@ -5,14 +5,20 @@
   "foil": false,
   "nocturnal": false,
   "preferred_temperature": "cold",
-  "lifetime_gene": "random5narrow",
-  "light_gene": "any",
-  "produce_gene": "random5narrow",
-  "temperature_gene": "random3high",
-  "weather_gene": "strict",
+  "gene_selectors": {
+    "lifetime": "random5narrow",
+    "light_tolerance": "any",
+    "rare_produce": "random5narrow",
+    "temperature_tolerance": "random3high",
+    "weather_tolerance": "strict"
+  },
   "produce": {
-    "common": "minecraft:honeycomb",
-    "common_count_unsatisfied": 5,
-    "common_count_satisfied": 7
+    "common": {
+      "item": "minecraft:honeycomb",
+      "count": {
+        "unsatisfied": 5,
+        "satisfied": 7
+      }
+    }
   }
 }

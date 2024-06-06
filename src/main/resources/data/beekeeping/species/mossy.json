@@ -5,23 +5,35 @@
   "foil": false,
   "nocturnal": false,
   "preferred_temperature": "tempered",
-  "lifetime_gene": "random5narrow",
-  "light_gene": "strict",
-  "produce_gene": "normal5",
-  "temperature_gene": "random3low",
-  "weather_gene": "strict",
+  "gene_selectors": {
+    "lifetime": "random5narrow",
+    "light_tolerance": "strict",
+    "rare_produce": "normal5",
+    "temperature_tolerance": "random3low",
+    "weather_tolerance": "strict"
+  },
   "parents": [
     "dugout",
     "fungal"
   ],
   "produce": {
-    "common": "minecraft:honeycomb",
-    "common_count_unsatisfied": 5,
-    "common_count_satisfied": 7,
-    "rare": "minecraft:moss_block",
-    "rare_count_unsatisfied": 1,
-    "rare_count_satisfied": 1,
-    "rare_chance_unsatisfied": 0.5,
-    "rare_chance_satisfied": 0.8
+    "common": {
+      "item": "minecraft:honeycomb",
+      "count": {
+        "unsatisfied": 5,
+        "satisfied": 7
+      }
+    },
+    "rare": {
+      "item": "minecraft:moss_block",
+      "count": {
+        "unsatisfied": 1,
+        "satisfied": 1
+      },
+      "chance": {
+        "unsatisfied": 0.5,
+        "satisfied": 0.8
+      }
+    }
   }
 }
