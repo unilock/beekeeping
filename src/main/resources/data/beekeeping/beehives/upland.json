@@ -1,0 +1,8 @@
+{
+  "name": "upland",
+  "spawn_conditions": {
+    "biome_tag": "minecraft:is_savanna",
+    "tries": 4,
+    "rarity": 16
+  }
+}

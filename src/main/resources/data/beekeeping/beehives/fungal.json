@@ -1,0 +1,8 @@
+{
+  "name": "fungal",
+  "spawn_conditions": {
+    "biome_tag": "c:is_mushroom",
+    "tries": 3,
+    "rarity": 10
+  }
+}

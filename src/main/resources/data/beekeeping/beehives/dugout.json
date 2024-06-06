@@ -1,0 +1,8 @@
+{
+  "name": "dugout",
+  "spawn_conditions": {
+    "biome_tag": "minecraft:is_overworld",
+    "tries": 3,
+    "rarity": 2
+  }
+}

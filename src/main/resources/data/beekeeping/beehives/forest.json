@@ -1,0 +1,8 @@
+{
+  "name": "forest",
+  "spawn_conditions": {
+    "biome_tag": "minecraft:is_forest",
+    "tries": 4,
+    "rarity": 10
+  }
+}

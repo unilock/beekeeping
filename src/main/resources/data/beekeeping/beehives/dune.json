@@ -1,0 +1,8 @@
+{
+  "name": "dune",
+  "spawn_conditions": {
+    "biome_tag": "c:is_sandy",
+    "tries": 3,
+    "rarity": 12
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "common",
+  "spawn_conditions": {
+    "biome_tag": "c:is_plains",
+    "tries": 2,
+    "rarity": 16
+  }
+}

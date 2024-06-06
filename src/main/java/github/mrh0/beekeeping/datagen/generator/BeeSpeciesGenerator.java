@@ -22,15 +22,19 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class BeeSpeciesGenerator {
-    private static final Path OUTPUT = Path.of("../../src/main/resources/data/beekeeping/species").toAbsolutePath();
+    private static final Path OUTPUT_SPECIES = Path.of("../../src/main/resources/data/beekeeping/species").toAbsolutePath();
+    private static final Path OUTPUT_BEEHIVES = Path.of("../../src/main/resources/data/beekeeping/beehives").toAbsolutePath();
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .create();
 
     public static void makeAll() throws IOException {
-        if (!OUTPUT.toFile().exists()) {
-            OUTPUT.toFile().mkdirs();
+        if (!OUTPUT_SPECIES.toFile().exists()) {
+            OUTPUT_SPECIES.toFile().mkdirs();
+        }
+        if (!OUTPUT_BEEHIVES.toFile().exists()) {
+            OUTPUT_BEEHIVES.toFile().mkdirs();
         }
 
         // TODO: everything
@@ -446,7 +450,7 @@ public class BeeSpeciesGenerator {
         json.add("produce", produce);
 
         // Write to the species file.
-        File file = OUTPUT.resolve(species.name + ".json").toFile();
+        File file = OUTPUT_SPECIES.resolve(species.name + ".json").toFile();
 
         try (FileWriter writer = new FileWriter(file)) {
             System.out.println(file.getCanonicalPath());
@@ -456,7 +460,33 @@ public class BeeSpeciesGenerator {
         return species;
     }
 
-    private static void makeBeehive(Beehive beehive) {
+    private static Beehive makeBeehive(Beehive beehive) throws IOException {
+        JsonObject json = new JsonObject();
 
+        // Add the beehive's usual properties.
+        json.addProperty("name", beehive.species.name);
+
+        // Add the beehive's spawn conditions.
+        JsonObject spawnConditions = new JsonObject();
+
+        spawnConditions.addProperty("biome_tag", beehive.biomeTag.location().toString());
+        spawnConditions.addProperty("tries", beehive.tries);
+        spawnConditions.addProperty("rarity", beehive.rarity);
+//        TODO: ???
+//        spawnConditions.addProperty("placement_modifier", 0);
+//        spawnConditions.addProperty("feature", 0);
+//        spawnConditions.addProperty("placement_function", 0);
+
+        json.add("spawn_conditions", spawnConditions);
+
+        // Write to the species file.
+        File file = OUTPUT_BEEHIVES.resolve(beehive.species.name + ".json").toFile();
+
+        try (FileWriter writer = new FileWriter(file)) {
+            System.out.println(file.getCanonicalPath());
+            GSON.toJson(json, writer);
+        }
+
+        return beehive;
     }
 }

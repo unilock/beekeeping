@@ -1,0 +1,8 @@
+{
+  "name": "snowy",
+  "spawn_conditions": {
+    "biome_tag": "c:is_snowy",
+    "tries": 4,
+    "rarity": 16
+  }
+}

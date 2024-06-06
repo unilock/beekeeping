@@ -1,0 +1,8 @@
+{
+  "name": "tropical",
+  "spawn_conditions": {
+    "biome_tag": "minecraft:is_jungle",
+    "tries": 4,
+    "rarity": 10
+  }
+}
