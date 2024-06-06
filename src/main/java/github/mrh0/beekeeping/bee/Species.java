@@ -143,7 +143,7 @@ public class Species implements Comparable<Species> {
         Pair<String, String> parents;
         Produce produce;
 
-        public Builder(String name) {
+        private Builder(String name) {
             this.name = name;
         }
 

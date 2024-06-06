@@ -48,7 +48,7 @@ public class Beehive {
         Feature<RandomPatchConfiguration> feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
         Function<BlockPos, Boolean> allowPlacement = (pos) -> true;
 
-        public Builder(Species species) {
+        private Builder(Species species) {
             this.species = species;
         }
 
