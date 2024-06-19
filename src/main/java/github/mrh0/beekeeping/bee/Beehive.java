@@ -56,13 +56,13 @@ public class Beehive {
     }
 
     public static class Builder {
-        final Species species;
-        TagKey<Biome> biomeTag = BiomeTags.IS_OVERWORLD;
-        int tries = 0;
-        int rarity = 0;
-        BeehivePlacement placement = BeehivePlacement.NORMAL;
-        int minY = -63;
-        int maxY = 255;
+        private final Species species;
+        private TagKey<Biome> biomeTag = BiomeTags.IS_OVERWORLD;
+        private int tries = 0;
+        private int rarity = 0;
+        private BeehivePlacement placement = BeehivePlacement.NORMAL;
+        private int minY = -63;
+        private int maxY = 255;
 
         private Builder(Species species) {
             this.species = species;

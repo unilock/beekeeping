@@ -129,19 +129,19 @@ public class Species implements Comparable<Species> {
     }
 
     public static class Builder {
-        final String name;
-        int color = 0x00000000;
-        boolean dark = false;
-        boolean foil = false;
-        boolean nocturnal = false;
-        BiomeTemperature preferredTemperature = BiomeTemperature.TEMPERED;
-        Gene.RandomFunctions lifetimeGene = Gene.RandomFunctions.RANDOM_5_NARROW;
-        Gene.RandomFunctions lightGene = Gene.RandomFunctions.STRICT;
-        Gene.RandomFunctions produceGene = Gene.RandomFunctions.RANDOM_5_NARROW;
-        Gene.RandomFunctions temperatureGene = Gene.RandomFunctions.PICKY;
-        Gene.RandomFunctions weatherGene = Gene.RandomFunctions.STRICT;
-        Pair<String, String> parents;
-        Produce produce;
+        private final String name;
+        private int color = 0x00000000;
+        private boolean dark = false;
+        private boolean foil = false;
+        private boolean nocturnal = false;
+        private BiomeTemperature preferredTemperature = BiomeTemperature.TEMPERED;
+        private Gene.RandomFunctions lifetimeGene = Gene.RandomFunctions.RANDOM_5_NARROW;
+        private Gene.RandomFunctions lightGene = Gene.RandomFunctions.STRICT;
+        private Gene.RandomFunctions produceGene = Gene.RandomFunctions.RANDOM_5_NARROW;
+        private Gene.RandomFunctions temperatureGene = Gene.RandomFunctions.PICKY;
+        private Gene.RandomFunctions weatherGene = Gene.RandomFunctions.STRICT;
+        private Pair<String, String> parents;
+        private Produce produce;
 
         private Builder(String name) {
             this.name = name;
