@@ -3,6 +3,7 @@
   "spawn_conditions": {
     "biome_tag": "c:is_plains",
     "tries": 2,
-    "rarity": 16
+    "rarity": 16,
+    "placement": "normal"
   }
 }

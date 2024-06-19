@@ -29,12 +29,6 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue BEEHIVE_GENERATION_ENABLED;
 
-    public static ForgeConfigSpec.IntValue BEEHIVE_DUGOUT_MIN_HEIGHT;
-    public static ForgeConfigSpec.IntValue BEEHIVE_DUGOUT_MAX_HEIGHT;
-
-    public static ForgeConfigSpec.IntValue BEEHIVE_SCORCHED_MIN_HEIGHT;
-    public static ForgeConfigSpec.IntValue BEEHIVE_SCORCHED_MAX_HEIGHT;
-
     static {
         COMMON_BUILDER.comment("Bee Lifecycle").push(CATEGORY_BEE);
 
@@ -75,16 +69,6 @@ public class Config {
 
         BEEHIVE_GENERATION_ENABLED = COMMON_BUILDER.comment("Enabled beehive world generation")
                 .define("beehive_generation_enabled", true);
-
-        BEEHIVE_DUGOUT_MIN_HEIGHT = COMMON_BUILDER.comment("Min spawn height.")
-                .defineInRange("beehive_dugout_min_height", 80, -127, 255);
-        BEEHIVE_DUGOUT_MAX_HEIGHT = COMMON_BUILDER.comment("Max spawn height.")
-                .defineInRange("beehive_dugout_max_height", 255, -127, 255);
-
-        BEEHIVE_SCORCHED_MIN_HEIGHT = COMMON_BUILDER.comment("Min spawn height.")
-                .defineInRange("beehive_scorched_min_height", 0, -127, 255);
-        BEEHIVE_SCORCHED_MAX_HEIGHT = COMMON_BUILDER.comment("Max spawn height.")
-                .defineInRange("beehive_scorched_max_height", 127, -127, 255);
 
         COMMON_BUILDER.pop();
 

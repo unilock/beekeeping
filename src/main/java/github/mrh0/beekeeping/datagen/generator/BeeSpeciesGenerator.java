@@ -5,14 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import github.mrh0.beekeeping.bee.Beehive;
+import github.mrh0.beekeeping.bee.BeehivePlacement;
 import github.mrh0.beekeeping.bee.Produce;
 import github.mrh0.beekeeping.bee.Species;
 import github.mrh0.beekeeping.bee.genes.Gene;
 import github.mrh0.beekeeping.biome.BiomeTemperature;
-import github.mrh0.beekeeping.config.Config;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.item.Items;
 
@@ -236,8 +235,9 @@ public class BeeSpeciesGenerator {
                 .setBiomeTag(BiomeTags.IS_OVERWORLD)
                 .setRarity(2)
                 .setTries(3)
-                .setAllowPlacement(pos -> pos.getY() > Config.BEEHIVE_DUGOUT_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_DUGOUT_MAX_HEIGHT.get())
-                .setPlacementModifier(PlacementUtils.FULL_RANGE)
+                .setPlacement(BeehivePlacement.HEIGHT)
+                .setMinHeight(80)
+                .setMaxHeight(255)
                 .build());
 
         var nocturnal = makeSpecies(Species.builder("nocturnal")
@@ -314,8 +314,9 @@ public class BeeSpeciesGenerator {
                 .setBiomeTag(BiomeTags.IS_NETHER)
                 .setRarity(6)
                 .setTries(6)
-                .setAllowPlacement(pos -> pos.getY() > Config.BEEHIVE_SCORCHED_MIN_HEIGHT.get() && pos.getY() < Config.BEEHIVE_SCORCHED_MAX_HEIGHT.get())
-                .setPlacementModifier(PlacementUtils.FULL_RANGE)
+                .setPlacement(BeehivePlacement.HEIGHT)
+                .setMinHeight(0)
+                .setMaxHeight(127)
                 .build());
 
         var magmatic = makeSpecies(Species.builder("magmatic")
@@ -472,14 +473,15 @@ public class BeeSpeciesGenerator {
         spawnConditions.addProperty("biome_tag", beehive.biomeTag.location().toString());
         spawnConditions.addProperty("tries", beehive.tries);
         spawnConditions.addProperty("rarity", beehive.rarity);
-//        TODO: ???
-//        spawnConditions.addProperty("placement_modifier", 0);
-//        spawnConditions.addProperty("feature", 0);
-//        spawnConditions.addProperty("placement_function", 0);
+        spawnConditions.addProperty("placement", beehive.placement.name);
+        if (beehive.placement == BeehivePlacement.HEIGHT) {
+            spawnConditions.addProperty("minY", beehive.minY);
+            spawnConditions.addProperty("maxY", beehive.maxY);
+        }
 
         json.add("spawn_conditions", spawnConditions);
 
-        // Write to the species file.
+        // Write to the beehive file.
         File file = OUTPUT_BEEHIVES.resolve(beehive.species.name + ".json").toFile();
 
         try (FileWriter writer = new FileWriter(file)) {

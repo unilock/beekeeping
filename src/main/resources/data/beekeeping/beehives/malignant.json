@@ -3,6 +3,7 @@
   "spawn_conditions": {
     "biome_tag": "c:is_wasteland",
     "tries": 1,
-    "rarity": 8
+    "rarity": 8,
+    "placement": "normal"
   }
 }

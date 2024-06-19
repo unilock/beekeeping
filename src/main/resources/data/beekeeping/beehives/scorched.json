@@ -3,6 +3,9 @@
   "spawn_conditions": {
     "biome_tag": "minecraft:is_nether",
     "tries": 6,
-    "rarity": 6
+    "rarity": 6,
+    "placement": "height",
+    "minY": 0,
+    "maxY": 127
   }
 }

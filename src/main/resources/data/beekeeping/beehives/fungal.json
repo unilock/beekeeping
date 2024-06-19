@@ -3,6 +3,7 @@
   "spawn_conditions": {
     "biome_tag": "c:is_mushroom",
     "tries": 3,
-    "rarity": 10
+    "rarity": 10,
+    "placement": "normal"
   }
 }

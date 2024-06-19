@@ -3,6 +3,9 @@
   "spawn_conditions": {
     "biome_tag": "minecraft:is_overworld",
     "tries": 3,
-    "rarity": 2
+    "rarity": 2,
+    "placement": "height",
+    "minY": 80,
+    "maxY": 255
   }
 }

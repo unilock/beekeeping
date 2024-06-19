@@ -17,18 +17,34 @@ public class Beehive {
     public final TagKey<Biome> biomeTag;
     public final int tries;
     public final int rarity;
+    public final BeehivePlacement placement;
+    public final int minY;
+    public final int maxY;
+
     public final PlacementModifier placementModifier;
     public final Feature<RandomPatchConfiguration> feature;
     public final Function<BlockPos, Boolean> allowPlacement;
 
-    private Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, PlacementModifier modifier, Feature<RandomPatchConfiguration> feature, Function<BlockPos, Boolean> blockPlaceAllow) {
+    private Beehive(Species species, TagKey<Biome> biomeTag, int tries, int rarity, BeehivePlacement placement, int minY, int maxY) {
         this.species = species;
         this.biomeTag = biomeTag;
         this.tries = tries;
         this.rarity = rarity;
-        this.placementModifier = modifier;
-        this.feature = feature;
-        this.allowPlacement = blockPlaceAllow;
+        this.placement = placement;
+        this.minY = minY;
+        this.maxY = maxY;
+
+        if (placement == BeehivePlacement.NORMAL) {
+            this.placementModifier = PlacementUtils.HEIGHTMAP;
+            this.feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
+            this.allowPlacement = (pos) -> true;
+        } else if (placement == BeehivePlacement.HEIGHT) {
+            this.placementModifier = PlacementUtils.FULL_RANGE;
+            this.feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
+            this.allowPlacement = (pos) -> pos.getY() > this.minY && pos.getY() < this.maxY;
+        } else {
+            throw new RuntimeException(); // TODO: replace with something better, i'm too tired for this
+        }
     }
 
     public String getName() {
@@ -44,16 +60,16 @@ public class Beehive {
         TagKey<Biome> biomeTag = BiomeTags.IS_OVERWORLD;
         int tries = 0;
         int rarity = 0;
-        PlacementModifier placementModifier = PlacementUtils.HEIGHTMAP;
-        Feature<RandomPatchConfiguration> feature = new RandomPatchFeature(RandomPatchConfiguration.CODEC);
-        Function<BlockPos, Boolean> allowPlacement = (pos) -> true;
+        BeehivePlacement placement = BeehivePlacement.NORMAL;
+        int minY = -63;
+        int maxY = 255;
 
         private Builder(Species species) {
             this.species = species;
         }
 
         public Beehive build() {
-            return new Beehive(this.species, this.biomeTag, this.tries, this.rarity, this.placementModifier, this.feature, this.allowPlacement);
+            return new Beehive(this.species, this.biomeTag, this.tries, this.rarity, this.placement, this.minY, this.maxY);
         }
 
         public Builder setBiomeTag(TagKey<Biome> biomeTag) {
@@ -71,18 +87,22 @@ public class Beehive {
             return this;
         }
 
-        public Builder setPlacementModifier(PlacementModifier placementModifier) {
-            this.placementModifier = placementModifier;
+        public Builder setPlacement(BeehivePlacement placement) {
+            this.placement = placement;
             return this;
         }
 
-        public Builder setFeature(Feature<RandomPatchConfiguration> feature) {
-            this.feature = feature;
+        public Builder setMinHeight(int minY) {
+            if (this.placement != BeehivePlacement.HEIGHT) throw new IllegalStateException();
+
+            this.minY = minY;
             return this;
         }
 
-        public Builder setAllowPlacement(Function<BlockPos, Boolean> allowPlacement) {
-            this.allowPlacement = allowPlacement;
+        public Builder setMaxHeight(int maxY) {
+            if (this.placement != BeehivePlacement.HEIGHT) throw new IllegalStateException();
+
+            this.maxY = maxY;
             return this;
         }
     }
