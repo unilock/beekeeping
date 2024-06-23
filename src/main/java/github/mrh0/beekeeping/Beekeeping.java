@@ -1,6 +1,7 @@
 package github.mrh0.beekeeping;
 
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import github.mrh0.beekeeping.bee.SpeciesReloadListener;
 import github.mrh0.beekeeping.config.Config;
 import github.mrh0.beekeeping.group.ItemGroup;
 import github.mrh0.beekeeping.network.BeekeepingChannel;
@@ -36,6 +37,8 @@ public class Beekeeping implements ModInitializer {
 
         BeehiveBiomeModifier.modify();
         ItemGroup.init();
+
+        SpeciesReloadListener.register();
     }
 
     public static ResourceLocation get(String resource) {

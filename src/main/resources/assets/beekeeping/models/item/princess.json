@@ -1,0 +1,6 @@
+{
+  "parent": "beekeeping:item/template_bee",
+  "textures": {
+    "layer1" : "beekeeping:item/bee/princess"
+  }
+}

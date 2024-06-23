@@ -110,6 +110,7 @@ public interface Gene {
         RandomFunctions(String name, RandomFunction func) {
             this.name = name;
             this.func = func;
+            RandomFunctionRegistry.register(this);
         }
     }
 }
