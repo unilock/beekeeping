@@ -1,4 +1,3 @@
-// 1.20.1	2024-04-18T11:41:44.093405	Beekeeping/Tags for minecraft:block
-31ca794cff11e9deefa65d6bb2c26cfb8c0c471f data/beekeeping/tags/blocks/beehives.json
+// 1.20.1	2024-06-18T22:35:14.066838134	Beekeeping/Tags for minecraft:block
+13f986c76a8b107aa6cdd92bf4b37fc579c298a0 data/minecraft/tags/blocks/mineable/axe.json
 3f1c5f7df0973e3790d784df5bbf8f1a54d749c3 data/minecraft/tags/blocks/mineable/pickaxe.json
-b1eb5538d835669f71e70d4de5902279bea463a4 data/minecraft/tags/blocks/mineable/axe.json

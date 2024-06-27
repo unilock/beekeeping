@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +32,7 @@ public abstract class BeeItem extends Item {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             return false;
         }
 
@@ -41,43 +42,43 @@ public abstract class BeeItem extends Item {
     public abstract BeeType getType();
 
     public static void setAnalyzed(ItemStack stack, boolean analyzed) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             throw new IllegalArgumentException("[Beekeeping] setAnalyzed called on invalid stack");
         }
 
-        stack.getTag().putBoolean(ANALYZED_KEY, analyzed);
+        stack.getOrCreateTag().putBoolean(ANALYZED_KEY, analyzed);
     }
 
     public static boolean getAnalyzed(ItemStack stack) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             return false;
         }
 
-        return stack.getTag().getBoolean(ANALYZED_KEY);
+        return stack.getOrCreateTag().getBoolean(ANALYZED_KEY);
     }
 
     public static void setHealth(ItemStack stack, int health) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             throw new IllegalArgumentException("[Beekeeping] setHealth called on invalid stack");
         }
 
-        stack.getTag().putInt(HEALTH_KEY, health);
+        stack.getOrCreateTag().putInt(HEALTH_KEY, health);
     }
 
     public static int getHealth(ItemStack stack) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             return 0;
         }
 
-        return stack.getTag().getInt(HEALTH_KEY);
+        return stack.getOrCreateTag().getInt(HEALTH_KEY);
     }
 
     public static void setSpecies(ItemStack stack, Species species) {
-        if (!(stack.getItem() instanceof BeeItem) || stack.getTag() == null) {
+        if (!(stack.getItem() instanceof BeeItem)) {
             throw new IllegalArgumentException("[Beekeeping] setSpecies called on invalid stack");
         }
 
-        stack.getTag().putString(SPECIES_KEY, species.name);
+        stack.getOrCreateTag().putString(SPECIES_KEY, species.name);
     }
 
     public static Species getSpecies(ItemStack stack) {
@@ -147,6 +148,18 @@ public abstract class BeeItem extends Item {
         double health = getHealth(stack);
         double max = LifetimeGene.of(LifetimeGene.get(stack)).getTime();
         return health/max;
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        String name;
+        if (!(stack.getItem() instanceof BeeItem) || getSpecies(stack) == null) {
+            name = "null";
+        } else {
+            name = StringUtils.capitalize(getSpecies(stack).name);
+        }
+
+        return Component.translatable(this.getDescriptionId(stack), name);
     }
 
     @Override

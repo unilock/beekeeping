@@ -1,17 +1,7 @@
 {
   "replace": false,
   "values": [
-    "beekeeping:forest_beehive",
-    "beekeeping:ender_beehive",
-    "beekeeping:tropical_beehive",
-    "beekeeping:snowy_beehive",
-    "beekeeping:malignant_beehive",
-    "beekeeping:dune_beehive",
-    "beekeeping:upland_beehive",
-    "beekeeping:fungal_beehive",
-    "beekeeping:common_beehive",
-    "beekeeping:scorched_beehive",
-    "beekeeping:dugout_beehive",
-    "beekeeping:apiary"
+    "beekeeping:apiary",
+    "beekeeping:beehive"
   ]
 }

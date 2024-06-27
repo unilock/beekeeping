@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class AnalyzerScreen extends BeeScreen<AnalyzerMenu, AnalyzerBlockEntity>
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
         if(getAnalyzed() != null && getSpecies() != null) {
-            drawText(guiGraphics, Component.translatable("item.beekeeping.species." + getSpecies().name), 29, 14, 1.75f, getSpecies().color);
+            drawText(guiGraphics, Component.literal(StringUtils.capitalize(getSpecies().name)), 29, 14, 1.75f, getSpecies().color);
         }
         else
             drawText(guiGraphics, Component.translatable("title.beekeeping.analyzer.insert"), 29, 14, 1.75f);

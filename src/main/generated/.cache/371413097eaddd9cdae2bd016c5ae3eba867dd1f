@@ -1,14 +1,3 @@
-// 1.20.1	2024-04-18T11:41:44.090304	Beekeeping/Block Loot Tables
-09ee6965b020132f4755961a80c612938506c991 data/beekeeping/loot_tables/blocks/malignant_beehive.json
-21bb855ab2653fa3b9752b7f9c293eda698c00b6 data/beekeeping/loot_tables/blocks/scorched_beehive.json
-360f42b8d34599cb4eb2c16dde2cf42da2e621a1 data/beekeeping/loot_tables/blocks/upland_beehive.json
+// 1.20.1	2024-06-18T22:35:14.065536637	Beekeeping/Block Loot Tables
 d8fbf2b4073700e7ed5bf1bc06d35b01d126c23c data/beekeeping/loot_tables/blocks/analyzer.json
-7f098051aacd9e5c1ef1a7d0dd2a34a7cbb350c6 data/beekeeping/loot_tables/blocks/forest_beehive.json
-12758a852ac9e111bbfba250c0bc721f8b60d0b9 data/beekeeping/loot_tables/blocks/dugout_beehive.json
-6b7216eab62c1f5ef61de204bca96e4709241b2d data/beekeeping/loot_tables/blocks/snowy_beehive.json
 255cab482660681262065cd3ebe7ca2c42a83e45 data/beekeeping/loot_tables/blocks/apiary.json
-555525ea1809e6aa0274034ecb88047e4462bcf8 data/beekeeping/loot_tables/blocks/fungal_beehive.json
-87de62dc7f9410171ed95b6588b56d2e577bca57 data/beekeeping/loot_tables/blocks/common_beehive.json
-fdcd5d60bd09b277159085ed40df2a44b31418c1 data/beekeeping/loot_tables/blocks/dune_beehive.json
-e5f551e6bd595f314bc05bb464e35b582bf3887d data/beekeeping/loot_tables/blocks/tropical_beehive.json
-d5c278b9af66fb59e2e3b788367af147d5bd7292 data/beekeeping/loot_tables/blocks/ender_beehive.json

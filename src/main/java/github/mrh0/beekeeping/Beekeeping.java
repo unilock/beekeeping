@@ -35,7 +35,7 @@ public class Beekeeping implements ModInitializer {
         ModTags.init();
         ModRecipes.init();
 
-        BeehiveBiomeModifier.modify();
+        //BeehiveBiomeModifier.modify();
         ItemGroup.init();
 
         SpeciesReloadListener.register();

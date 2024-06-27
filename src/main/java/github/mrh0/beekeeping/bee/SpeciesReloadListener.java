@@ -31,7 +31,7 @@ public class SpeciesReloadListener {
             public void onResourceManagerReload(@NotNull ResourceManager manager) {
                 SpeciesRegistry.INSTANCE.clear();
 
-                manager.listResources("beekeeping/species", id -> id.getPath().endsWith(".json")).forEach((id, resource) -> {
+                manager.listResources("species", id -> id.getPath().endsWith(".json")).forEach((id, resource) -> {
                     try (var reader = resource.openAsReader()) {
                         JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
                         String name = json.get("name").getAsString();
@@ -97,7 +97,6 @@ public class SpeciesReloadListener {
                         if (nocturnal) speciesBuilder.setNocturnal();
                         speciesBuilder.setPreferredTemperature(temperature);
 
-                        // TODO!!!
                         speciesBuilder.setLifetimeGene(lifetimeGene);
                         speciesBuilder.setLightGene(lightToleranceGene);
                         speciesBuilder.setProduceGene(rareProduceGene);
