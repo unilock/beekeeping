@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class BeeSpeciesGenerator {
-    private static final Path OUTPUT_SPECIES = Path.of("../../src/main/resources/data/beekeeping/species").toAbsolutePath();
-    private static final Path OUTPUT_BEEHIVES = Path.of("../../src/main/resources/data/beekeeping/beehives").toAbsolutePath();
+    private static final Path OUTPUT_SPECIES = Path.of("../../src/main/resources/data/beekeeping/beekeeping/species").toAbsolutePath();
+    private static final Path OUTPUT_BEEHIVES = Path.of("../../src/main/resources/data/beekeeping/beekeeping/beehives").toAbsolutePath();
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()

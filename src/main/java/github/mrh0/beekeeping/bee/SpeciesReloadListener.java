@@ -31,7 +31,7 @@ public class SpeciesReloadListener {
             public void onResourceManagerReload(@NotNull ResourceManager manager) {
                 SpeciesRegistry.INSTANCE.clear();
 
-                manager.listResources("species", id -> id.getPath().endsWith(".json")).forEach((id, resource) -> {
+                manager.listResources("beekeeping/species", id -> id.getPath().endsWith(".json")).forEach((id, resource) -> {
                     try (var reader = resource.openAsReader()) {
                         JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
                         String name = json.get("name").getAsString();
