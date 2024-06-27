@@ -5,14 +5,14 @@ Fabric port by unilock
 TODO:
 - DATAGEN
   - Default Beehive blockstate
-  - Built-in Beehives for each Species
-- DYNAMIC REGISTRIES
+- DYNAMIC STUFF
+  - Beehive blocks in CreativeModeTab
   - Beehive feature!?
   - Bee breeding recipes
   - Bee produce recipes
 - RENDERING
-  - Beehive block textures / colors
-  - Bee item textures / colors
+  - Beehive block colors?
+  - Bee item colors are all wrong
 - MISC
   - Beehive item NBT (Species) - store on break and load on place
 - LONG-TERM GOALS
